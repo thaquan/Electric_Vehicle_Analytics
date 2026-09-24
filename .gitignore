@@ -1,0 +1,13 @@
+# Source data is acquired separately from Kaggle and must not be published.
+/data/raw/
+/data/bronze/
+/data/silver/
+
+# Local tooling and generated runtime artifacts
+.venv/
+__pycache__/
+*.pyc
+/.playwright-mcp/
+/output/
+/upstream-notebook-source/
+/predicting-electric-vehicle-full-eda.ipynb

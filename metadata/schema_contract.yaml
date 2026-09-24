@@ -1,0 +1,39 @@
+contract_version: 2
+dataset: kaggle_playground_series_s6e9_ev_purchases
+grain: one synthetic potential buyer per record
+datasets:
+  train:
+    primary_key: id
+    expected_columns:
+      - { name: id, type: long, nullable: false }
+      - { name: Age, type: integer, nullable: false }
+      - { name: Annual_Income_USD, type: decimal, nullable: false }
+      - { name: Daily_Commute_km, type: decimal, nullable: false }
+      - { name: Number_of_Cars_Owned, type: integer, nullable: false }
+      - { name: Charging_Stations_Near_Home, type: integer, nullable: false }
+      - { name: Charging_Stations_Near_Work, type: integer, nullable: false }
+      - { name: Environmental_Concern_Level, type: string, nullable: false }
+      - { name: Gender, type: string, nullable: false }
+      - { name: City_Type, type: string, nullable: false }
+      - { name: Current_Car_Type, type: string, nullable: false }
+      - { name: Home_Charging_Possible, type: string, nullable: false }
+      - { name: Subsidy_Available, type: string, nullable: false }
+      - { name: Range_Anxiety_Level, type: string, nullable: false }
+      - { name: Will_Buy_EV, type: string, nullable: false, allowed_values: ["Yes", "No"] }
+  test:
+    primary_key: id
+    expected_columns: same_as_train_except_Will_Buy_EV
+  original_reference:
+    primary_key: Buyer_ID
+    expected_columns: same_business_fields_as_train_with_Buyer_ID
+    column_overrides:
+      Buyer_ID: { type: string, nullable: false }
+      Annual_Income_USD: { type: decimal, nullable: true, snapshot_null_count: 178 }
+      Daily_Commute_km: { type: decimal, nullable: true, snapshot_null_count: 181 }
+      Environmental_Concern_Level: { type: string, nullable: true, snapshot_null_count: 184 }
+quality_rules:
+  - id and Buyer_ID must be unique within their source file.
+  - train must contain Will_Buy_EV; test must not contain it.
+  - all expected columns must exist with exact names and order recorded in source_manifest.json.
+  - categorical values are profiled in categorical_profile.json before enforcement.
+  - numeric bounds are profiled before hard business constraints are introduced.
