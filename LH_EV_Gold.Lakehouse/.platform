@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Lakehouse",
+    "displayName": "LH_EV_Gold",
+    "description": "EV purchase-intent analytics from validated train data: buyer fact, KPI and segment summaries."
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "f6573088-6bcf-8fd2-4428-38e932e99e91"
+  }
+}
