@@ -10,13 +10,16 @@ EV purchase analytics in Microsoft Fabric, versioned in Azure DevOps.
 | Analytics Lakehouse | LH_EV_Gold |
 | Transformation notebook | NB_EV_Bronze_To_Silver |
 | Analytics notebook | NB_EV_Silver_To_Gold |
+| On-demand pipeline | PL_EV_E2E |
 
 Foundation and Bronze are complete. Silver run `20260924T031507399976Z` is
-published and its success marker has been verified on OneLake. Gold reference
-metrics and notebook are prepared; Gold execution in Fabric is still pending.
+published. Gold run `20260924T131322687853Z` is also published, and both success
+markers have been verified on OneLake. The E2E pipeline is prepared for Git
+deployment; its first full Fabric run is still pending.
 
 Start with [the Bronze/Silver runbook](docs/bronze_silver.md).
 Next: [Gold definitions and run instructions](docs/gold_runbook.md).
+Run the full flow using [PL_EV_E2E instructions](docs/pipeline_runbook.md).
 Source schema and checksums are in `metadata/`; raw/generated data is excluded
 from Git. The original reference remains separate from competition train/test.
 

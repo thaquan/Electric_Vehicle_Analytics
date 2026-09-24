@@ -11,11 +11,17 @@
   "silver_validation_module_uploaded": true,
   "silver_executed_on_fabric": true,
   "notebook_name": "NB_EV_Bronze_To_Silver",
-  "notebook_deployment": "Silver synced from Fabric Git and published; Gold prepared in Fabric Git for user execution.",
-  "pending": "User Update from Git and Run all for NB_EV_Silver_To_Gold.",
+  "notebook_deployment": "Manual Silver/Gold published; pipeline-ready notebook updates and PL_EV_E2E prepared for Git deployment.",
+  "pending": "Sync and run PL_EV_E2E; verify final e2e audit marker.",
   "silver_published_run_id": "20260924T031507399976Z",
   "gold_lakehouse_id": "32e99e91-38e9-4428-8fd2-6bcff6573088",
   "gold_lakehouse_name": "LH_EV_Gold",
   "gold_notebook_name": "NB_EV_Silver_To_Gold",
-  "gold_executed_on_fabric": false
+  "gold_executed_on_fabric": true,
+  "silver_notebook_id": "1055ff27-5dd1-4a21-8703-4ae5af12363f",
+  "gold_notebook_id": "194c42ee-d59b-4cda-9dd9-70399e3ddf76",
+  "gold_published_run_id": "20260924T131322687853Z",
+  "pipeline_name": "PL_EV_E2E",
+  "pipeline_executed_on_fabric": false,
+  "pipeline_deployment": "Fabric Git definition ready; requires Update from Git and first run."
 }

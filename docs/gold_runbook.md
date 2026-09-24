@@ -6,15 +6,20 @@
 - `LH_EV_Gold` created: `32e99e91-38e9-4428-8fd2-6bcff6573088`.
 - Silver success marker and quality report downloaded from OneLake into
   `metadata/silver_published_run.json` and `metadata/silver_fabric_quality_report.json`.
-- Gold reference counts checked locally. Gold has not yet run in Fabric.
+- Gold run `20260924T131322687853Z` published successfully; its OneLake marker
+  is saved as `metadata/gold_published_run.json`.
+- The updated notebook supports the E2E pipeline. See [pipeline instructions](pipeline_runbook.md).
 
 ## Input and scope
 
-The notebook pins Silver run `20260924T031507399976Z`, table
+For a manual run with no override, the notebook pins Silver run `20260924T031507399976Z`, table
 `silver_train_20260924t031507399976z`, Delta version **0**. The verified physical
 path is `LH_EV_Silver/Tables/silver_train_20260924t031507399976z` (no `dbo`
 folder). It checks the source publication marker, row counts, unique IDs,
 source checksum lineage and exact Yes/No-to-flag mapping before writing Gold.
+In pipeline mode, `silver_run_id` must be supplied from `Build_Silver`; source
+table and path are derived from that run, and its marker must belong to the
+same pipeline execution. The historical run is never a pipeline fallback.
 
 Only labeled competition **train** enters Gold. Test is unlabeled;
 original_reference is a separate population and must not inflate train KPIs.

@@ -8,6 +8,7 @@ Silver run `20260924T031507399976Z` completed successfully. Its publication
 marker and quality report have been verified directly on OneLake and saved
 in `metadata/silver_published_run.json` and `metadata/silver_fabric_quality_report.json`.
 Continue with [the Gold runbook](gold_runbook.md).
+For repeatable orchestration, use [PL_EV_E2E](pipeline_runbook.md).
 
 ## Local validation
 
