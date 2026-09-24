@@ -1,0 +1,16 @@
+{
+  "workspace_id": "5fe78794-25c3-41ee-b35e-bc56542d2cea",
+  "workspace_name": "WS_EV_Analytics",
+  "bronze_lakehouse_id": "c1516bc3-3ae5-4a7f-966e-16a6c8126ec5",
+  "bronze_lakehouse_name": "LH_EV_Bronze",
+  "silver_lakehouse_id": "676ba346-22dd-4eeb-92ec-4f53f09ccca7",
+  "silver_lakehouse_name": "LH_EV_Silver",
+  "source_manifest_uploaded": true,
+  "raw_csv_uploaded": true,
+  "bronze_metadata_uploaded": true,
+  "silver_validation_module_uploaded": true,
+  "silver_executed_on_fabric": false,
+  "notebook_name": "NB_EV_Bronze_To_Silver",
+  "notebook_deployment": "Fabric Git source in Azure DevOps; user will Update from Git and Run all.",
+  "pending": "User execution of NB_EV_Bronze_To_Silver on Fabric."
+}

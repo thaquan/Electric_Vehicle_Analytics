@@ -1,0 +1,87 @@
+﻿{
+    "source":  "Kaggle Playground Series S6E9: Predicting Electric Vehicle Purchases",
+    "competition_url":  "https://www.kaggle.com/competitions/playground-series-s6e9",
+    "notebook_reference":  "https://www.kaggle.com/code/thuandao/predicting-electric-vehicle-full-eda",
+    "acquisition_note":  "Retrieved from the public repository referenced by the Kaggle notebook; validate against a direct Kaggle download when API access is configured.",
+    "profiled_at_utc":  "2026-09-23T16:01:20.7480517Z",
+    "files":  [
+                  {
+                      "name":  "EV_Adoption_and_Range_Anxiety_Dataset.csv",
+                      "bytes":  692429,
+                      "data_rows":  10000,
+                      "columns":  [
+                                      "Buyer_ID",
+                                      "Age",
+                                      "Gender",
+                                      "Annual_Income_USD",
+                                      "City_Type",
+                                      "Daily_Commute_km",
+                                      "Number_of_Cars_Owned",
+                                      "Current_Car_Type",
+                                      "Charging_Stations_Near_Home",
+                                      "Charging_Stations_Near_Work",
+                                      "Home_Charging_Possible",
+                                      "Environmental_Concern_Level",
+                                      "Subsidy_Available",
+                                      "Range_Anxiety_Level",
+                                      "Will_Buy_EV"
+                                  ],
+                      "sha256":  "C271A380DF51B18177D0A039D54525CA7C3D71500701DC7496714A091DF16FAE"
+                  },
+                  {
+                      "name":  "sample_submission.csv",
+                      "bytes":  8024004,
+                      "data_rows":  286571,
+                      "columns":  [
+                                      "id",
+                                      "Will_Buy_EV"
+                                  ],
+                      "sha256":  "1E53F819367E0F95466FBB65D8D46C330AE933D776073EB760887B22DE94F9C1"
+                  },
+                  {
+                      "name":  "test.csv",
+                      "bytes":  18584919,
+                      "data_rows":  286571,
+                      "columns":  [
+                                      "id",
+                                      "Age",
+                                      "Annual_Income_USD",
+                                      "Daily_Commute_km",
+                                      "Number_of_Cars_Owned",
+                                      "Charging_Stations_Near_Home",
+                                      "Charging_Stations_Near_Work",
+                                      "Environmental_Concern_Level",
+                                      "Gender",
+                                      "City_Type",
+                                      "Current_Car_Type",
+                                      "Home_Charging_Possible",
+                                      "Subsidy_Available",
+                                      "Range_Anxiety_Level"
+                                  ],
+                      "sha256":  "6C6454734F573EBEDF987D4B4C50E9EA89694DE3AB2A6816F56FFBFB24AF1285"
+                  },
+                  {
+                      "name":  "train.csv",
+                      "bytes":  45376312,
+                      "data_rows":  668665,
+                      "columns":  [
+                                      "id",
+                                      "Age",
+                                      "Annual_Income_USD",
+                                      "Daily_Commute_km",
+                                      "Number_of_Cars_Owned",
+                                      "Charging_Stations_Near_Home",
+                                      "Charging_Stations_Near_Work",
+                                      "Environmental_Concern_Level",
+                                      "Gender",
+                                      "City_Type",
+                                      "Current_Car_Type",
+                                      "Home_Charging_Possible",
+                                      "Subsidy_Available",
+                                      "Range_Anxiety_Level",
+                                      "Will_Buy_EV"
+                                  ],
+                      "sha256":  "141B8AC4B171CEBCE17EA7F52CF5C26F1AC5B675C24850096A3CFACA60B036D4"
+                  }
+              ]
+}

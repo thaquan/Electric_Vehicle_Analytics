@@ -1,20 +1,34 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+# Electric Vehicle Analytics
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+EV purchase analytics in Microsoft Fabric, versioned in Azure DevOps.
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+| Artifact | Name |
+| --- | --- |
+| Workspace | WS_EV_Analytics |
+| Raw Lakehouse | LH_EV_Bronze |
+| Validated Lakehouse | LH_EV_Silver |
+| Transformation notebook | NB_EV_Bronze_To_Silver |
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+Foundation profiling and local data-quality checks are complete. Four source
+CSVs are uploaded to Bronze. Silver notebook code is ready for the user to
+sync from Git and run; successful execution in Fabric is not yet confirmed.
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+Start with [the Bronze/Silver runbook](docs/bronze_silver.md).
+Source schema and checksums are in `metadata/`; raw/generated data is excluded
+from Git. The original reference remains separate from competition train/test.
+
+```powershell
+python -m pip install -r requirements.txt
+python -m unittest discover -s tests -v
+python scripts/bronze_silver.py --stage-bronze
+python scripts/build_fabric_notebook.py
+```
+
+The notebook is maintained in `scripts/fabric_silver.py` and generated into both
+`NB_EV_Bronze_To_Silver.Notebook/` (Fabric Git) and `notebooks/` (manual import).
+Its validation module is `scripts/bronze_silver.py`, deployed to Silver
+`Files/code/bronze_silver.py`. Changes to that module must be uploaded to
+OneLake as well as pushed to this repository.
+
+This is synthetic competition data. Results describe this dataset, not causal
+effects or population-level EV demand.
