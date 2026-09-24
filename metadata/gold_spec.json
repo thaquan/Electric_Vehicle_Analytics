@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "source_dataset": "train",
+  "silver_run_id": "20260924T031507399976Z",
+  "source_table": "silver_train_20260924t031507399976z",
+  "source_relative_path": "Tables/silver_train_20260924t031507399976z",
+  "expected_rows": 668665,
+  "expected_yes": 116779,
+  "bands": {
+    "age_band": {"column": "Age", "edges": [35, 45, 55, 65], "labels": ["Under 35", "35-44", "45-54", "55-64", "65+"]},
+    "income_band": {"column": "Annual_Income_USD", "edges": [50000, 75000, 100000], "labels": ["Under 50k", "50k-<75k", "75k-<100k", "100k+"]},
+    "commute_band": {"column": "Daily_Commute_km", "edges": [10, 25, 50], "labels": ["Under 10 km", "10-<25 km", "25-<50 km", "50+ km"]}
+  },
+  "segments": ["age_band", "income_band", "commute_band", "Gender", "City_Type", "Current_Car_Type", "Home_Charging_Possible", "Subsidy_Available", "Range_Anxiety_Level", "Environmental_Concern_Level"],
+  "metric_definition": "purchase_intent_rate = yes_count / respondent_count; not realized vehicle sales"
+}
