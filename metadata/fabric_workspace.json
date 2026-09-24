@@ -9,8 +9,13 @@
   "raw_csv_uploaded": true,
   "bronze_metadata_uploaded": true,
   "silver_validation_module_uploaded": true,
-  "silver_executed_on_fabric": false,
+  "silver_executed_on_fabric": true,
   "notebook_name": "NB_EV_Bronze_To_Silver",
-  "notebook_deployment": "Fabric Git source in Azure DevOps; user will Update from Git and Run all.",
-  "pending": "User execution of NB_EV_Bronze_To_Silver on Fabric."
+  "notebook_deployment": "Silver synced from Fabric Git and published; Gold prepared in Fabric Git for user execution.",
+  "pending": "User Update from Git and Run all for NB_EV_Silver_To_Gold.",
+  "silver_published_run_id": "20260924T031507399976Z",
+  "gold_lakehouse_id": "32e99e91-38e9-4428-8fd2-6bcff6573088",
+  "gold_lakehouse_name": "LH_EV_Gold",
+  "gold_notebook_name": "NB_EV_Silver_To_Gold",
+  "gold_executed_on_fabric": false
 }

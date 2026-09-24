@@ -7,13 +7,16 @@ EV purchase analytics in Microsoft Fabric, versioned in Azure DevOps.
 | Workspace | WS_EV_Analytics |
 | Raw Lakehouse | LH_EV_Bronze |
 | Validated Lakehouse | LH_EV_Silver |
+| Analytics Lakehouse | LH_EV_Gold |
 | Transformation notebook | NB_EV_Bronze_To_Silver |
+| Analytics notebook | NB_EV_Silver_To_Gold |
 
-Foundation profiling and local data-quality checks are complete. Four source
-CSVs are uploaded to Bronze. Silver notebook code is ready for the user to
-sync from Git and run; successful execution in Fabric is not yet confirmed.
+Foundation and Bronze are complete. Silver run `20260924T031507399976Z` is
+published and its success marker has been verified on OneLake. Gold reference
+metrics and notebook are prepared; Gold execution in Fabric is still pending.
 
 Start with [the Bronze/Silver runbook](docs/bronze_silver.md).
+Next: [Gold definitions and run instructions](docs/gold_runbook.md).
 Source schema and checksums are in `metadata/`; raw/generated data is excluded
 from Git. The original reference remains separate from competition train/test.
 

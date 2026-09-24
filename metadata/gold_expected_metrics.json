@@ -1,0 +1,220 @@
+{
+  "verification_scope": "Local train snapshot reference; not Fabric Gold execution",
+  "source_sha256": "141B8AC4B171CEBCE17EA7F52CF5C26F1AC5B675C24850096A3CFACA60B036D4",
+  "respondent_count": 668665,
+  "yes_count": 116779,
+  "no_count": 551886,
+  "purchase_intent_rate": 0.17464500160768098,
+  "segments": [
+    {
+      "segment_dimension": "age_band",
+      "segment_value": "35-44",
+      "respondent_count": 151968,
+      "yes_count": 26401
+    },
+    {
+      "segment_dimension": "age_band",
+      "segment_value": "45-54",
+      "respondent_count": 154375,
+      "yes_count": 28321
+    },
+    {
+      "segment_dimension": "age_band",
+      "segment_value": "55-64",
+      "respondent_count": 146413,
+      "yes_count": 25428
+    },
+    {
+      "segment_dimension": "age_band",
+      "segment_value": "65+",
+      "respondent_count": 73568,
+      "yes_count": 11692
+    },
+    {
+      "segment_dimension": "age_band",
+      "segment_value": "Under 35",
+      "respondent_count": 142341,
+      "yes_count": 24937
+    },
+    {
+      "segment_dimension": "income_band",
+      "segment_value": "100k+",
+      "respondent_count": 182731,
+      "yes_count": 53325
+    },
+    {
+      "segment_dimension": "income_band",
+      "segment_value": "50k-<75k",
+      "respondent_count": 159595,
+      "yes_count": 16599
+    },
+    {
+      "segment_dimension": "income_band",
+      "segment_value": "75k-<100k",
+      "respondent_count": 251563,
+      "yes_count": 43600
+    },
+    {
+      "segment_dimension": "income_band",
+      "segment_value": "Under 50k",
+      "respondent_count": 74776,
+      "yes_count": 3255
+    },
+    {
+      "segment_dimension": "commute_band",
+      "segment_value": "10-<25 km",
+      "respondent_count": 86826,
+      "yes_count": 18410
+    },
+    {
+      "segment_dimension": "commute_band",
+      "segment_value": "25-<50 km",
+      "respondent_count": 303373,
+      "yes_count": 52001
+    },
+    {
+      "segment_dimension": "commute_band",
+      "segment_value": "50+ km",
+      "respondent_count": 132507,
+      "yes_count": 19445
+    },
+    {
+      "segment_dimension": "commute_band",
+      "segment_value": "Under 10 km",
+      "respondent_count": 145959,
+      "yes_count": 26923
+    },
+    {
+      "segment_dimension": "Gender",
+      "segment_value": "Female",
+      "respondent_count": 295427,
+      "yes_count": 52480
+    },
+    {
+      "segment_dimension": "Gender",
+      "segment_value": "Male",
+      "respondent_count": 367954,
+      "yes_count": 63381
+    },
+    {
+      "segment_dimension": "Gender",
+      "segment_value": "Other",
+      "respondent_count": 5284,
+      "yes_count": 918
+    },
+    {
+      "segment_dimension": "City_Type",
+      "segment_value": "Rural",
+      "respondent_count": 123983,
+      "yes_count": 23977
+    },
+    {
+      "segment_dimension": "City_Type",
+      "segment_value": "Suburban",
+      "respondent_count": 255377,
+      "yes_count": 46207
+    },
+    {
+      "segment_dimension": "City_Type",
+      "segment_value": "Urban",
+      "respondent_count": 289305,
+      "yes_count": 46595
+    },
+    {
+      "segment_dimension": "Current_Car_Type",
+      "segment_value": "Hatchback",
+      "respondent_count": 79438,
+      "yes_count": 13846
+    },
+    {
+      "segment_dimension": "Current_Car_Type",
+      "segment_value": "SUV",
+      "respondent_count": 246545,
+      "yes_count": 44613
+    },
+    {
+      "segment_dimension": "Current_Car_Type",
+      "segment_value": "Sedan",
+      "respondent_count": 303459,
+      "yes_count": 52185
+    },
+    {
+      "segment_dimension": "Current_Car_Type",
+      "segment_value": "Truck",
+      "respondent_count": 39223,
+      "yes_count": 6135
+    },
+    {
+      "segment_dimension": "Home_Charging_Possible",
+      "segment_value": "No",
+      "respondent_count": 205988,
+      "yes_count": 26178
+    },
+    {
+      "segment_dimension": "Home_Charging_Possible",
+      "segment_value": "Yes",
+      "respondent_count": 462677,
+      "yes_count": 90601
+    },
+    {
+      "segment_dimension": "Subsidy_Available",
+      "segment_value": "No",
+      "respondent_count": 248756,
+      "yes_count": 1432
+    },
+    {
+      "segment_dimension": "Subsidy_Available",
+      "segment_value": "Yes",
+      "respondent_count": 419909,
+      "yes_count": 115347
+    },
+    {
+      "segment_dimension": "Range_Anxiety_Level",
+      "segment_value": "High",
+      "respondent_count": 2194,
+      "yes_count": 3
+    },
+    {
+      "segment_dimension": "Range_Anxiety_Level",
+      "segment_value": "Low",
+      "respondent_count": 603972,
+      "yes_count": 114167
+    },
+    {
+      "segment_dimension": "Range_Anxiety_Level",
+      "segment_value": "Medium",
+      "respondent_count": 62499,
+      "yes_count": 2609
+    },
+    {
+      "segment_dimension": "Environmental_Concern_Level",
+      "segment_value": "1.0",
+      "respondent_count": 147476,
+      "yes_count": 834
+    },
+    {
+      "segment_dimension": "Environmental_Concern_Level",
+      "segment_value": "2.0",
+      "respondent_count": 135133,
+      "yes_count": 2889
+    },
+    {
+      "segment_dimension": "Environmental_Concern_Level",
+      "segment_value": "3.0",
+      "respondent_count": 127351,
+      "yes_count": 14126
+    },
+    {
+      "segment_dimension": "Environmental_Concern_Level",
+      "segment_value": "4.0",
+      "respondent_count": 130469,
+      "yes_count": 32467
+    },
+    {
+      "segment_dimension": "Environmental_Concern_Level",
+      "segment_value": "5.0",
+      "respondent_count": 128236,
+      "yes_count": 66463
+    }
+  ]
+}

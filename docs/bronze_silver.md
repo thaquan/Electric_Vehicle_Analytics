@@ -4,7 +4,10 @@ Workspace: `WS_EV_Analytics` (`5fe78794-25c3-41ee-b35e-bc56542d2cea`).
 Bronze: `LH_EV_Bronze` (`c1516bc3-3ae5-4a7f-966e-16a6c8126ec5`).
 Silver: `LH_EV_Silver` (`676ba346-22dd-4eeb-92ec-4f53f09ccca7`).
 All four raw CSVs have been uploaded to Bronze with user authorization.
-Silver has not been executed in Fabric; the user will run the notebook.
+Silver run `20260924T031507399976Z` completed successfully. Its publication
+marker and quality report have been verified directly on OneLake and saved
+in `metadata/silver_published_run.json` and `metadata/silver_fabric_quality_report.json`.
+Continue with [the Gold runbook](gold_runbook.md).
 
 ## Local validation
 
