@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Lakehouse",
+    "displayName": "LH_EV_Silver",
+    "description": "Validated EV purchase datasets, separated into train, test and original reference."
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "f09ccca7-4f53-92ec-4eeb-22dd676ba346"
+  }
+}
