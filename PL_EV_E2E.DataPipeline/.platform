@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "DataPipeline",
+    "displayName": "PL_EV_E2E",
+    "description": "On-demand Bronze checks, Silver publication, Gold publication and independent verification."
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "221ff1cf-3800-4a7c-87c3-13dc94057fbd"
+  }
+}

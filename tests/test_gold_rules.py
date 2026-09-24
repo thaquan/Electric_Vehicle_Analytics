@@ -2,6 +2,7 @@ import json
 import sqlite3
 import sys
 import unittest
+from contextlib import closing
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -12,7 +13,7 @@ from gold_rules import band_label, band_sql, require_gold_context, validate_band
 class GoldTests(unittest.TestCase):
     def test_boundaries_and_sql_agree(self):
         spec = json.loads((ROOT / "metadata/gold_spec.json").read_text())
-        with sqlite3.connect(":memory:") as db:
+        with closing(sqlite3.connect(":memory:")) as db:
             for band in spec["bands"].values():
                 cases = [(None, "Unknown")]
                 for i, edge in enumerate(band["edges"]):

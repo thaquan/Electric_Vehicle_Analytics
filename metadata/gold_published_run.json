@@ -1,0 +1,26 @@
+{
+  "status": "published",
+  "run_id": "20260924T131322687853Z",
+  "silver_run_id": "20260924T031507399976Z",
+  "silver_delta_version": 0,
+  "respondent_count": 668665,
+  "yes_count": 116779,
+  "purchase_intent_rate": 0.17464500160768098,
+  "tables": [
+    {
+      "role": "fact_ev_purchase_intent",
+      "table": "fact_ev_purchase_intent_20260924t131322687853z",
+      "rows": 668665
+    },
+    {
+      "role": "agg_ev_kpi",
+      "table": "agg_ev_kpi_20260924t131322687853z",
+      "rows": 1
+    },
+    {
+      "role": "agg_ev_segments",
+      "table": "agg_ev_segments_20260924t131322687853z",
+      "rows": 35
+    }
+  ]
+}
