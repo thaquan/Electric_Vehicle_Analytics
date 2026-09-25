@@ -7,7 +7,7 @@ from bisect import bisect_right
 def require_gold_context(context, config):
     if (context.get("defaultLakehouseId") != config["gold_lakehouse_id"]
             or context.get("defaultLakehouseWorkspaceId") != config["workspace_id"]):
-        raise RuntimeError("Attach LH_EV_Gold as default Lakehouse in WS_EV_Analytics, restart the session, then Run all.")
+        raise RuntimeError(f"Expected LH_EV_Gold in WS_EV_Analytics; actual Lakehouse={context.get('defaultLakehouseId')!r}, workspace={context.get('defaultLakehouseWorkspaceId')!r}. Sync the latest notebook and start a fresh run so its first %%configure cell is applied.")
 
 
 def validate_band(band):

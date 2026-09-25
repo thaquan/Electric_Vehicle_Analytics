@@ -16,13 +16,23 @@ def write_notebook(name, lakehouse_name, lakehouse_id, workspace_id, cells, desc
     def meta(value):
         return "# METADATA ********************\n" + "\n".join("# META " + line for line in json.dumps(value, indent=2).splitlines())
     source = "# Fabric notebook source\n\n" + meta({"kernel_info": {"name": "synapse_pyspark"}, "dependencies": dependencies})
+    # Pipeline sessions must receive %%configure before any Python/parameter cell.
+    session_config = {"defaultLakehouse": {"name": lakehouse_name, "id": lakehouse_id, "workspaceId": workspace_id}}
+    configure = "%%configure -f\n" + json.dumps(session_config, indent=2) + "\n"
+    notebook["cells"].append({"cell_type": "code", "id": "session-config", "metadata": {},
+                             "execution_count": None, "outputs": [], "source": configure.splitlines(keepends=True)})
+    source += "\n\n# CELL ********************\n\n" + configure
+    source += "\n" + meta({"language": "python", "language_group": "synapse_pyspark"})
     for index, (body, parameter_cell) in enumerate(cells):
         compile(body, f"{name}-cell-{index}", "exec")
         notebook["cells"].append({"cell_type": "code", "id": f"cell-{index}", "metadata": {"tags": ["parameters"]} if parameter_cell else {},
                                  "execution_count": None, "outputs": [], "source": body.splitlines(keepends=True)})
         source += "\n\n# " + ("PARAMETERS CELL" if parameter_cell else "CELL") + " ********************\n\n" + body
         source += "\n\n" + meta({"language": "python", "language_group": "synapse_pyspark"})
-    compile(source, name, "exec")
+    # Cell magic is Fabric/IPython syntax, not standalone Python. Check its JSON
+    # separately and compile all ordinary Python cells without executing them.
+    json.loads(configure.split("\n", 1)[1])
+    compile(source.replace(configure, ""), name, "exec")
     folder = ROOT / f"{name}.Notebook"
     folder.mkdir(exist_ok=True)
     platform = folder / ".platform"

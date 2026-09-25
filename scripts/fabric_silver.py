@@ -15,7 +15,7 @@ def execute_silver():
         raise ValueError("Unsupported Silver run mode")
     context = notebookutils.runtime.context
     if context.get("defaultLakehouseId") != "676ba346-22dd-4eeb-92ec-4f53f09ccca7" or context.get("defaultLakehouseWorkspaceId") != "5fe78794-25c3-41ee-b35e-bc56542d2cea":
-        raise RuntimeError("Attach LH_EV_Silver as default Lakehouse and restart the session")
+        raise RuntimeError(f"Expected LH_EV_Silver in WS_EV_Analytics; actual Lakehouse={context.get('defaultLakehouseId')!r}, workspace={context.get('defaultLakehouseWorkspaceId')!r}. Sync the latest notebook and start a fresh pipeline run so its first %%configure cell is applied.")
     BASE = Path("/lakehouse/default/Files")
     WORKSPACE_ID = "5fe78794-25c3-41ee-b35e-bc56542d2cea"
     BRONZE_ID = "c1516bc3-3ae5-4a7f-966e-16a6c8126ec5"
