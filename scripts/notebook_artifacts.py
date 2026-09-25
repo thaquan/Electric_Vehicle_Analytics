@@ -21,11 +21,10 @@ def write_notebook(name, lakehouse_name, lakehouse_id, workspace_id, cells, desc
     configure = "%%configure -f\n" + json.dumps(session_config, indent=2) + "\n"
     notebook["cells"].append({"cell_type": "code", "id": "session-config", "metadata": {},
                              "execution_count": None, "outputs": [], "source": configure.splitlines(keepends=True)})
-    # Fabric Git escapes every line of a magic cell. Its metadata is outside
-    # this escaped body; raw %%configure would absorb the following metadata.
+    # The magic body must end at the next CELL/PARAMETERS CELL delimiter.
+    # Do not append per-cell METADATA: Fabric's importer consumes it as magic text.
     magic_source = "\n".join("# MAGIC " + line for line in configure.splitlines()) + "\n"
     source += "\n\n# CELL ********************\n\n" + magic_source
-    source += "\n" + meta({"language": "python", "language_group": "synapse_pyspark"})
     for index, (body, parameter_cell) in enumerate(cells):
         compile(body, f"{name}-cell-{index}", "exec")
         notebook["cells"].append({"cell_type": "code", "id": f"cell-{index}", "metadata": {"tags": ["parameters"]} if parameter_cell else {},

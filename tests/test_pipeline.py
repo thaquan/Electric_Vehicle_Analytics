@@ -110,6 +110,9 @@ class PipelineTests(unittest.TestCase):
             # if Fabric Git metadata has accidentally become part of the JSON.
             self.assertEqual(json.loads(decoded.split("\n", 1)[1]), json.loads(configure.split("\n", 1)[1]))
             self.assertNotIn("# METADATA", decoded)
+            first_block = source.split("# CELL ********************", 1)[1].split("# PARAMETERS CELL ********************", 1)[0]
+            self.assertTrue(all(line.startswith("# MAGIC ") for line in first_block.splitlines() if line.strip()))
+            self.assertNotIn("METADATA", first_block)
             compile(source, name, "exec")
 
     def test_pipeline_session_targets_before_parameter_injection(self):
