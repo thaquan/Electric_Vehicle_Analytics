@@ -1,5 +1,23 @@
 # Fabric notebook source
 
+# METADATA ********************
+# META {
+# META   "kernel_info": {
+# META     "name": "synapse_pyspark"
+# META   },
+# META   "dependencies": {
+# META     "lakehouse": {
+# META       "default_lakehouse": "676ba346-22dd-4eeb-92ec-4f53f09ccca7",
+# META       "default_lakehouse_name": "LH_EV_Silver",
+# META       "default_lakehouse_workspace_id": "5fe78794-25c3-41ee-b35e-bc56542d2cea",
+# META       "known_lakehouses": [
+# META         {
+# META           "id": "676ba346-22dd-4eeb-92ec-4f53f09ccca7"
+# META         }
+# META       ]
+# META     }
+# META   }
+# META }
 
 # CELL ********************
 
@@ -11,12 +29,12 @@
 # MAGIC     "workspaceId": "5fe78794-25c3-41ee-b35e-bc56542d2cea"
 # MAGIC   }
 # MAGIC }
-# MAGIC 
-# MAGIC # METADATA ********************
-# MAGIC # META {
-# MAGIC # META   "language": "python",
-# MAGIC # META   "language_group": "synapse_pyspark"
-# MAGIC # META }
+
+# METADATA ********************
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
 
 # PARAMETERS CELL ********************
 

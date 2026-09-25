@@ -104,8 +104,13 @@ class PipelineTests(unittest.TestCase):
             self.assertEqual(source.count("# PARAMETERS CELL"), 1)
             configure = "".join(notebook["cells"][0]["source"])
             self.assertTrue(configure.startswith("%%configure -f\n"))
-            self.assertIn(configure, source)
-            compile(source.replace(configure, ""), name, "exec")
+            decoded = "\n".join(line[len("# MAGIC "):] for line in source.splitlines() if line.startswith("# MAGIC ")) + "\n"
+            self.assertEqual(decoded, configure)
+            # Parse the exported magic body, not just the ipynb body. This fails
+            # if Fabric Git metadata has accidentally become part of the JSON.
+            self.assertEqual(json.loads(decoded.split("\n", 1)[1]), json.loads(configure.split("\n", 1)[1]))
+            self.assertNotIn("# METADATA", decoded)
+            compile(source, name, "exec")
 
     def test_pipeline_session_targets_before_parameter_injection(self):
         config = json.loads((ROOT / "metadata/fabric_workspace.json").read_text())

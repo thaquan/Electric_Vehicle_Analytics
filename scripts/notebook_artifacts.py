@@ -21,7 +21,10 @@ def write_notebook(name, lakehouse_name, lakehouse_id, workspace_id, cells, desc
     configure = "%%configure -f\n" + json.dumps(session_config, indent=2) + "\n"
     notebook["cells"].append({"cell_type": "code", "id": "session-config", "metadata": {},
                              "execution_count": None, "outputs": [], "source": configure.splitlines(keepends=True)})
-    source += "\n\n# CELL ********************\n\n" + configure
+    # Fabric Git escapes every line of a magic cell. Its metadata is outside
+    # this escaped body; raw %%configure would absorb the following metadata.
+    magic_source = "\n".join("# MAGIC " + line for line in configure.splitlines()) + "\n"
+    source += "\n\n# CELL ********************\n\n" + magic_source
     source += "\n" + meta({"language": "python", "language_group": "synapse_pyspark"})
     for index, (body, parameter_cell) in enumerate(cells):
         compile(body, f"{name}-cell-{index}", "exec")
@@ -32,7 +35,7 @@ def write_notebook(name, lakehouse_name, lakehouse_id, workspace_id, cells, desc
     # Cell magic is Fabric/IPython syntax, not standalone Python. Check its JSON
     # separately and compile all ordinary Python cells without executing them.
     json.loads(configure.split("\n", 1)[1])
-    compile(source.replace(configure, ""), name, "exec")
+    compile(source, name, "exec")
     folder = ROOT / f"{name}.Notebook"
     folder.mkdir(exist_ok=True)
     platform = folder / ".platform"
