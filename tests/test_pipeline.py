@@ -98,11 +98,26 @@ class PipelineTests(unittest.TestCase):
             notebook = json.loads((ROOT / f"notebooks/{name}.ipynb").read_text())
             parameter_cells = [c for c in notebook["cells"] if "parameters" in c["metadata"].get("tags", [])]
             self.assertEqual(len(parameter_cells), 1)
-            self.assertIs(parameter_cells[0], notebook["cells"][0])
+            self.assertIs(parameter_cells[0], notebook["cells"][1])
             self.assertIn("notebookutils.notebook.exit", "".join(notebook["cells"][-1]["source"]))
             source = (ROOT / f"{name}.Notebook/notebook-content.py").read_text()
             self.assertEqual(source.count("# PARAMETERS CELL"), 1)
-            compile(source, name, "exec")
+            configure = "".join(notebook["cells"][0]["source"])
+            self.assertTrue(configure.startswith("%%configure -f\n"))
+            self.assertIn(configure, source)
+            compile(source.replace(configure, ""), name, "exec")
+
+    def test_pipeline_session_targets_before_parameter_injection(self):
+        config = json.loads((ROOT / "metadata/fabric_workspace.json").read_text())
+        for name, layer in (("NB_EV_Bronze_To_Silver", "silver"), ("NB_EV_Silver_To_Gold", "gold")):
+            notebook = json.loads((ROOT / f"notebooks/{name}.ipynb").read_text())
+            first = "".join(notebook["cells"][0]["source"])
+            self.assertEqual(first.splitlines()[0], "%%configure -f")
+            target = json.loads(first.split("\n", 1)[1])["defaultLakehouse"]
+            self.assertEqual(target["id"], config[f"{layer}_lakehouse_id"])
+            self.assertEqual(target["name"], config[f"{layer}_lakehouse_name"])
+            self.assertEqual(target["workspaceId"], config["workspace_id"])
+            self.assertEqual(notebook["cells"][1]["metadata"]["tags"], ["parameters"])
 
 
 if __name__ == "__main__":

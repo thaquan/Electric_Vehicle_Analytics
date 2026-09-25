@@ -1,5 +1,40 @@
 # Fabric notebook source
 
+# METADATA ********************
+# META {
+# META   "kernel_info": {
+# META     "name": "synapse_pyspark"
+# META   },
+# META   "dependencies": {
+# META     "lakehouse": {
+# META       "default_lakehouse": "32e99e91-38e9-4428-8fd2-6bcff6573088",
+# META       "default_lakehouse_name": "LH_EV_Gold",
+# META       "default_lakehouse_workspace_id": "5fe78794-25c3-41ee-b35e-bc56542d2cea",
+# META       "known_lakehouses": [
+# META         {
+# META           "id": "32e99e91-38e9-4428-8fd2-6bcff6573088"
+# META         }
+# META       ]
+# META     }
+# META   }
+# META }
+
+# CELL ********************
+
+%%configure -f
+{
+  "defaultLakehouse": {
+    "name": "LH_EV_Gold",
+    "id": "32e99e91-38e9-4428-8fd2-6bcff6573088",
+    "workspaceId": "5fe78794-25c3-41ee-b35e-bc56542d2cea"
+  }
+}
+
+# METADATA ********************
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
 
 # PARAMETERS CELL ********************
 
@@ -79,7 +114,7 @@ from bisect import bisect_right
 def require_gold_context(context, config):
     if (context.get("defaultLakehouseId") != config["gold_lakehouse_id"]
             or context.get("defaultLakehouseWorkspaceId") != config["workspace_id"]):
-        raise RuntimeError("Attach LH_EV_Gold as default Lakehouse in WS_EV_Analytics, restart the session, then Run all.")
+        raise RuntimeError(f"Expected LH_EV_Gold in WS_EV_Analytics; actual Lakehouse={context.get('defaultLakehouseId')!r}, workspace={context.get('defaultLakehouseWorkspaceId')!r}. Sync the latest notebook and start a fresh run so its first %%configure cell is applied.")
 
 
 def validate_band(band):

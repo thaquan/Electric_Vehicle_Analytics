@@ -44,6 +44,11 @@ Validate_Gold receives the current Gold run using:
 
 Parameter cells are generated as both Fabric `PARAMETERS CELL` sections and
 ipynb `parameters` tags. Defaults are never reassigned after runtime injection.
+Both notebooks now start with `%%configure -f` specifying the default Lakehouse
+by name, physical ID and workspace ID. This first cell initializes the pipeline
+session before the parameter cell and Python imports; it does not rely solely
+on notebook metadata or an existing interactive session. Silver targets
+LH_EV_Silver and Gold targets LH_EV_Gold. Runtime target guards remain enabled.
 A pipeline invocation without injected correlation or Silver run ID fails
 instead of silently using the historical Silver run in the manual-run spec.
 
@@ -97,6 +102,18 @@ Local tests cover missing parameter injection, unsafe run IDs, stale/cross-run
 markers, incomplete table sets, wrong Gold parent, success-only dependencies,
 dynamic output expressions and generated parameter/exit cells. Fabric Spark
 execution and connection binding still require the first real pipeline run.
+
+### Error 2451 with “Attach LH_EV_Silver ...”
+
+This RuntimeError means the running session did not report the expected default
+Lakehouse/workspace to the guard. It is not a Bronze data-quality failure.
+The generated first `%%configure` cell now sets both explicitly. Update both
+notebooks from Git, confirm the first cell exists, stop any old interactive
+session, and start a new whole-pipeline run. If the guard still fails, its error
+now includes the actual Lakehouse/workspace IDs for further diagnosis.
+Do not remove the guard to force writes through.
+
+Session setup reference: [Configure a Spark session](https://learn.microsoft.com/en-us/fabric/data-engineering/author-execute-notebook#spark-session-configuration-magic-command).
 
 References: [Fabric pipeline definition](https://learn.microsoft.com/en-us/rest/api/fabric/articles/item-management/definitions/datapipeline-definition),
 [Notebook activity](https://learn.microsoft.com/en-us/fabric/data-factory/notebook-activity),
