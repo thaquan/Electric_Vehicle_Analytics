@@ -1,0 +1,7 @@
+/// EV purchase-intent analytics from the verified Gold snapshot.
+database SM_EV_Analytics
+	id: 8e7e37b7-7bab-4122-84fb-3ae7b2121cd7
+	compatibilityLevel: 1604
+	compatibilityMode: powerBI
+	language: 1033
+

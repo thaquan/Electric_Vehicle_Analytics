@@ -1,0 +1,345 @@
+{
+  "status": "verified",
+  "stage": "e2e",
+  "pipeline_run_id": "78f9cdfe-1e19-4624-bede-042310ec9bb9",
+  "silver_run_id": "20260925T152449241452Z",
+  "gold_run_id": "20260925T152721965637Z",
+  "tables": [
+    {
+      "role": "dim_demographics",
+      "table": "dim_demographics_20260925t152721965637z",
+      "rows": 45,
+      "columns": [
+        {
+          "name": "demographics_key",
+          "type": "string"
+        },
+        {
+          "name": "age_band",
+          "type": "string"
+        },
+        {
+          "name": "Gender",
+          "type": "string"
+        },
+        {
+          "name": "City_Type",
+          "type": "string"
+        },
+        {
+          "name": "silver_run_id",
+          "type": "string"
+        },
+        {
+          "name": "gold_run_id",
+          "type": "string"
+        },
+        {
+          "name": "age_band_sort",
+          "type": "int"
+        }
+      ]
+    },
+    {
+      "role": "dim_income",
+      "table": "dim_income_20260925t152721965637z",
+      "rows": 4,
+      "columns": [
+        {
+          "name": "income_key",
+          "type": "string"
+        },
+        {
+          "name": "income_band",
+          "type": "string"
+        },
+        {
+          "name": "silver_run_id",
+          "type": "string"
+        },
+        {
+          "name": "gold_run_id",
+          "type": "string"
+        },
+        {
+          "name": "income_band_sort",
+          "type": "int"
+        }
+      ]
+    },
+    {
+      "role": "dim_mobility",
+      "table": "dim_mobility_20260925t152721965637z",
+      "rows": 16,
+      "columns": [
+        {
+          "name": "mobility_key",
+          "type": "string"
+        },
+        {
+          "name": "commute_band",
+          "type": "string"
+        },
+        {
+          "name": "Current_Car_Type",
+          "type": "string"
+        },
+        {
+          "name": "silver_run_id",
+          "type": "string"
+        },
+        {
+          "name": "gold_run_id",
+          "type": "string"
+        },
+        {
+          "name": "commute_band_sort",
+          "type": "int"
+        }
+      ]
+    },
+    {
+      "role": "dim_charging",
+      "table": "dim_charging_20260925t152721965637z",
+      "rows": 2,
+      "columns": [
+        {
+          "name": "charging_key",
+          "type": "string"
+        },
+        {
+          "name": "Home_Charging_Possible",
+          "type": "string"
+        },
+        {
+          "name": "silver_run_id",
+          "type": "string"
+        },
+        {
+          "name": "gold_run_id",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "role": "dim_attitude_incentive",
+      "table": "dim_attitude_incentive_20260925t152721965637z",
+      "rows": 30,
+      "columns": [
+        {
+          "name": "attitude_incentive_key",
+          "type": "string"
+        },
+        {
+          "name": "Environmental_Concern_Level",
+          "type": "string"
+        },
+        {
+          "name": "Subsidy_Available",
+          "type": "string"
+        },
+        {
+          "name": "Range_Anxiety_Level",
+          "type": "string"
+        },
+        {
+          "name": "silver_run_id",
+          "type": "string"
+        },
+        {
+          "name": "gold_run_id",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "role": "fact_ev_purchase_intent",
+      "table": "fact_ev_purchase_intent_20260925t152721965637z",
+      "rows": 668665,
+      "columns": [
+        {
+          "name": "id",
+          "type": "bigint"
+        },
+        {
+          "name": "Age",
+          "type": "int"
+        },
+        {
+          "name": "Annual_Income_USD",
+          "type": "decimal(18,4)"
+        },
+        {
+          "name": "Daily_Commute_km",
+          "type": "decimal(18,4)"
+        },
+        {
+          "name": "Number_of_Cars_Owned",
+          "type": "int"
+        },
+        {
+          "name": "Charging_Stations_Near_Home",
+          "type": "int"
+        },
+        {
+          "name": "Charging_Stations_Near_Work",
+          "type": "int"
+        },
+        {
+          "name": "Will_Buy_EV",
+          "type": "string"
+        },
+        {
+          "name": "will_buy_ev_flag",
+          "type": "int"
+        },
+        {
+          "name": "source_dataset",
+          "type": "string"
+        },
+        {
+          "name": "source_file",
+          "type": "string"
+        },
+        {
+          "name": "source_sha256",
+          "type": "string"
+        },
+        {
+          "name": "processed_at_utc",
+          "type": "timestamp"
+        },
+        {
+          "name": "record_key",
+          "type": "string"
+        },
+        {
+          "name": "demographics_key",
+          "type": "string"
+        },
+        {
+          "name": "income_key",
+          "type": "string"
+        },
+        {
+          "name": "mobility_key",
+          "type": "string"
+        },
+        {
+          "name": "charging_key",
+          "type": "string"
+        },
+        {
+          "name": "attitude_incentive_key",
+          "type": "string"
+        },
+        {
+          "name": "silver_run_id",
+          "type": "string"
+        },
+        {
+          "name": "gold_run_id",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "role": "agg_ev_kpi",
+      "table": "agg_ev_kpi_20260925t152721965637z",
+      "rows": 1,
+      "columns": [
+        {
+          "name": "respondent_count",
+          "type": "bigint"
+        },
+        {
+          "name": "yes_count",
+          "type": "bigint"
+        },
+        {
+          "name": "no_count",
+          "type": "bigint"
+        },
+        {
+          "name": "purchase_intent_rate",
+          "type": "double"
+        },
+        {
+          "name": "source_dataset",
+          "type": "string"
+        },
+        {
+          "name": "silver_run_id",
+          "type": "string"
+        },
+        {
+          "name": "gold_run_id",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "role": "agg_ev_segments",
+      "table": "agg_ev_segments_20260925t152721965637z",
+      "rows": 35,
+      "columns": [
+        {
+          "name": "segment_value",
+          "type": "string"
+        },
+        {
+          "name": "respondent_count",
+          "type": "bigint"
+        },
+        {
+          "name": "yes_count",
+          "type": "bigint"
+        },
+        {
+          "name": "no_count",
+          "type": "bigint"
+        },
+        {
+          "name": "purchase_intent_rate",
+          "type": "double"
+        },
+        {
+          "name": "segment_dimension",
+          "type": "string"
+        },
+        {
+          "name": "silver_run_id",
+          "type": "string"
+        },
+        {
+          "name": "gold_run_id",
+          "type": "string"
+        }
+      ]
+    }
+  ],
+  "gold_schema_version": 2,
+  "star_validation": {
+    "status": "passed",
+    "fact_rows": 668665,
+    "dimension_rows": {
+      "dim_demographics": 45,
+      "dim_income": 4,
+      "dim_mobility": 16,
+      "dim_charging": 2,
+      "dim_attitude_incentive": 30
+    },
+    "orphan_keys": 0,
+    "silver_reconstruction": "exact",
+    "gold_schema_version": 2
+  },
+  "sql_validation": {
+    "status": "passed",
+    "engine": "Spark SQL",
+    "respondent_count": 668665,
+    "yes_count": 116779,
+    "no_count": 551886,
+    "purchase_intent_rate": 0.174645001607681,
+    "segment_groups": 35
+  }
+}

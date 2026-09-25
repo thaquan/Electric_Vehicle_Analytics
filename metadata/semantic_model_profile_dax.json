@@ -1,0 +1,71 @@
+{
+  "message": "DAX query executed successfully, returned 1 rows in 363ms",
+  "operation": "Execute",
+  "data": {
+    "rowCount": 1,
+    "isTruncated": false,
+    "columns": [
+      {
+        "name": "[age]",
+        "dataType": "Double",
+        "isNullable": true,
+        "ordinal": 0
+      },
+      {
+        "name": "[income]",
+        "dataType": "Decimal",
+        "isNullable": true,
+        "ordinal": 1
+      },
+      {
+        "name": "[commute]",
+        "dataType": "Decimal",
+        "isNullable": true,
+        "ordinal": 2
+      },
+      {
+        "name": "[cars]",
+        "dataType": "Double",
+        "isNullable": true,
+        "ordinal": 3
+      },
+      {
+        "name": "[home_chargers]",
+        "dataType": "Double",
+        "isNullable": true,
+        "ordinal": 4
+      },
+      {
+        "name": "[work_chargers]",
+        "dataType": "Double",
+        "isNullable": true,
+        "ordinal": 5
+      },
+      {
+        "name": "[home_access]",
+        "dataType": "Double",
+        "isNullable": true,
+        "ordinal": 6
+      },
+      {
+        "name": "[subsidy]",
+        "dataType": "Double",
+        "isNullable": true,
+        "ordinal": 7
+      }
+    ],
+    "rows": [
+      {
+        "[age]": 47.03917058616796,
+        "[income]": 84769.267,
+        "[commute]": 32.1583,
+        "[cars]": 1.7126259038532001,
+        "[home_chargers]": 4.9604076779852395,
+        "[work_chargers]": 7.176313998788631,
+        "[home_access]": 0.6919414056366043,
+        "[subsidy]": 0.6279811265730971
+      }
+    ],
+    "executionTimeMs": 363
+  }
+}

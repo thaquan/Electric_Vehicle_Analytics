@@ -1,5 +1,14 @@
 # Gold v2 Star Schema
 
+## Verified Fabric run
+
+E2E `78f9cdfe-1e19-4624-bede-042310ec9bb9` completed with schema v2.
+Gold `20260925T152721965637Z` passed star reconstruction, PK/FK and Spark SQL
+checks. The full audit is `metadata/e2e_star_verified_run.json`. All six model
+partitions are bound to it. Live DAX passed all 12 measures, 35 segment groups and 24 combined-filter groups.
+Separate SQL analytics endpoint execution remains pending.
+The rollout below describes the procedure for future snapshots.
+
 ## Design decision
 
 Keep `LH_EV_Gold` (Delta Lakehouse). Stage 5 permits Warehouse **or** Lakehouse;
@@ -81,7 +90,7 @@ permission to both endpoints. Spark SQL success does not prove endpoint access.
 2. Run `PL_EV_E2E`. Require all five activities to succeed. The final audit must
    say `gold_schema_version: 2`, `star_validation.status: passed`, and
    `sql_validation.status: passed`. Download that audit to metadata.
-3. Do **not** deploy the current SemanticModel draft while its partitions contain
+3. Do **not** deploy a SemanticModel draft while its partitions contain
    `pending_star_v2`. These placeholders prevent accidentally binding the new
    star model to incompatible legacy wide tables.
 4. Connect to the local TMDL using Power BI Modeling MCP. Prepare the binding:

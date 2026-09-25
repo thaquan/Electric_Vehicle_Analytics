@@ -33,8 +33,10 @@ def binding_request(audit, connection_name):
     for role, table in names.items():
         if table != role + '_' + audit['gold_run_id'].lower():
             raise ValueError('Mixed snapshot table binding')
-    definitions = [{'name': 'EV Respondents', 'entityName': names[FACT_ROLE], 'expressionSourceName': 'GoldLakehouse', 'schemaName': 'dbo'}]
-    definitions += [{'name': d['model'], 'entityName': names[d['role']], 'expressionSourceName': 'GoldLakehouse', 'schemaName': 'dbo'} for d in DIMENSIONS]
+    # Direct Lake on OneLake for this non-schema Lakehouse must omit schemaName.
+    # An empty value clears any previous dbo binding. T-SQL still uses dbo.
+    definitions = [{'name': 'EV Respondents', 'entityName': names[FACT_ROLE], 'expressionSourceName': 'GoldLakehouse', 'schemaName': ''}]
+    definitions += [{'name': d['model'], 'entityName': names[d['role']], 'expressionSourceName': 'GoldLakehouse', 'schemaName': ''} for d in DIMENSIONS]
     return {'request': {'operation': 'Update', 'connectionName': connection_name, 'definitions': definitions}}, names
 
 

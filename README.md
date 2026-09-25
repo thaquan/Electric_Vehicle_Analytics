@@ -12,19 +12,18 @@ EV purchase analytics in Microsoft Fabric, versioned in Azure DevOps.
 | Analytics notebook | NB_EV_Silver_To_Gold |
 | On-demand pipeline | PL_EV_E2E |
 
-Foundation, Bronze, Silver and the original Gold v1 are complete. E2E pipeline run
-`17d02413-970d-4220-b110-cf05484ff3bb` completed successfully; its final audit
-was verified directly on OneLake. Its Gold run `20260925T080132680916Z` is a
-legacy wide-table snapshot, not the new star schema.
+Gold v2 Star Schema is verified on Fabric. E2E run
+`78f9cdfe-1e19-4624-bede-042310ec9bb9` produced Gold snapshot
+`20260925T152721965637Z`: one fact, five dimensions and two audit aggregates.
+All 668665 respondent rows reconstruct Silver exactly, with zero orphan keys;
+Spark SQL reconciles KPI and all 35 segment groups.
 
-Gold v2 now builds one fact, five dimensions and two audit aggregates. Full
-local reconstruction and SQL reconciliation pass for all 668665 train rows;
-Fabric deployment and a new E2E run are pending.
-The semantic model definition is authored and locally reloaded successfully
-(6 tables, 5 relationships, 12 measures). It deliberately uses `pending_star_v2`
-source names until a verified v2 audit is available; do not deploy it yet.
-See [Star Schema design and rollout](docs/star_schema.md).
-See [semantic model instructions](docs/semantic_model.md).
+`SM_EV_Analytics` contains 6 tables, 5 relationships and 12 measures. All source
+partitions now target this verified snapshot; their columns match the published
+schemas. The model is deployed and fully refreshed on Fabric; all 12 measures, 35
+segment groups and 24 combined-filter groups pass live DAX reconciliation.
+Separate SQL analytics endpoint execution remains pending. See [semantic model instructions](docs/semantic_model.md) and
+[Star Schema design and rollout](docs/star_schema.md).
 
 Start with [the Bronze/Silver runbook](docs/bronze_silver.md).
 Next: [Gold definitions and run instructions](docs/gold_runbook.md).
@@ -47,3 +46,6 @@ OneLake as well as pushed to this repository.
 
 This is synthetic competition data. Results describe this dataset, not causal
 effects or population-level EV demand.
+
+Live model: [SM_EV_Analytics](https://app.powerbi.com/groups/5fe78794-25c3-41ee-b35e-bc56542d2cea/datasets/8e7e37b7-7bab-4122-84fb-3ae7b2121cd7/details).
+The exported live TMDL snapshot is in `models/SM_EV_Analytics/`.

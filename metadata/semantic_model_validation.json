@@ -1,5 +1,5 @@
 {
-  "status": "local_star_metadata_validated",
+  "status": "live_model_validated",
   "tables": 6,
   "measures": 12,
   "relationships": 5,
@@ -7,7 +7,23 @@
   "cardinality": "Many-to-One from fact to dimension",
   "band_sort_columns": 3,
   "tmdl_roundtrip": "Passed via Power BI Modeling MCP ConnectFolder",
-  "source_binding": "pending_star_v2 placeholder entities; deployment blocked until a verified v2 audit",
-  "live_dax_status": "Not executed",
-  "local_sql_reference": "metadata/star_expected_metrics.json"
+  "source_binding": "All 6 partitions bound to verified Gold v2 run 20260925T152721965637Z",
+  "live_dax_status": "Passed: KPI and 35 groups match SQL reference; 24 combined groups and 8 profile measures match train; empty selection returns blank.",
+  "local_sql_reference": "metadata/star_expected_metrics.json",
+  "gold_run_id": "20260925T152721965637Z",
+  "pipeline_run_id": "78f9cdfe-1e19-4624-bede-042310ec9bb9",
+  "source_schema_validation": "All model source columns exactly match the 6 published table schemas",
+  "spark_sql_validation": {
+    "status": "passed",
+    "engine": "Spark SQL",
+    "respondent_count": 668665,
+    "yes_count": 116779,
+    "no_count": 551886,
+    "purchase_intent_rate": 0.174645001607681,
+    "segment_groups": 35
+  },
+  "sql_endpoint_status": "Not executed; Spark SQL on Fabric and independent SQLite match DAX. Endpoint T-SQL script ready.",
+  "semantic_model_id": "8e7e37b7-7bab-4122-84fb-3ae7b2121cd7",
+  "refresh_status": "Full refresh succeeded on Fabric",
+  "direct_lake_schema": "No schemaName: source is a non-schema Lakehouse"
 }

@@ -2,12 +2,13 @@
 
 ## Gold v2 update
 
-The notebook now builds a star schema: one respondent fact, five dimensions,
-and two audit aggregates (8 tables). The v1 executions documented below remain
-historical evidence only. A new Fabric E2E run is required before v2 is published.
-See [Star Schema design, validation and rollout](star_schema.md) for the current
-table contract and semantic-model binding steps. Full local reconstruction and
-SQLite KPI/35-segment checks passed; Fabric Spark and endpoint SQL are pending.
+Gold v2 is now verified on Fabric: E2E run
+`78f9cdfe-1e19-4624-bede-042310ec9bb9`, Gold run `20260925T152721965637Z`.
+All 8 tables, exact Silver reconstruction, zero orphan keys and 35-group Spark
+SQL reconciliation passed. See `metadata/e2e_star_verified_run.json` and
+[Star Schema design](star_schema.md). Semantic Model is deployed/refreshed and live DAX matches the verified Gold.
+Separate SQL analytics endpoint execution remains pending.
+The older executions below remain historical reference.
 
 ## Current status
 

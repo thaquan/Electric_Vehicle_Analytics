@@ -1,0 +1,222 @@
+/// Fact: one labeled synthetic train respondent. Five dimension keys. Verified Gold v2 run 20260925T152721965637Z.
+table 'EV Respondents'
+	lineageTag: 19a80358-f432-4857-8e09-0e26efa49f05
+
+	/// Number of labeled train respondents in the current filter context.
+	measure Respondents = COUNTROWS('EV Respondents')
+		formatString: #,0
+		displayFolder: Purchase intent
+		lineageTag: 4be63eb7-b5e1-444b-9681-932a53a52fd8
+
+	/// Yes respondents in the current context; blank when no fact rows, zero for a populated group with no Yes responses.
+	measure 'Intending to Buy EV' = SUM('EV Respondents'[will_buy_ev_flag])
+		formatString: #,0
+		displayFolder: Purchase intent
+		lineageTag: f16c024e-e107-4232-a9fd-c7bfcf3d99b4
+
+	/// Respondents whose Will_Buy_EV is No.
+	measure 'Not Intending to Buy EV' = [Respondents] - [Intending to Buy EV]
+		formatString: #,0
+		displayFolder: Purchase intent
+		lineageTag: acee68a7-d18b-41ec-bd65-1d4f01b8dd34
+
+	/// Share of respondents with purchase intent; not sales conversion.
+	measure 'Purchase Intent Rate' = DIVIDE([Intending to Buy EV], [Respondents])
+		formatString: 0.00%
+		displayFolder: Purchase intent
+		lineageTag: 3d86ea81-5777-4aaf-a166-8f5f474ceec0
+
+	/// Average respondent age.
+	measure 'Average Age' = AVERAGE('EV Respondents'[Age])
+		formatString: 0.0
+		displayFolder: Respondent profile
+		lineageTag: 86bb0fe5-d021-4c27-9335-9672c0648733
+
+	/// Average annual income in USD.
+	measure 'Average Annual Income USD' = AVERAGE('EV Respondents'[Annual_Income_USD])
+		formatString: $#,0.00
+		displayFolder: Respondent profile
+		lineageTag: 6065ef99-94f8-4b4e-889a-e42a63f308f9
+
+	/// Average daily commute in km.
+	measure 'Average Daily Commute km' = AVERAGE('EV Respondents'[Daily_Commute_km])
+		formatString: 0.0
+		displayFolder: Respondent profile
+		lineageTag: ef4e1fce-9c5a-4011-9ba4-761a916edd3a
+
+	/// Average number of cars owned.
+	measure 'Average Cars Owned' = AVERAGE('EV Respondents'[Number_of_Cars_Owned])
+		formatString: 0.00
+		displayFolder: Respondent profile
+		lineageTag: 9a6c991f-77ec-45a3-a636-46424746b9dc
+
+	/// Share with home charging access within current filters.
+	measure 'Home Charging Access Rate' = DIVIDE(CALCULATE([Respondents], KEEPFILTERS('Charging'[Home_Charging_Possible] = "Yes")), [Respondents])
+		formatString: 0.00%
+		displayFolder: Charging and incentives
+		lineageTag: 63cf03e7-c904-4943-ac7e-3a9913437fd5
+
+	/// Share with subsidy available within current filters.
+	measure 'Subsidy Availability Rate' = DIVIDE(CALCULATE([Respondents], KEEPFILTERS('Attitude and Incentive'[Subsidy_Available] = "Yes")), [Respondents])
+		formatString: 0.00%
+		displayFolder: Charging and incentives
+		lineageTag: 617a4f89-f77d-438f-aaac-2c045040537f
+
+	/// Average number of charging stations near home.
+	measure 'Average Chargers Near Home' = AVERAGE('EV Respondents'[Charging_Stations_Near_Home])
+		formatString: 0.00
+		displayFolder: Charging and incentives
+		lineageTag: a12905e1-ff55-47cc-88f1-cdd3817dfbde
+
+	/// Average number of charging stations near work.
+	measure 'Average Chargers Near Work' = AVERAGE('EV Respondents'[Charging_Stations_Near_Work])
+		formatString: 0.00
+		displayFolder: Charging and incentives
+		lineageTag: 9f25f38b-b36c-4a45-b31c-afe22c9057b6
+
+	column id
+		dataType: int64
+		isHidden
+		lineageTag: 2b5b3b41-d51f-40bb-83bc-bfc67b7be28e
+		summarizeBy: none
+		sourceColumn: id
+
+	column Age
+		dataType: int64
+		lineageTag: 9315a030-08c1-4b92-8b9d-cf3faff02883
+		summarizeBy: none
+		sourceColumn: Age
+
+	column Annual_Income_USD
+		dataType: decimal
+		lineageTag: 06e039b3-52b9-472e-a320-39e93d47c80b
+		summarizeBy: none
+		sourceColumn: Annual_Income_USD
+
+	column Daily_Commute_km
+		dataType: decimal
+		lineageTag: 0d9a6150-3614-4993-80f1-96cb9ecc9029
+		summarizeBy: none
+		sourceColumn: Daily_Commute_km
+
+	column Number_of_Cars_Owned
+		dataType: int64
+		lineageTag: 9d26cd05-6599-4379-bb75-4feb3308528e
+		summarizeBy: none
+		sourceColumn: Number_of_Cars_Owned
+
+	column Charging_Stations_Near_Home
+		dataType: int64
+		lineageTag: c5d13814-883e-4787-bc59-379736f07b62
+		summarizeBy: none
+		sourceColumn: Charging_Stations_Near_Home
+
+	column Charging_Stations_Near_Work
+		dataType: int64
+		lineageTag: 500bca8a-387a-4cd2-9e31-aa4b425fd8e1
+		summarizeBy: none
+		sourceColumn: Charging_Stations_Near_Work
+
+	column Will_Buy_EV
+		dataType: string
+		lineageTag: be5c7cdc-a33c-4d84-998e-9da8dd980a34
+		summarizeBy: none
+		sourceColumn: Will_Buy_EV
+
+	column will_buy_ev_flag
+		dataType: int64
+		isHidden
+		lineageTag: 432fbbd0-bedc-4f67-a06c-a2fa88d8ef44
+		summarizeBy: none
+		sourceColumn: will_buy_ev_flag
+
+	column source_dataset
+		dataType: string
+		isHidden
+		lineageTag: 0fe7c0f1-f94c-4da7-ae90-8dd61b046b6d
+		summarizeBy: none
+		sourceColumn: source_dataset
+
+	column source_file
+		dataType: string
+		isHidden
+		lineageTag: e1093655-27f2-4816-acbd-c584a4394d02
+		summarizeBy: none
+		sourceColumn: source_file
+
+	column source_sha256
+		dataType: string
+		isHidden
+		lineageTag: af4106eb-f55d-4ec9-9f6b-5bd4b4b2d9df
+		summarizeBy: none
+		sourceColumn: source_sha256
+
+	column processed_at_utc
+		dataType: dateTime
+		isHidden
+		lineageTag: fa045f0b-670a-4f2d-bff5-d6087ef5dbc4
+		summarizeBy: none
+		sourceColumn: processed_at_utc
+
+	column record_key
+		dataType: string
+		isHidden
+		lineageTag: f9d49156-9100-4fe1-9be8-a209ec3e355c
+		summarizeBy: none
+		sourceColumn: record_key
+
+	column silver_run_id
+		dataType: string
+		isHidden
+		lineageTag: 1b8c1b53-0244-48f6-b1e6-484e83db9501
+		summarizeBy: none
+		sourceColumn: silver_run_id
+
+	column gold_run_id
+		dataType: string
+		isHidden
+		lineageTag: 5bc83abe-e15f-4362-82b6-801a620ee6b1
+		summarizeBy: none
+		sourceColumn: gold_run_id
+
+	column demographics_key
+		dataType: string
+		isHidden
+		lineageTag: 83213bd1-6d85-436f-bb8b-df3bd2ed269d
+		summarizeBy: none
+		sourceColumn: demographics_key
+
+	column income_key
+		dataType: string
+		isHidden
+		lineageTag: 5283ca4a-f844-423e-934f-25dc43bfe3c2
+		summarizeBy: none
+		sourceColumn: income_key
+
+	column mobility_key
+		dataType: string
+		isHidden
+		lineageTag: bf3f6d9b-2951-40a5-9a44-e5c4d15972e7
+		summarizeBy: none
+		sourceColumn: mobility_key
+
+	column charging_key
+		dataType: string
+		isHidden
+		lineageTag: a31d6b5d-092c-446a-bb06-7dc3534f7ffc
+		summarizeBy: none
+		sourceColumn: charging_key
+
+	column attitude_incentive_key
+		dataType: string
+		isHidden
+		lineageTag: e0f520e1-e784-421b-b676-6af08ec1d003
+		summarizeBy: none
+		sourceColumn: attitude_incentive_key
+
+	partition 'EV Respondents' = entity
+		mode: directLake
+		source
+			entityName: fact_ev_purchase_intent_20260925t152721965637z
+			expressionSource: GoldLakehouse
+
