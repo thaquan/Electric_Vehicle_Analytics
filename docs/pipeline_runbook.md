@@ -114,10 +114,11 @@ now includes the actual Lakehouse/workspace IDs for further diagnosis.
 Do not remove the guard to force writes through.
 
 The Fabric Git source must encode the entire configure body using `# MAGIC`
-lines. Cell metadata stays outside that body. Raw `%%configure` in the Git
-source previously caused the subsequent metadata to be imported into the
-configuration cell. The generator now escapes it and tests that the decoded
-configuration is clean JSON and exactly matches the ipynb cell.
+lines and end it directly at the next `PARAMETERS CELL` delimiter. Do not put
+per-cell METADATA after this magic body: the Fabric importer consumed that
+text as configuration content, producing `TA ********************` after the
+JSON and the reported parse error. The generator omits that block and tests
+the entire interval between cell delimiters, as well as decoded JSON equality.
 
 Session setup reference: [Configure a Spark session](https://learn.microsoft.com/en-us/fabric/data-engineering/author-execute-notebook#spark-session-configuration-magic-command).
 
