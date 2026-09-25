@@ -25,7 +25,7 @@ def verify_published_tables(spark, root_uri, marker, stage, expected_metrics):
                     raise ValueError("Published train/fact target total mismatch")
         elif name.startswith("agg_ev_kpi_"):
             row = frame.first()
-            if (row.respondent_count, row.yes_count, row.no_count) != (668665, 116779, 551886):
+            if (row.respondent_count, row.yes_count, row.no_count) != (expected_metrics["respondent_count"], expected_metrics["yes_count"], expected_metrics["no_count"]):
                 raise ValueError("Published KPI mismatch")
             if abs(row.purchase_intent_rate - expected_metrics["purchase_intent_rate"]) > 1e-12:
                 raise ValueError("Published KPI rate mismatch")
@@ -34,3 +34,33 @@ def verify_published_tables(spark, root_uri, marker, stage, expected_metrics):
             actual = {(r.segment_dimension, r.segment_value): (r.respondent_count, r.yes_count) for r in frame.collect()}
             if actual != expected:
                 raise ValueError("Published segment mismatch")
+
+
+def verify_gold_star(spark, root_uri, marker, silver_uri, spec, expected, star_expected):
+    """Re-read immutable Delta version 0; verify joins and execute SQL independently."""
+    source = spark.read.format("delta").option("versionAsOf", 0).load(f"{silver_uri}/{spec['source_relative_path']}")
+    for name, band in spec["bands"].items():
+        source = source.withColumn(name, F.expr(band_sql(band)))
+    source = source.withColumn("silver_run_id", F.lit(marker["silver_run_id"])).withColumn("gold_run_id", F.lit(marker["run_id"]))
+    tables = {e["role"]: spark.read.format("delta").option("versionAsOf", 0).load(f"{root_uri}/Tables/{e['table']}") for e in marker["tables"]}
+    star = verify_star_spark(tables, source, spec["bands"], star_expected["dimension_rows"])
+    # Register only the explicitly selected snapshot; SQL never reads a stale run.
+    names = {}
+    for role, frame in tables.items():
+        name = "verify_" + role
+        frame.createOrReplaceTempView(name)
+        names[role] = name
+    try:
+        queries = star_queries(names, DIMENSIONS, spec["segments"])
+        kpi = spark.sql(queries["kpi"]).first().asDict()
+        segments = [r.asDict() for r in spark.sql(queries["segments"]).collect()]
+        check_sql_results(kpi, segments, expected)
+        silver_row = source.agg(F.count("*").alias("n"), F.sum("will_buy_ev_flag").alias("yes")).first()
+        if (kpi["respondent_count"], kpi["yes_count"]) != (silver_row.n, silver_row.yes):
+            raise ValueError("SQL Gold totals differ from selected Silver")
+        return {"star_validation": star, "sql_validation": {"status": "passed", "engine": "Spark SQL",
+                "respondent_count": int(kpi["respondent_count"]), "yes_count": int(kpi["yes_count"]),
+                "no_count": int(kpi["no_count"]), "purchase_intent_rate": float(kpi["purchase_intent_rate"]), "segment_groups": len(segments)}}
+    finally:
+        for name in names.values():
+            spark.catalog.dropTempView(name)

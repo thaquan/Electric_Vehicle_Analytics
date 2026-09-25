@@ -12,10 +12,19 @@ EV purchase analytics in Microsoft Fabric, versioned in Azure DevOps.
 | Analytics notebook | NB_EV_Silver_To_Gold |
 | On-demand pipeline | PL_EV_E2E |
 
-Foundation and Bronze are complete. Silver run `20260924T031507399976Z` is
-published. Gold run `20260924T131322687853Z` is also published, and both success
-markers have been verified on OneLake. The E2E pipeline is prepared for Git
-deployment; its first full Fabric run is still pending.
+Foundation, Bronze, Silver and the original Gold v1 are complete. E2E pipeline run
+`17d02413-970d-4220-b110-cf05484ff3bb` completed successfully; its final audit
+was verified directly on OneLake. Its Gold run `20260925T080132680916Z` is a
+legacy wide-table snapshot, not the new star schema.
+
+Gold v2 now builds one fact, five dimensions and two audit aggregates. Full
+local reconstruction and SQL reconciliation pass for all 668665 train rows;
+Fabric deployment and a new E2E run are pending.
+The semantic model definition is authored and locally reloaded successfully
+(6 tables, 5 relationships, 12 measures). It deliberately uses `pending_star_v2`
+source names until a verified v2 audit is available; do not deploy it yet.
+See [Star Schema design and rollout](docs/star_schema.md).
+See [semantic model instructions](docs/semantic_model.md).
 
 Start with [the Bronze/Silver runbook](docs/bronze_silver.md).
 Next: [Gold definitions and run instructions](docs/gold_runbook.md).

@@ -1,0 +1,13 @@
+{
+  "status": "local_star_metadata_validated",
+  "tables": 6,
+  "measures": 12,
+  "relationships": 5,
+  "relationship_direction": "dimension_to_fact_only",
+  "cardinality": "Many-to-One from fact to dimension",
+  "band_sort_columns": 3,
+  "tmdl_roundtrip": "Passed via Power BI Modeling MCP ConnectFolder",
+  "source_binding": "pending_star_v2 placeholder entities; deployment blocked until a verified v2 audit",
+  "live_dax_status": "Not executed",
+  "local_sql_reference": "metadata/star_expected_metrics.json"
+}
