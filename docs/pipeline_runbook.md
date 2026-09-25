@@ -2,9 +2,15 @@
 
 ## Deployment status
 
-The pipeline definition and notebook updates are prepared in Azure DevOps.
-The first pipeline run in Fabric is pending. Prior manual Silver and Gold
-runs succeeded; their publication markers have been verified directly in OneLake.
+Pipeline run `17d02413-970d-4220-b110-cf05484ff3bb` completed successfully.
+Its final OneLake audit was downloaded and verified on 2026-09-25; see
+`metadata/e2e_verified_run.json`. The verified Silver run is
+`20260925T075816460252Z` and Gold run is `20260925T080132680916Z`.
+
+That execution used Gold v1. The Gold v2 star-schema notebook is now prepared
+locally and must be synced before starting the next pipeline run. Its completion
+audit must include `gold_schema_version: 2`, `star_validation.status: passed`
+and `sql_validation.status: passed`. See [rollout instructions](star_schema.md).
 
 The source-controlled pipeline is `PL_EV_E2E.DataPipeline/pipeline-content.json`.
 It is created in Fabric by **Update from Git**, together with the notebook
@@ -17,8 +23,8 @@ updates. Do not create a separate empty pipeline with the same name.
 | Check_Bronze | NB_EV_Bronze_To_Silver | validate_only | Four pinned CSV hashes/headers, schema, counts, keys, categories and target checks pass; no Silver tables written |
 | Build_Silver | NB_EV_Bronze_To_Silver | publish | Revalidate input, write three new Delta tables, verify written counts, publish Silver marker |
 | Validate_Silver | NB_EV_Silver_To_Gold | verify_silver | Read marker and all three Silver tables at Delta version 0; verify table set, row counts, keys, train target total and test target absence |
-| Build_Gold | NB_EV_Silver_To_Gold | publish | Use the just-published Silver run; validate lineage, KPI totals and all segment aggregates; publish three Gold tables |
-| Validate_Gold | NB_EV_Silver_To_Gold | verify_gold | Independently read Gold tables; check counts, lineage, fact keys/target, KPI and segment metrics; write final E2E audit |
+| Build_Gold | NB_EV_Silver_To_Gold | publish | Use the current Silver run; write 8 immutable Gold tables, check PK/FK, lossless reconstruction, KPI/35-group Spark SQL reconciliation, then publish |
+| Validate_Gold | NB_EV_Silver_To_Gold | verify_gold | Independently repeat readback, lineage, star reconstruction and Spark SQL checks; require schema v2 and write final E2E audit |
 
 Every dependency is **Succeeded**, never Completed. Exceptions and missing
 output values fail the activity and skip downstream activities. A malformed or

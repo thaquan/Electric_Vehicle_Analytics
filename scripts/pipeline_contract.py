@@ -26,6 +26,17 @@ def require_publication(marker, stage, run_id, pipeline_run_id="", silver_run_id
         expected = {f"silver_train_{suffix}": 668665, f"silver_test_{suffix}": 286571, f"silver_original_reference_{suffix}": 10000}
     elif stage == "gold":
         expected = {f"fact_ev_purchase_intent_{suffix}": 668665, f"agg_ev_kpi_{suffix}": 1, f"agg_ev_segments_{suffix}": 35}
+        version = marker.get("gold_schema_version", 1)
+        if version not in (1, 2):
+            raise ValueError("Unsupported Gold schema version")
+        if version == 2:
+            roles = {"dim_demographics", "dim_income", "dim_mobility", "dim_charging", "dim_attitude_incentive"}
+            counts = marker.get("dimension_rows", {})
+            if set(counts) != roles or any(type(n) is not int or not 0 < n <= 668665 for n in counts.values()):
+                raise ValueError("Invalid star dimension manifest")
+            expected.update({f"{role}_{suffix}": n for role, n in counts.items()})
+            if marker.get("star_validation", {}).get("status") != "passed" or marker.get("sql_validation", {}).get("status") != "passed":
+                raise ValueError("Gold star/SQL verification missing")
         if marker.get("silver_run_id") != silver_run_id:
             raise ValueError("Gold does not reference the selected Silver run")
         if marker.get("respondent_count") != 668665 or marker.get("yes_count") != 116779:

@@ -33,8 +33,11 @@ def execute_gold(input_gold_run_id):
         gold_uri = f"abfss://{CONFIG['workspace_id']}@onelake.dfs.fabric.microsoft.com/{CONFIG['gold_lakehouse_id']}"
         gold_marker = json.loads(notebookutils.fs.head(f"{gold_uri}/Files/quality/{input_gold_run_id}_published.json", 65536))
         require_publication(gold_marker, "gold", input_gold_run_id, pipeline_run_id, SPEC["silver_run_id"])
+        if gold_marker.get("gold_schema_version") != STAR_VERSION:
+            raise ValueError("Current pipeline requires Gold star schema v2; rerun Build_Gold")
         verify_published_tables(spark, gold_uri, gold_marker, "gold", EXPECTED)
-        result = {"status": "verified", "stage": "e2e", "pipeline_run_id": pipeline_run_id, "silver_run_id": SPEC["silver_run_id"], "gold_run_id": input_gold_run_id, "tables": gold_marker["tables"]}
+        checks = verify_gold_star(spark, gold_uri, gold_marker, silver_uri, SPEC, EXPECTED, STAR_EXPECTED)
+        result = {"status": "verified", "stage": "e2e", "pipeline_run_id": pipeline_run_id, "silver_run_id": SPEC["silver_run_id"], "gold_run_id": input_gold_run_id, "tables": gold_marker["tables"], "gold_schema_version": STAR_VERSION, **checks}
         if pipeline_run_id:
             audit = Path(f"/lakehouse/default/Files/pipeline_runs/{pipeline_run_id}.json")
             audit.parent.mkdir(parents=True, exist_ok=True)
@@ -93,14 +96,17 @@ def execute_gold(input_gold_run_id):
         if fact.where(F.col(name).isNull()).limit(1).count():
             raise ValueError(f"Null segment: {name}")
 
-    tables = {"fact_ev_purchase_intent": fact, "agg_ev_kpi": kpi, "agg_ev_segments": segment_summary}
+    tables = build_star_spark(fact, SPEC["bands"])
+    tables.update({"agg_ev_kpi": kpi, "agg_ev_segments": segment_summary})
     outputs = []
     for role, frame in tables.items():
         if role != "fact_ev_purchase_intent":
             frame = frame.withColumn("silver_run_id", F.lit(SPEC["silver_run_id"])).withColumn("gold_run_id", F.lit(gold_run_id))
         name = f"{role}_{gold_run_id.lower()}"
         table = name
-        expected_rows = EXPECTED["respondent_count"] if role == "fact_ev_purchase_intent" else (1 if role == "agg_ev_kpi" else len(expected))
+        expected_rows = (EXPECTED["respondent_count"] if role == "fact_ev_purchase_intent" else
+                         STAR_EXPECTED["dimension_rows"][role] if role.startswith("dim_") else
+                         1 if role == "agg_ev_kpi" else len(expected))
         frame.write.format("delta").mode("errorifexists").saveAsTable(table)
         written = spark.table(table)
         if written.count() != expected_rows:
@@ -112,14 +118,25 @@ def execute_gold(input_gold_run_id):
             readback = {(r.segment_dimension, r.segment_value): (r.respondent_count, r.yes_count) for r in written.collect()}
             if readback != expected:
                 raise ValueError("Written segment reconciliation failed")
-        else:
+        elif role == "agg_ev_kpi":
             row = written.first()
             if (row.respondent_count, row.yes_count, row.no_count) != (EXPECTED["respondent_count"], EXPECTED["yes_count"], EXPECTED["no_count"]):
                 raise ValueError("Written KPI reconciliation failed")
-        outputs.append({"role": role, "table": table, "rows": expected_rows})
+        outputs.append({"role": role, "table": table, "rows": expected_rows,
+                        "columns": [{"name": f.name, "type": f.dataType.simpleString()} for f in written.schema.fields]})
 
     result = {"status": "published", "run_id": gold_run_id, "silver_run_id": SPEC["silver_run_id"], "silver_delta_version": 0, "pipeline_run_id": pipeline_run_id,
-              "respondent_count": EXPECTED["respondent_count"], "yes_count": EXPECTED["yes_count"], "purchase_intent_rate": EXPECTED["purchase_intent_rate"], "tables": outputs}
+              "respondent_count": EXPECTED["respondent_count"], "yes_count": EXPECTED["yes_count"], "purchase_intent_rate": EXPECTED["purchase_intent_rate"], "tables": outputs,
+              "gold_schema_version": STAR_VERSION, "dimension_rows": STAR_EXPECTED["dimension_rows"]}
+    gold_uri = f"abfss://{CONFIG['workspace_id']}@onelake.dfs.fabric.microsoft.com/{CONFIG['gold_lakehouse_id']}"
+    verify_published_tables(spark, gold_uri, result, "gold", EXPECTED)
+    result.update(verify_gold_star(spark, gold_uri, result, silver_uri, SPEC, EXPECTED, STAR_EXPECTED))
+    require_publication(result, "gold", gold_run_id, pipeline_run_id, SPEC["silver_run_id"])
+    sql_path = Path(f"/lakehouse/default/Files/sql/{gold_run_id}_reconciliation.sql")
+    sql_path.parent.mkdir(parents=True, exist_ok=True)
+    sql_path.write_text(endpoint_sql({e["role"]: e["table"] for e in outputs}, DIMENSIONS, SPEC["segments"], SPEC["source_table"]), encoding="utf-8")
+    result["sql_endpoint_validation"] = "pending: execute the generated T-SQL on the Gold SQL analytics endpoint"
+    result["sql_script_path"] = f"Files/sql/{gold_run_id}_reconciliation.sql"
     marker = Path(f"/lakehouse/default/Files/quality/{gold_run_id}_published.json")
     marker.parent.mkdir(parents=True, exist_ok=True)
     marker.write_text(json.dumps(result, indent=2), encoding="utf-8")

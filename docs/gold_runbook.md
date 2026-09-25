@@ -1,5 +1,14 @@
 # Gold: EV purchase-intent analytics
 
+## Gold v2 update
+
+The notebook now builds a star schema: one respondent fact, five dimensions,
+and two audit aggregates (8 tables). The v1 executions documented below remain
+historical evidence only. A new Fabric E2E run is required before v2 is published.
+See [Star Schema design, validation and rollout](star_schema.md) for the current
+table contract and semantic-model binding steps. Full local reconstruction and
+SQLite KPI/35-segment checks passed; Fabric Spark and endpoint SQL are pending.
+
 ## Current status
 
 - `WS_EV_Analytics`: `5fe78794-25c3-41ee-b35e-bc56542d2cea`.
@@ -32,7 +41,12 @@ Each run appends its unique run ID to these table prefixes:
 
 | Prefix | Grain | Expected rows |
 | --- | --- | ---: |
-| `fact_ev_purchase_intent` | One train respondent, preserving all Silver fields plus analysis bands and run IDs | 668,665 |
+| `fact_ev_purchase_intent` | One train respondent, numeric observations, target, lineage and five dimension keys | 668,665 |
+| `dim_demographics` | Age band, gender, city type | 45 |
+| `dim_income` | Income band | 4 |
+| `dim_mobility` | Commute band, current car type | 16 |
+| `dim_charging` | Home charging availability | 2 |
+| `dim_attitude_incentive` | Environmental concern, subsidy, range anxiety | 30 |
 | `agg_ev_kpi` | One overall train snapshot | 1 |
 | `agg_ev_segments` | One dimension/value pair | 35 |
 
@@ -71,8 +85,8 @@ categorical string, including values such as `1.0`; no new scale is inferred.
    change the default in an existing Spark session, restart the session.
 4. **Run all**. No separate helper-module or metadata upload is needed: all
    code, configuration and expected aggregates are embedded in the notebook.
-5. Confirm `status: published`, matching counts, and the three output table
-   names. Save the output for the Power BI semantic-model step.
+5. Confirm `status: published`, matching counts, and all output table
+   names (8 tables in v2). Save the output for the Power BI semantic-model step.
 6. The authoritative completion marker is
    `LH_EV_Gold/Files/quality/<gold_run_id>_published.json`.
 
@@ -87,6 +101,7 @@ are per table, so there is no claim of a single transaction across all tables.
 
 ```powershell
 python scripts/profile_gold.py
+python scripts/profile_star.py
 python -m unittest discover -s tests -v
 python scripts/build_gold_notebook.py
 ```
