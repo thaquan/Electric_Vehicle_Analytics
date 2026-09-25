@@ -113,6 +113,12 @@ session, and start a new whole-pipeline run. If the guard still fails, its error
 now includes the actual Lakehouse/workspace IDs for further diagnosis.
 Do not remove the guard to force writes through.
 
+The Fabric Git source must encode the entire configure body using `# MAGIC`
+lines. Cell metadata stays outside that body. Raw `%%configure` in the Git
+source previously caused the subsequent metadata to be imported into the
+configuration cell. The generator now escapes it and tests that the decoded
+configuration is clean JSON and exactly matches the ipynb cell.
+
 Session setup reference: [Configure a Spark session](https://learn.microsoft.com/en-us/fabric/data-engineering/author-execute-notebook#spark-session-configuration-magic-command).
 
 References: [Fabric pipeline definition](https://learn.microsoft.com/en-us/rest/api/fabric/articles/item-management/definitions/datapipeline-definition),
