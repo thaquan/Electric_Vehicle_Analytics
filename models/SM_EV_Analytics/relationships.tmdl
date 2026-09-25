@@ -1,0 +1,20 @@
+relationship Fact_to_dim_demographics
+	fromColumn: 'EV Respondents'.demographics_key
+	toColumn: Demographics.demographics_key
+
+relationship Fact_to_dim_income
+	fromColumn: 'EV Respondents'.income_key
+	toColumn: Income.income_key
+
+relationship Fact_to_dim_mobility
+	fromColumn: 'EV Respondents'.mobility_key
+	toColumn: Mobility.mobility_key
+
+relationship Fact_to_dim_charging
+	fromColumn: 'EV Respondents'.charging_key
+	toColumn: Charging.charging_key
+
+relationship Fact_to_dim_attitude_incentive
+	fromColumn: 'EV Respondents'.attitude_incentive_key
+	toColumn: 'Attitude and Incentive'.attitude_incentive_key
+

@@ -100,6 +100,7 @@ class StarTests(unittest.TestCase):
         audit['tables'] += [{'role': role, 'table': role+'_'+audit['gold_run_id'].lower(), 'rows': n} for role,n in expected['dimension_rows'].items()]
         request, _ = binding_request(audit, 'offline')
         self.assertEqual(len(request['request']['definitions']), 6)
+        self.assertTrue(all(d['schemaName'] == '' for d in request['request']['definitions']))
         audit['tables'][-1]['table'] = 'dim_attitude_incentive_old_snapshot'
         with self.assertRaises(ValueError): binding_request(audit, 'offline')
 

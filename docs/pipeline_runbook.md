@@ -7,10 +7,10 @@ Its final OneLake audit was downloaded and verified on 2026-09-25; see
 `metadata/e2e_verified_run.json`. The verified Silver run is
 `20260925T075816460252Z` and Gold run is `20260925T080132680916Z`.
 
-That execution used Gold v1. The Gold v2 star-schema notebook is now prepared
-locally and must be synced before starting the next pipeline run. Its completion
-audit must include `gold_schema_version: 2`, `star_validation.status: passed`
-and `sql_validation.status: passed`. See [rollout instructions](star_schema.md).
+The subsequent Gold v2 E2E run `78f9cdfe-1e19-4624-bede-042310ec9bb9`
+has also completed. Its OneLake audit confirms `gold_schema_version: 2`,
+`star_validation.status: passed` and `sql_validation.status: passed`.
+See `metadata/e2e_star_verified_run.json` and [rollout instructions](star_schema.md).
 
 The source-controlled pipeline is `PL_EV_E2E.DataPipeline/pipeline-content.json`.
 It is created in Fabric by **Update from Git**, together with the notebook

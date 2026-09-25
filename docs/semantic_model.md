@@ -1,14 +1,34 @@
-# SM_EV_Analytics ? Gold v2
+# SM_EV_Analytics - Gold v2
 
 ## Current state
 
-The local draft was authored/exported through Power BI Modeling MCP and reloaded
-successfully: 6 tables, 5 active Many-to-One single-direction relationships,
-12 measures. All partitions intentionally reference `pending_star_v2` entities.
-It is not deployed, refreshed or live-DAX validated. Do not sync/deploy this
-SemanticModel folder until its six partitions have been bound to one verified
-Gold v2 E2E audit. Legacy Gold v1 does not contain these dimension tables.
+The model was authored/exported through Power BI Modeling MCP: 6 tables,
+5 active Many-to-One single-direction relationships, 12 measures. All six
+partitions now reference Gold v2 run `20260925T152721965637Z`, confirmed by
+`metadata/e2e_star_verified_run.json`. Every model source column matches the
+corresponding published table schema. There are no placeholder entities.
 
+The model is deployed as `8e7e37b7-7bab-4122-84fb-3ae7b2121cd7` in
+WS_EV_Analytics. Full refresh and live DAX validation passed: all 12 measures,
+35 segment groups, 24 combined-filter groups and empty-selection handling.
+Evidence is in `metadata/semantic_model_live_dax.json`,
+`metadata/semantic_model_profile_dax.json` and `metadata/semantic_model_validation.json`.
+Separate SQL analytics endpoint execution is still pending; Fabric Spark SQL
+and independent SQLite counts are already reconciled with live DAX.
+
+The live model's exported TMDL is versioned under `models/SM_EV_Analytics/`.
+This is a model snapshot, not a second Fabric item. To start native Fabric Git
+tracking, commit the existing model from Fabric Source control first, preserving
+its service-generated item identity; do not create another model with the same name.
+
+Direct Lake on OneLake must omit schemaName for this non-schema Lakehouse.
+The SQL analytics endpoint still uses dbo; the two connection conventions differ.
+The binding helper now clears schemaName explicitly. See Microsoft's
+[Direct Lake migration instructions](https://learn.microsoft.com/en-us/fabric/fundamentals/direct-lake-power-bi-desktop).
+
+The Yes count measure preserves BLANK when no fact rows exist. This prevents
+empty dimension members from appearing as zero-valued groups; populated groups
+with no Yes responses still return zero.
 See [the Star Schema runbook](star_schema.md) for source grains, physical table
 counts, validation gates and the binding workflow.
 

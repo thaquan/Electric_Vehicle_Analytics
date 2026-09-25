@@ -1,0 +1,50 @@
+/// One distinct combination of Environmental_Concern_Level, Subsidy_Available, Range_Anxiety_Level. Snapshot dimension; filters EV Respondents.
+table 'Attitude and Incentive'
+	lineageTag: 5c43f34b-d242-44ce-b7d3-579926c0ac3b
+
+	column attitude_incentive_key
+		dataType: string
+		isHidden
+		isKey
+		lineageTag: bb83bc8f-63bc-4324-ae06-09fbc127aa6a
+		summarizeBy: none
+		sourceColumn: attitude_incentive_key
+
+	column Environmental_Concern_Level
+		dataType: string
+		lineageTag: be762fc8-adbb-49e6-bbe9-87cd06101f40
+		summarizeBy: none
+		sourceColumn: Environmental_Concern_Level
+
+	column Subsidy_Available
+		dataType: string
+		lineageTag: e4a6b4a3-da74-45be-8c8e-985c6b64d174
+		summarizeBy: none
+		sourceColumn: Subsidy_Available
+
+	column Range_Anxiety_Level
+		dataType: string
+		lineageTag: 150a9f41-70bd-4028-989e-7bb04020e712
+		summarizeBy: none
+		sourceColumn: Range_Anxiety_Level
+
+	column silver_run_id
+		dataType: string
+		isHidden
+		lineageTag: 2796f6c8-aded-4ffb-9141-dd769c36e3ba
+		summarizeBy: none
+		sourceColumn: silver_run_id
+
+	column gold_run_id
+		dataType: string
+		isHidden
+		lineageTag: 08c2e185-ce9d-4e34-a1a4-8a575cda6832
+		summarizeBy: none
+		sourceColumn: gold_run_id
+
+	partition 'Attitude and Incentive' = entity
+		mode: directLake
+		source
+			entityName: dim_attitude_incentive_20260925t152721965637z
+			expressionSource: GoldLakehouse
+

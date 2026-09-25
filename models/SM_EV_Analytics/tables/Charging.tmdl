@@ -1,0 +1,38 @@
+/// One distinct combination of Home_Charging_Possible. Snapshot dimension; filters EV Respondents.
+table Charging
+	lineageTag: 8ac5e2a0-62c8-46d0-82db-91215ee78423
+
+	column charging_key
+		dataType: string
+		isHidden
+		isKey
+		lineageTag: b17944ef-615a-4ead-b7c1-ad482824bcda
+		summarizeBy: none
+		sourceColumn: charging_key
+
+	column Home_Charging_Possible
+		dataType: string
+		lineageTag: 02396a40-59e7-4334-9dd5-a01fb1334b66
+		summarizeBy: none
+		sourceColumn: Home_Charging_Possible
+
+	column silver_run_id
+		dataType: string
+		isHidden
+		lineageTag: 98c52f5b-30e9-4d47-9e5c-3cfb44ea6b42
+		summarizeBy: none
+		sourceColumn: silver_run_id
+
+	column gold_run_id
+		dataType: string
+		isHidden
+		lineageTag: dc61dae4-8e3b-4af7-a8f5-377325a9c6ea
+		summarizeBy: none
+		sourceColumn: gold_run_id
+
+	partition Charging = entity
+		mode: directLake
+		source
+			entityName: dim_charging_20260925t152721965637z
+			expressionSource: GoldLakehouse
+
