@@ -1,0 +1,58 @@
+/// One distinct combination of age_band, Gender, City_Type. Snapshot dimension; filters EV Respondents.
+table Demographics
+	lineageTag: dafbf044-ddb0-4129-8d6b-76f07adc3156
+
+	column demographics_key
+		dataType: string
+		isHidden
+		isKey
+		lineageTag: a9f586a6-c592-43ca-ad85-d4566cd2793d
+		summarizeBy: none
+		sourceColumn: demographics_key
+
+	column age_band
+		dataType: string
+		lineageTag: 9ab5aaa0-57ee-4c6d-a80c-6b24af0fde87
+		summarizeBy: none
+		sourceColumn: age_band
+		sortByColumn: age_band_sort
+
+	column Gender
+		dataType: string
+		lineageTag: 57347fee-c50a-496b-82ad-be9f76bf8971
+		summarizeBy: none
+		sourceColumn: Gender
+
+	column City_Type
+		dataType: string
+		lineageTag: 5f1ded7f-9ca3-42f1-bc15-787a8e89e6fe
+		summarizeBy: none
+		sourceColumn: City_Type
+
+	column age_band_sort
+		dataType: int64
+		isHidden
+		lineageTag: 1dd05e5b-0528-45c8-a38f-870fe87c7ca4
+		summarizeBy: none
+		sourceColumn: age_band_sort
+
+	column silver_run_id
+		dataType: string
+		isHidden
+		lineageTag: 9a33f40b-0916-4aff-8364-af6185d33063
+		summarizeBy: none
+		sourceColumn: silver_run_id
+
+	column gold_run_id
+		dataType: string
+		isHidden
+		lineageTag: c180dac4-ae7c-4135-a78c-b637b82614a1
+		summarizeBy: none
+		sourceColumn: gold_run_id
+
+	partition Demographics = entity
+		mode: directLake
+		source
+			entityName: dim_demographics_20260925t152721965637z
+			expressionSource: GoldLakehouse
+

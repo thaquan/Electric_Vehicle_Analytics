@@ -1,0 +1,3 @@
+expression GoldLakehouse = AzureStorage.DataLake("https://onelake.dfs.fabric.microsoft.com/5fe78794-25c3-41ee-b35e-bc56542d2cea/32e99e91-38e9-4428-8fd2-6bcff6573088", [HierarchicalNavigation=true])
+	lineageTag: 337b19b5-7c30-4943-9a04-b43541783f70
+

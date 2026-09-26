@@ -1,0 +1,52 @@
+/// One distinct combination of commute_band, Current_Car_Type. Snapshot dimension; filters EV Respondents.
+table Mobility
+	lineageTag: 15f95068-d4b9-4846-a9b8-78a8f74a6a42
+
+	column mobility_key
+		dataType: string
+		isHidden
+		isKey
+		lineageTag: e1f10b85-21db-4eaa-ac9c-9e7c28b2777e
+		summarizeBy: none
+		sourceColumn: mobility_key
+
+	column commute_band
+		dataType: string
+		lineageTag: 6a982893-8fd2-472f-96d4-5bdd8f2ac298
+		summarizeBy: none
+		sourceColumn: commute_band
+		sortByColumn: commute_band_sort
+
+	column Current_Car_Type
+		dataType: string
+		lineageTag: be706d0d-1525-490c-85b8-681c939ecf31
+		summarizeBy: none
+		sourceColumn: Current_Car_Type
+
+	column commute_band_sort
+		dataType: int64
+		isHidden
+		lineageTag: 2fe136bf-45e3-4ba6-8044-21f29762bcb0
+		summarizeBy: none
+		sourceColumn: commute_band_sort
+
+	column silver_run_id
+		dataType: string
+		isHidden
+		lineageTag: a4325ccf-643b-4f60-8305-4240fc7e0ce0
+		summarizeBy: none
+		sourceColumn: silver_run_id
+
+	column gold_run_id
+		dataType: string
+		isHidden
+		lineageTag: 11bb9a58-7f8e-43aa-9e11-e3bb2dde2625
+		summarizeBy: none
+		sourceColumn: gold_run_id
+
+	partition Mobility = entity
+		mode: directLake
+		source
+			entityName: dim_mobility_20260925t152721965637z
+			expressionSource: GoldLakehouse
+

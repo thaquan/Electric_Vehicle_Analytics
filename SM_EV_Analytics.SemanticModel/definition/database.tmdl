@@ -1,0 +1,4 @@
+/// EV purchase-intent analytics from the verified Gold snapshot.
+database
+	compatibilityLevel: 1604
+
