@@ -1,0 +1,357 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "1900eab6c028483d7126",
+  "displayName": "Customer Profile",
+  "displayOption": "FitToPage",
+  "width": 1600,
+  "height": 900,
+  "objects": {
+    "background": [
+      {
+        "properties": {
+          "color": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#0B1220'"
+                  }
+                }
+              }
+            }
+          },
+          "transparency": {
+            "expr": {
+              "Literal": {
+                "Value": "0D"
+              }
+            }
+          }
+        }
+      }
+    ],
+    "outspace": [
+      {
+        "properties": {
+          "color": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#0B1220'"
+                  }
+                }
+              }
+            }
+          },
+          "transparency": {
+            "expr": {
+              "Literal": {
+                "Value": "0D"
+              }
+            }
+          }
+        }
+      }
+    ],
+    "outspacePane": [
+      {
+        "properties": {
+          "backgroundColor": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#0B1220'"
+                  }
+                }
+              }
+            }
+          },
+          "foregroundColor": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#F8FAFC'"
+                  }
+                }
+              }
+            }
+          },
+          "inputBoxColor": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#131E2F'"
+                  }
+                }
+              }
+            }
+          },
+          "borderColor": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#26354B'"
+                  }
+                }
+              }
+            }
+          },
+          "checkboxAndApplyColor": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#34D399'"
+                  }
+                }
+              }
+            }
+          },
+          "transparency": {
+            "expr": {
+              "Literal": {
+                "Value": "0D"
+              }
+            }
+          }
+        }
+      }
+    ],
+    "filterCard": [
+      {
+        "selector": {
+          "id": "Available"
+        },
+        "properties": {
+          "backgroundColor": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#131E2F'"
+                  }
+                }
+              }
+            }
+          },
+          "foregroundColor": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#F8FAFC'"
+                  }
+                }
+              }
+            }
+          },
+          "inputBoxColor": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#131E2F'"
+                  }
+                }
+              }
+            }
+          },
+          "borderColor": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#26354B'"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        "selector": {
+          "id": "Applied"
+        },
+        "properties": {
+          "backgroundColor": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#131E2F'"
+                  }
+                }
+              }
+            }
+          },
+          "foregroundColor": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#F8FAFC'"
+                  }
+                }
+              }
+            }
+          },
+          "inputBoxColor": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#131E2F'"
+                  }
+                }
+              }
+            }
+          },
+          "borderColor": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#26354B'"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "visualInteractions": [
+    {
+      "source": "7edbddb3aeb1df812559",
+      "target": "84bbd1d5ea0186a864e6",
+      "type": "DataFilter"
+    },
+    {
+      "source": "7edbddb3aeb1df812559",
+      "target": "10c65222ad80e7d56006",
+      "type": "DataFilter"
+    },
+    {
+      "source": "7edbddb3aeb1df812559",
+      "target": "fccebc826611cad9c9ed",
+      "type": "DataFilter"
+    },
+    {
+      "source": "7edbddb3aeb1df812559",
+      "target": "0a5f6b24cc20d7f08d03",
+      "type": "DataFilter"
+    },
+    {
+      "source": "eefbf57aa0fa360ddafd",
+      "target": "84bbd1d5ea0186a864e6",
+      "type": "DataFilter"
+    },
+    {
+      "source": "eefbf57aa0fa360ddafd",
+      "target": "10c65222ad80e7d56006",
+      "type": "DataFilter"
+    },
+    {
+      "source": "eefbf57aa0fa360ddafd",
+      "target": "fccebc826611cad9c9ed",
+      "type": "DataFilter"
+    },
+    {
+      "source": "eefbf57aa0fa360ddafd",
+      "target": "0a5f6b24cc20d7f08d03",
+      "type": "DataFilter"
+    },
+    {
+      "source": "16654fff8327763cf773",
+      "target": "84bbd1d5ea0186a864e6",
+      "type": "DataFilter"
+    },
+    {
+      "source": "16654fff8327763cf773",
+      "target": "10c65222ad80e7d56006",
+      "type": "DataFilter"
+    },
+    {
+      "source": "16654fff8327763cf773",
+      "target": "fccebc826611cad9c9ed",
+      "type": "DataFilter"
+    },
+    {
+      "source": "16654fff8327763cf773",
+      "target": "0a5f6b24cc20d7f08d03",
+      "type": "DataFilter"
+    },
+    {
+      "source": "40e32e761f79f6ebf8c5",
+      "target": "84bbd1d5ea0186a864e6",
+      "type": "DataFilter"
+    },
+    {
+      "source": "40e32e761f79f6ebf8c5",
+      "target": "10c65222ad80e7d56006",
+      "type": "DataFilter"
+    },
+    {
+      "source": "40e32e761f79f6ebf8c5",
+      "target": "fccebc826611cad9c9ed",
+      "type": "DataFilter"
+    },
+    {
+      "source": "40e32e761f79f6ebf8c5",
+      "target": "0a5f6b24cc20d7f08d03",
+      "type": "DataFilter"
+    },
+    {
+      "source": "10c65222ad80e7d56006",
+      "target": "84bbd1d5ea0186a864e6",
+      "type": "DataFilter"
+    },
+    {
+      "source": "10c65222ad80e7d56006",
+      "target": "fccebc826611cad9c9ed",
+      "type": "DataFilter"
+    },
+    {
+      "source": "10c65222ad80e7d56006",
+      "target": "0a5f6b24cc20d7f08d03",
+      "type": "DataFilter"
+    },
+    {
+      "source": "fccebc826611cad9c9ed",
+      "target": "84bbd1d5ea0186a864e6",
+      "type": "DataFilter"
+    },
+    {
+      "source": "fccebc826611cad9c9ed",
+      "target": "10c65222ad80e7d56006",
+      "type": "DataFilter"
+    },
+    {
+      "source": "fccebc826611cad9c9ed",
+      "target": "0a5f6b24cc20d7f08d03",
+      "type": "DataFilter"
+    },
+    {
+      "source": "0a5f6b24cc20d7f08d03",
+      "target": "84bbd1d5ea0186a864e6",
+      "type": "DataFilter"
+    },
+    {
+      "source": "0a5f6b24cc20d7f08d03",
+      "target": "10c65222ad80e7d56006",
+      "type": "DataFilter"
+    },
+    {
+      "source": "0a5f6b24cc20d7f08d03",
+      "target": "fccebc826611cad9c9ed",
+      "type": "DataFilter"
+    }
+  ]
+}

@@ -1,0 +1,357 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "36b3161dab7f0f1b69ab",
+  "displayName": "Charging & Incentives",
+  "displayOption": "FitToPage",
+  "width": 1600,
+  "height": 900,
+  "objects": {
+    "background": [
+      {
+        "properties": {
+          "color": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#0B1220'"
+                  }
+                }
+              }
+            }
+          },
+          "transparency": {
+            "expr": {
+              "Literal": {
+                "Value": "0D"
+              }
+            }
+          }
+        }
+      }
+    ],
+    "outspace": [
+      {
+        "properties": {
+          "color": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#0B1220'"
+                  }
+                }
+              }
+            }
+          },
+          "transparency": {
+            "expr": {
+              "Literal": {
+                "Value": "0D"
+              }
+            }
+          }
+        }
+      }
+    ],
+    "outspacePane": [
+      {
+        "properties": {
+          "backgroundColor": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#0B1220'"
+                  }
+                }
+              }
+            }
+          },
+          "foregroundColor": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#F8FAFC'"
+                  }
+                }
+              }
+            }
+          },
+          "inputBoxColor": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#131E2F'"
+                  }
+                }
+              }
+            }
+          },
+          "borderColor": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#26354B'"
+                  }
+                }
+              }
+            }
+          },
+          "checkboxAndApplyColor": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#34D399'"
+                  }
+                }
+              }
+            }
+          },
+          "transparency": {
+            "expr": {
+              "Literal": {
+                "Value": "0D"
+              }
+            }
+          }
+        }
+      }
+    ],
+    "filterCard": [
+      {
+        "selector": {
+          "id": "Available"
+        },
+        "properties": {
+          "backgroundColor": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#131E2F'"
+                  }
+                }
+              }
+            }
+          },
+          "foregroundColor": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#F8FAFC'"
+                  }
+                }
+              }
+            }
+          },
+          "inputBoxColor": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#131E2F'"
+                  }
+                }
+              }
+            }
+          },
+          "borderColor": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#26354B'"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        "selector": {
+          "id": "Applied"
+        },
+        "properties": {
+          "backgroundColor": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#131E2F'"
+                  }
+                }
+              }
+            }
+          },
+          "foregroundColor": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#F8FAFC'"
+                  }
+                }
+              }
+            }
+          },
+          "inputBoxColor": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#131E2F'"
+                  }
+                }
+              }
+            }
+          },
+          "borderColor": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#26354B'"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "visualInteractions": [
+    {
+      "source": "42eac17ab4d246c32095",
+      "target": "1eac88bf0c211c8889b7",
+      "type": "DataFilter"
+    },
+    {
+      "source": "42eac17ab4d246c32095",
+      "target": "929ecaf4db654ec34ee6",
+      "type": "DataFilter"
+    },
+    {
+      "source": "42eac17ab4d246c32095",
+      "target": "d8f0bce93077bd4c3bff",
+      "type": "DataFilter"
+    },
+    {
+      "source": "42eac17ab4d246c32095",
+      "target": "cdfeb262bb71a9292ac3",
+      "type": "DataFilter"
+    },
+    {
+      "source": "3c14bdebbc8ee2e6978c",
+      "target": "1eac88bf0c211c8889b7",
+      "type": "DataFilter"
+    },
+    {
+      "source": "3c14bdebbc8ee2e6978c",
+      "target": "929ecaf4db654ec34ee6",
+      "type": "DataFilter"
+    },
+    {
+      "source": "3c14bdebbc8ee2e6978c",
+      "target": "d8f0bce93077bd4c3bff",
+      "type": "DataFilter"
+    },
+    {
+      "source": "3c14bdebbc8ee2e6978c",
+      "target": "cdfeb262bb71a9292ac3",
+      "type": "DataFilter"
+    },
+    {
+      "source": "d31e5c478a3d66bb4dcc",
+      "target": "1eac88bf0c211c8889b7",
+      "type": "DataFilter"
+    },
+    {
+      "source": "d31e5c478a3d66bb4dcc",
+      "target": "929ecaf4db654ec34ee6",
+      "type": "DataFilter"
+    },
+    {
+      "source": "d31e5c478a3d66bb4dcc",
+      "target": "d8f0bce93077bd4c3bff",
+      "type": "DataFilter"
+    },
+    {
+      "source": "d31e5c478a3d66bb4dcc",
+      "target": "cdfeb262bb71a9292ac3",
+      "type": "DataFilter"
+    },
+    {
+      "source": "43108878f374274eb8e5",
+      "target": "1eac88bf0c211c8889b7",
+      "type": "DataFilter"
+    },
+    {
+      "source": "43108878f374274eb8e5",
+      "target": "929ecaf4db654ec34ee6",
+      "type": "DataFilter"
+    },
+    {
+      "source": "43108878f374274eb8e5",
+      "target": "d8f0bce93077bd4c3bff",
+      "type": "DataFilter"
+    },
+    {
+      "source": "43108878f374274eb8e5",
+      "target": "cdfeb262bb71a9292ac3",
+      "type": "DataFilter"
+    },
+    {
+      "source": "929ecaf4db654ec34ee6",
+      "target": "1eac88bf0c211c8889b7",
+      "type": "DataFilter"
+    },
+    {
+      "source": "929ecaf4db654ec34ee6",
+      "target": "d8f0bce93077bd4c3bff",
+      "type": "DataFilter"
+    },
+    {
+      "source": "929ecaf4db654ec34ee6",
+      "target": "cdfeb262bb71a9292ac3",
+      "type": "DataFilter"
+    },
+    {
+      "source": "d8f0bce93077bd4c3bff",
+      "target": "1eac88bf0c211c8889b7",
+      "type": "DataFilter"
+    },
+    {
+      "source": "d8f0bce93077bd4c3bff",
+      "target": "929ecaf4db654ec34ee6",
+      "type": "DataFilter"
+    },
+    {
+      "source": "d8f0bce93077bd4c3bff",
+      "target": "cdfeb262bb71a9292ac3",
+      "type": "DataFilter"
+    },
+    {
+      "source": "cdfeb262bb71a9292ac3",
+      "target": "1eac88bf0c211c8889b7",
+      "type": "DataFilter"
+    },
+    {
+      "source": "cdfeb262bb71a9292ac3",
+      "target": "929ecaf4db654ec34ee6",
+      "type": "DataFilter"
+    },
+    {
+      "source": "cdfeb262bb71a9292ac3",
+      "target": "d8f0bce93077bd4c3bff",
+      "type": "DataFilter"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "name": "EV-Automotive-e96bf90b.json",
+  "dataColors": [
+    "#34D399",
+    "#38BDF8",
+    "#8B5CF6",
+    "#94A3B8"
+  ],
+  "background": "#0B1220",
+  "foreground": "#F8FAFC",
+  "tableAccent": "#34D399",
+  "firstLevelElements": "#F8FAFC",
+  "secondLevelElements": "#94A3B8",
+  "thirdLevelElements": "#26354B",
+  "secondaryBackground": "#131E2F",
+  "textClasses": {
+    "label": {
+      "fontFace": "Segoe UI",
+      "color": "#F8FAFC",
+      "fontSize": 11
+    },
+    "title": {
+      "fontFace": "Segoe UI",
+      "color": "#F8FAFC",
+      "fontSize": 13
+    },
+    "callout": {
+      "fontFace": "Segoe UI",
+      "color": "#34D399",
+      "fontSize": 30
+    }
+  }
+}
