@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "RPT_EV_Analytics"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "475ae012-1717-afed-4462-759eae4d7c59"
+  }
+}
