@@ -1,98 +1,103 @@
-# RPT_EV_Analytics — giai đoạn 6
+# RPT_EV_Analytics ? Phase 6
 
-## Trạng thái ngày 2026-09-27
+## Status on 2026-09-27
 
-- Đã tạo `RPT_EV_Analytics.pbip` và thư mục `RPT_EV_Analytics.Report`.
-- Báo cáo kết nối đến semantic model hiện có `SM_EV_Analytics`
-  (`8e7e37b7-7bab-4122-84fb-3ae7b2121cd7`) trong `WS_EV_Analytics`.
-- Không chạy lại pipeline, refresh hay sửa semantic model.
-- Bỏ qua chạy SQL analytics endpoint theo yêu cầu người dùng. Không coi bước này là đã đạt.
-- CLI kiểm tra PBIR: **0 lỗi, 0 cảnh báo**; kết quả tại
-  `metadata/report_validation.json`.
-- Đã mở báo cáo trong Power BI Desktop, kiểm tra dữ liệu thật và ảnh chụp cả ba trang.
-  KPI Overview khớp 668.665 / 116.779 / 551.886 / 17,46%; tám KPI còn lại
-  khớp bằng chứng DAX sau làm tròn. Ảnh lưu tại `docs/screenshots/`.
-- Toàn bộ nội dung report bằng tiếng Anh theo yêu cầu mới nhất, dùng thuật ngữ
-  **EV purchase intent**. Đã nạp lại và kiểm tra không có visual lỗi hoặc cắt chữ.
-- Đã xuất bản lên `WS_EV_Analytics`; Fabric catalog xác nhận report ID
-  `ae4d7c59-759e-4462-afed-1717475ae012` ngày 2026-09-27.
-  [Mở báo cáo](https://app.powerbi.com/groups/5fe78794-25c3-41ee-b35e-bc56542d2cea/reports/ae4d7c59-759e-4462-afed-1717475ae012).
-- Đã thử slicer City type = Urban bằng Windows UI Automation: 289.305 người,
-  46.595 có ý định mua, 242.710 không có ý định mua, tỷ lệ 16,11%; khớp đối chiếu.
-  Xóa lựa chọn trong slicer khôi phục tổng 668.665. Ảnh: `docs/screenshots/Overview-Urban-filter.png`.
-- Kiểm thử navigation/reset, lọc chéo từ biểu đồ và giao diện Service: **bỏ qua theo yêu cầu**.
-  Không đánh dấu các kiểm thử này đã đạt. Không dùng Playwright.
-- Giai đoạn 7 đã tạo bản export Parquet và manifest local có kiểm tra; xem
-  [bằng chứng export](gold_export.md). Chưa thực hiện khôi phục môi trường riêng.
+- Created `RPT_EV_Analytics.pbip` and `RPT_EV_Analytics.Report`.
+- The report connects to the existing `SM_EV_Analytics`
+  (`8e7e37b7-7bab-4122-84fb-3ae7b2121cd7`) in `WS_EV_Analytics`.
+- No pipeline rerun, model refresh, or model modification was performed for this report work.
+- SQL analytics endpoint execution was skipped by user request, not passed.
+- PBIR CLI validation: **zero errors and zero warnings**; see `metadata/report_validation.json`.
+- Opened the report in Power BI Desktop and checked live data and screenshots of all
+  three pages. Overview matches 668,665 / 116,779 / 551,886 / 17.46%; the other eight
+  KPI match the DAX evidence after rounding. Screenshots are in `docs/screenshots/`.
+- All report text is in English and uses **EV purchase intent**. Reloaded and checked
+  for visual errors and clipped text.
+- Published to `WS_EV_Analytics`; the Fabric catalog confirmed report ID
+  `ae4d7c59-759e-4462-afed-1717475ae012` on 2026-09-27.
+  [Open report](https://app.powerbi.com/groups/5fe78794-25c3-41ee-b35e-bc56542d2cea/reports/ae4d7c59-759e-4462-afed-1717475ae012).
+- Tested City type = Urban using Windows UI Automation: 289,305 respondents,
+  46,595 intending, 242,710 not intending, and a 16.11% rate; all match the reference.
+  Clearing the slicer restores 668,665. Evidence: `docs/screenshots/Overview-Urban-filter.png`.
+- Navigation/reset, chart cross-filter, and remaining Service rendering tests are
+  **skipped by user request**, not passed. Playwright was not used.
+- Phase 7 export and manifest evidence is in the [export guide](gold_export.md).
+  For subsequent isolated recovery results, see the [phase 7 closeout](phase7_closeout.md).
 
-## Nội dung
+## Contents
 
-| Trang | KPI | Biểu đồ và slicer |
+| Page | KPI | Charts and slicers |
 | --- | --- | --- |
-| Executive Overview | Người khảo sát; có/không có ý định mua EV; tỷ lệ ý định mua EV | Phân bố nơi sống; tỷ lệ theo tuổi và thu nhập. Lọc nơi sống, giới tính, tuổi, thu nhập. |
-| Charging & Incentives | Tỷ lệ có thể sạc tại nhà; tỷ lệ có trợ cấp; trạm sạc trung bình gần nhà/nơi làm | Tỷ lệ ý định mua EV theo sạc tại nhà, trợ cấp, lo ngại quãng đường. Lọc sạc tại nhà, trợ cấp, lo ngại quãng đường, nơi sống. |
-| Customer Profile | Thu nhập năm USD, tuổi, quãng đường đi làm km, số xe trung bình | Phân bố thu nhập và tuổi; tỷ lệ ý định mua EV theo quãng đường đi làm. Lọc thu nhập, tuổi, nơi sống, quãng đường. |
+| Executive Overview | Respondents; intending/not intending to buy EV; purchase intent rate | City type distribution; rates by age and income. Slicers: city type, gender, age, income. |
+| Charging & Incentives | Home charging access; subsidy availability; average chargers near home/work | Purchase intent by home charging, subsidy, range anxiety. Slicers: home charging, subsidy, range anxiety, city type. |
+| Customer Profile | Average annual income USD, age, commute km, cars owned | Income and age distributions; purchase intent by commute. Slicers: income, age, city type, commute. |
 
-Mỗi trang có 1 thẻ chứa 4 KPI, 3 biểu đồ, 4 slicer, 7 hộp văn bản và 4 nút.
-Tổng cộng 57 visual. Slicer hoạt động riêng trên từng trang, cho phép chọn nhiều giá trị.
-Thiết kế automotive dark 1600 × 900 (16:9), nền navy `#0B1220`, thẻ `#131E2F`,
-xanh mint `#34D399` cho tỷ lệ và xanh blue `#38BDF8` cho số lượng.
-Thanh bên có 3 nút chuyển trang và **Reset slicers** (xóa slicer trên trang hiện tại,
-không xóa mọi loại filter hoặc lựa chọn biểu đồ). Trong Desktop edit mode, dùng
-Ctrl+click để chạy hành động nút. Chưa nghiệm thu thao tác nút/lọc chéo trực tiếp.
-Nhãn **Survey snapshot** là ngày Gold đã xác minh, không phải thời điểm refresh trực tiếp.
-Các tương tác từ slicer/biểu đồ đến KPI và các biểu đồ khác được cấu hình `DataFilter`.
-Nhóm tuổi, thu nhập và quãng đường dùng thứ tự đã định nghĩa trong semantic model.
-Tất cả chỉ số dùng explicit measure; không cộng hai bảng aggregate Gold.
+Each page has one card with four KPI, three charts, four slicers, seven text boxes,
+and four buttons: 57 visuals in total. Slicers operate independently on each page
+and allow multiple selections.
 
-Dashboard dùng thuật ngữ **EV purchase intent**. Dữ liệu tổng hợp không đại diện cho
-doanh số, tỷ lệ chuyển đổi thực tế hay quan hệ nhân quả.
+The automotive dark design uses a 1600 x 900 canvas (16:9), navy `#0B1220`,
+card surfaces `#131E2F`, mint `#34D399` for rates, and blue `#38BDF8` for counts.
+The sidebar contains three navigation buttons and **Reset slicers**, which clears
+slicers on the current page, not every filter or chart selection. In Desktop edit
+mode, use Ctrl+click to run button actions. Live button and chart cross-filter
+behavior has not been accepted as passed.
 
-## Mở và xuất bản
+**Survey snapshot** shows the verified Gold snapshot date, not the live refresh time.
+Slicer/chart interactions with KPI and other charts use `DataFilter`.
+Age, income, and commute bands follow semantic model sort order. All KPI use
+explicit measures; the two Gold aggregate tables are not summed in the report.
 
-1. Mở `RPT_EV_Analytics.pbip` bằng Power BI Desktop có hỗ trợ PBIP/PBIR.
-2. Đăng nhập tài khoản có quyền truy cập `SM_EV_Analytics` trong `WS_EV_Analytics`.
-3. Kiểm tra cả ba trang bằng dữ liệu thật theo danh sách bên dưới.
-4. Publish vào `WS_EV_Analytics` với tên `RPT_EV_Analytics`.
-5. Lưu URL/ID báo cáo và ảnh chụp vào hồ sơ nghiệm thu.
+The dashboard describes **EV purchase intent** in synthetic data. It does not
+represent actual sales, conversion rates, or causal effects.
 
-Đã chuẩn bị `metadata/report_create_payload.json` bằng CLI `pack --mode create`.
-Tệp có envelope: phần body gửi Fabric API là `data.body`, không phải toàn bộ tệp.
-Đây là gói triển khai, không phải bằng chứng báo cáo đã được tạo trên Service.
+## Open and publish
 
-## Kiểm tra khi có Power BI
+1. Open `RPT_EV_Analytics.pbip` in Power BI Desktop with PBIP/PBIR support.
+2. Sign in with access to `SM_EV_Analytics` in `WS_EV_Analytics`.
+3. Check all three pages with live data using the checklist below as applicable.
+4. Publish to `WS_EV_Analytics` as `RPT_EV_Analytics`.
+5. Save the report URL/ID and screenshots with the acceptance evidence.
 
-Các giá trị dưới đây lấy từ bằng chứng DAX đã lưu và đã đối chiếu với
-12 KPI hiển thị trên ảnh chụp report trong Desktop, sau làm tròn.
+`metadata/report_create_payload.json` was generated locally with CLI `pack --mode create`.
+Its Fabric API request body is `data.body`, not the whole envelope. This generated
+file is excluded from Git and is not evidence of publication to the Service.
 
-| KPI khi xóa mọi bộ lọc | Giá trị mong đợi |
+## Checks in Power BI
+
+The following values come from saved DAX evidence and were compared with all
+12 KPI in Desktop screenshots after rounding.
+
+| KPI with all filters cleared | Expected value |
 | --- | ---: |
-| Người khảo sát | 668.665 |
-| Có ý định mua EV | 116.779 |
-| Không có ý định mua EV | 551.886 |
-| Tỷ lệ ý định mua EV | 17,46% |
-| Có thể sạc tại nhà | 69,19% |
-| Có trợ cấp | 62,80% |
-| Tuổi trung bình | 47,0 |
-| Thu nhập năm USD trung bình | 84.769,27 |
-| Quãng đường đi làm km trung bình | 32,2 |
-| Số xe trung bình | 1,71 |
-| Trạm sạc gần nhà trung bình | 4,96 |
-| Trạm sạc gần nơi làm trung bình | 7,18 |
+| Respondents | 668,665 |
+| Intending to buy EV | 116,779 |
+| Not intending to buy EV | 551,886 |
+| Purchase intent rate | 17.46% |
+| Home charging access | 69.19% |
+| Subsidy availability | 62.80% |
+| Average age | 47.0 |
+| Average annual income USD | 84,769.27 |
+| Average daily commute km | 32.2 |
+| Average cars owned | 1.71 |
+| Average chargers near home | 4.96 |
+| Average chargers near work | 7.18 |
 
-- Đối chiếu KPI và nhóm với `metadata/semantic_model_live_dax.json`,
-  `metadata/semantic_model_profile_dax.json`, `metadata/star_expected_metrics.json`.
-- Chọn một nhóm tuổi/thu nhập: KPI và biểu đồ phải cùng đổi; tỷ lệ bằng
-  số có ý định mua EV chia số người khảo sát trong bộ lọc hiện tại.
-- Kết hợp nơi sống + khả năng sạc tại nhà + trợ cấp trong Filter pane;
-  đối chiếu các nhóm đã kiểm tra trong bằng chứng DAX.
-- Chọn một thanh biểu đồ: các visual đích phải được lọc. Xóa lựa chọn
-  và bộ lọc phải khôi phục tổng ban đầu.
-- Kiểm tra chọn nhiều giá trị, xóa bộ lọc và tập kết quả rỗng (tỷ lệ để trống).
-- Kiểm tra tiêu đề, nhãn KPI, phần trăm, thứ tự nhóm và không có visual lỗi/cắt chữ.
-- Chụp ba trang ở trạng thái không lọc và ít nhất một trạng thái có lọc.
+The following checklist describes expected behavior; it does not override skipped tests:
 
-## Tái tạo và kiểm tra cấu trúc
+- Compare KPI and groups with `metadata/semantic_model_live_dax.json`,
+  `metadata/semantic_model_profile_dax.json`, and `metadata/star_expected_metrics.json`.
+- Select an age/income band: KPI and charts should update together; the rate should
+  equal intending respondents divided by respondents in the current filter context.
+- Combine city type, home charging, and subsidy in the Filter pane and compare
+  with the groups in the DAX evidence.
+- Select a chart bar: target visuals should filter. Clearing selections and filters
+  should restore the original totals.
+- Check multiple selections, clearing filters, and empty results (blank rate).
+- Check titles, KPI labels, percentages, group order, and visual/text clipping errors.
+- Capture all three unfiltered pages and at least one filtered state.
+
+## Rebuild and validate structure
 
 ```powershell
 node scripts/build_report.cjs
@@ -101,7 +106,7 @@ node scripts/style_report.cjs
 .tools/node_modules/.bin/powerbi-report-author.cmd pack RPT_EV_Analytics.Report --mode create --display-name RPT_EV_Analytics --out metadata/report_create_payload.json
 ```
 
-Script sử dụng bộ khung report hiện có và tạo nội dung xác định theo ID ổn định.
-Chạy lại sẽ ghi đè các visual do script quản lý; lưu các chỉnh sửa thủ công trước khi chạy.
-Sau mọi sửa đổi, kiểm tra lại cấu trúc và hiển thị. Kiểm tra PBIR không thay thế
-việc mở report, truy vấn dữ liệu và thử tương tác trong Power BI.
+The scripts use the existing report structure and generate deterministic content
+with stable IDs. Rerunning them overwrites script-managed visuals; preserve manual
+edits first. Recheck structure and rendering after changes. PBIR validation does
+not replace opening the report, querying live data, or testing interactions.
