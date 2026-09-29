@@ -1,57 +1,63 @@
-# EV Analytics — Gói bàn giao và khôi phục
+# EV Analytics ? Handoff and recovery package
 
-Snapshot Gold v2: **20260925T152721965637Z**. KPI chuẩn: **668665 / 116779 / 551886**.
+Gold v2 snapshot: **20260925T152721965637Z**. Expected KPI: **668665 / 116779 / 551886**.
 
-Gói gồm 8 Parquet và manifest, notebook/script, SQL, semantic model TMDL,
-report PBIP cùng tài nguyên giao diện và hướng dẫn cấu hình.
-Phần 3–4 đã chuẩn bị; chưa chạy khôi phục trong workspace riêng (phần 5).
-Kiểm thử dashboard còn lại: **bỏ qua theo yêu cầu**, không đánh dấu đạt.
+The package contains eight Parquet files and a manifest, notebooks/scripts, SQL,
+semantic model TMDL, report PBIP, visual resources, and configuration instructions.
+Parts 3?4 prepared the package and procedure. Recovery had not run when the original
+ZIP was released; see the repository's `docs/phase7_closeout.md` for subsequent results.
+Remaining dashboard tests are **skipped by user request**, not passed.
 
-## Bắt đầu
+## Get started
 
-1. Đối chiếu SHA-256 của file ZIP với file `.zip.sha256` đi kèm rồi giải nén.
-2. Mở terminal tại thư mục `EV_Analytics_Recovery` và chạy:
+1. Compare the ZIP SHA-256 with its `.zip.sha256` sidecar, then extract the archive.
+2. Open a terminal in `EV_Analytics_Recovery` and run:
 
    ```powershell
    python verify_package.py .
    ```
 
-   Chạy kiểm tra này trước khi tạo thêm config, môi trường Python hoặc file kết quả
-   trong thư mục gói. Verifier yêu cầu danh sách file đúng như lúc bàn giao.
-   Có thể kiểm tra lại ZIP nguyên bản bất kỳ lúc nào:
+   Run this before adding configuration, a Python environment, or result files.
+   The verifier requires the exact original inventory. You can verify the unchanged
+   ZIP at any time:
 
    ```powershell
-   python verify_package.py <duong-dan-file.zip>
+   python verify_package.py <zip-path>
    ```
 
-3. Đọc [quy trình khôi phục chi tiết](project/docs/recovery_runbook.md).
-4. Khi thực hiện phần 5: tạo workspace/lakehouse mới, điền `recovery.config.json`,
-   nạp snapshot, tạo model, refresh, rồi publish report theo đúng thứ tự trong runbook.
+3. Read `project/docs/recovery_runbook.md` in the extracted package. In the source
+   repository, use the [recovery runbook](recovery_runbook.md).
+4. For a new recovery attempt, create a workspace/lakehouse, fill in
+   `recovery.config.json`, load the snapshot, create the model, refresh it,
+   and publish the report in the order described in the runbook.
 
-## Cấu trúc
+## Layout
 
-| Đường dẫn | Nội dung |
+| Path | Contents |
 | --- | --- |
-| `snapshot/` | 8 Parquet, manifest và bằng chứng export |
-| `project/` | Mã nguồn và artifacts gốc, có thể đối chiếu với project hiện tại |
-| `project/notebooks/NB_EV_Restore_Gold.ipynb` | Notebook chạy trong lakehouse mới |
-| `project/scripts/prepare_recovery.py` | Tạo bản model/report với kết nối đích |
-| `project/scripts/create_recovery_item.py` | Gửi lệnh tạo item khi thực hiện recovery |
-| `recovery.example.json` | Cấu hình mẫu; các ID đích chưa được điền |
-| `package_manifest.json` | Danh sách file và SHA-256 toàn gói |
-| `release.json` | Phạm vi, snapshot và phiên bản công cụ |
+| `snapshot/` | Eight Parquet files, manifest, and export evidence |
+| `project/` | Original source code and artifacts for comparison |
+| `project/notebooks/NB_EV_Restore_Gold.ipynb` | Notebook for the new lakehouse |
+| `project/scripts/prepare_recovery.py` | Prepare model/report copies with target bindings |
+| `project/scripts/create_recovery_item.py` | Create Fabric items during recovery |
+| `recovery.example.json` | Configuration template with empty target IDs |
+| `package_manifest.json` | Complete file inventory and SHA-256 values |
+| `release.json` | Scope, snapshot, and tool versions |
 
-PBIP/TMDL trong `project/` là bản nguồn để lưu trữ; chúng vẫn có tham chiếu môi trường
-gốc. Dùng script chuẩn bị để tạo bản recovery trong `generated/`, rồi mở PBIP ở đó.
-Không cần chạy lại pipeline hay các notebook Bronze/Silver/Gold để khôi phục snapshot.
+PBIP/TMDL under `project/` preserve the source environment references. Use the
+preparation script to create recovery artifacts under `generated/`, then open
+that generated PBIP. Restoring the snapshot does not require rerunning the pipeline
+or the Bronze/Silver/Gold transformation notebooks.
 
-## Kiểm tra đã thực hiện
+## Checks performed before the original release
 
-- Kiểm tra inventory, checksum file trong thư mục và bên trong ZIP.
-- Kiểm tra cấu hình, chống chọn nhầm đích và tạo bản TMDL/PBIP bằng ID thử offline.
-- PBIR của bản đổi kết nối: 0 lỗi, 1 cảnh báo tải schema Microsoft `visualContainer/2.12.0`.
-  Các visual giữ nguyên từng byte; giới hạn này không được tính là schema đã đạt.
-- Chưa chạy Spark restore, API tạo model/report, refresh hoặc kiểm tra dashboard recovery.
+- Directory and ZIP inventories and file checksums verified.
+- Configuration guards and target TMDL/PBIP generation checked with offline test IDs.
+- Rebound PBIR: zero errors and one warning for the unavailable Microsoft
+  `visualContainer/2.12.0` schema. Visuals were byte-identical; the unavailable
+  schema check was not marked as passed.
+- Spark restore, model/report creation, refresh, and recovery dashboard checks
+  had not run at the original release date.
 
-Ảnh và bằng chứng DAX có sẵn trong `project/` thuộc môi trường nguồn.
-Khi thực hiện phần 5, lưu bằng chứng mới riêng theo mẫu trong runbook.
+Source screenshots and DAX evidence already in `project/` belong to the source
+environment. Record fresh evidence for each recovery attempt using the runbook template.

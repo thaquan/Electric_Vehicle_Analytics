@@ -1,24 +1,26 @@
-# Giai đoạn 7 — Export Parquet và manifest
+# Phase 7 ? Parquet export and manifest
 
-## Phạm vi
+## Scope
 
-Phần 1–2 xuất snapshot Gold v2 `20260925T152721965637Z` đã được xác minh.
-Không chạy lại pipeline, notebook biến đổi, refresh model hoặc thay đổi bảng nguồn.
-Gói project và hướng dẫn khôi phục thuộc phần 3–4; xem [recovery runbook](recovery_runbook.md)
-và `metadata/gold_recovery_package_status.json`. Khôi phục workspace riêng (phần 5) chưa thực hiện.
-Kiểm thử dashboard còn lại giữ trạng thái **bỏ qua theo yêu cầu**, không đánh dấu đạt.
+Parts 1?2 export the verified Gold v2 snapshot `20260925T152721965637Z`.
+The export did not rerun the pipeline or transformation notebooks, refresh the model,
+or modify source tables. Parts 3?4 cover packaging and the recovery procedure;
+see the [recovery runbook](recovery_runbook.md) and
+`metadata/gold_recovery_package_status.json`. Isolated recovery had not run at the
+export date; subsequent results are in the [phase 7 closeout](phase7_closeout.md).
+Remaining dashboard checks stay **skipped by user request**, not passed.
 
-## Bản export
+## Export details
 
 - Export ID: `20260927T130004568586Z`.
-- Workspace nguồn: `5fe78794-25c3-41ee-b35e-bc56542d2cea`.
-- Lakehouse nguồn: `32e99e91-38e9-4428-8fd2-6bcff6573088` (`LH_EV_Gold`).
+- Source workspace: `5fe78794-25c3-41ee-b35e-bc56542d2cea`.
+- Source lakehouse: `32e99e91-38e9-4428-8fd2-6bcff6573088` (`LH_EV_Gold`).
 - Local: `output/exports/gold_v2/20260925T152721965637Z/20260927T130004568586Z/`.
-- Đích OneLake: `Files/exports/gold_v2/20260925T152721965637Z/20260927T130004568586Z/`.
-- Trạng thái truyền và bằng chứng hoàn tất: `metadata/gold_export_status.json`.
-- Nguồn xác minh: `metadata/e2e_star_verified_run.json`; không dùng marker Gold v1 cũ.
+- OneLake: `Files/exports/gold_v2/20260925T152721965637Z/20260927T130004568586Z/`.
+- Transfer status and evidence: `metadata/gold_export_status.json`.
+- Verified source: `metadata/e2e_star_verified_run.json`; do not use the stale Gold v1 marker.
 
-| Bảng | Số dòng |
+| Table | Rows |
 | --- | ---: |
 | fact_ev_purchase_intent | 668665 |
 | dim_demographics | 45 |
@@ -29,65 +31,65 @@ Kiểm thử dashboard còn lại giữ trạng thái **bỏ qua theo yêu cầu
 | agg_ev_kpi | 1 |
 | agg_ev_segments | 35 |
 
-## Cách tạo
+## Export method
 
-1. Tải Delta log version 0 của đúng tám bảng bằng Fabric OneLake connector.
-2. Đọc danh sách `add` trong từng log. Chỉ lấy file dữ liệu thuộc version này;
-   không quét toàn thư mục và không lấy các file thống kê trong `_delta_log/_stats`.
-3. Kiểm tra protocol reader v1, không partition, không column mapping,
-   không deletion vector hoặc remove action. Script dừng nếu các điều kiện này thay đổi.
-4. Tải 49 file nguồn (14.311.522 byte), lưu ETag, dung lượng, request ID và checksum.
-5. PyArrow đọc và ghi lại thành tám file Parquet Snappy, tổng 11.721.983 byte.
-   Decimal giữ `decimal(18,4)`; timestamp được lưu microsecond UTC.
-6. So sánh chính xác dữ liệu trước/sau ghi; kiểm tra schema, số dòng, lineage,
-   PK/FK, khóa SHA-256 của dimensions, thứ tự band, KPI và 35 nhóm audit.
-7. Chỉ tạo manifest hoàn chỉnh khi các kiểm tra đều đạt. Tải lại bản OneLake và
-   đối chiếu SHA-256 với bản local trước khi ghi trạng thái truyền đã xác minh.
+1. Download Delta version 0 logs for the eight exact tables through the Fabric OneLake connector.
+2. Read each log's `add` actions. Download only active data files for this version;
+   do not scan the entire directory or include statistics in `_delta_log/_stats`.
+3. Require reader protocol v1, no partitions, column mapping, deletion vectors,
+   or remove actions. The script stops if these conditions change.
+4. Download 49 source files (14,311,522 bytes), recording ETags, sizes, request IDs, and checksums.
+5. Read and serialize with PyArrow into eight Snappy Parquet files totaling 11,721,983 bytes.
+   Preserve `decimal(18,4)` and store timestamps as UTC microseconds.
+6. Compare exact data before and after writing; verify schema, counts, lineage,
+   PK/FK, dimension SHA-256 keys, band ordering, KPI, and 35 audit groups.
+7. Finalize the manifest only after every check passes. Download the OneLake copy
+   and compare its SHA-256 with the local copy before marking the transfer verified.
 
-Đây là export dữ liệu snapshot có kiểm tra, không phải bản sao toàn bộ lịch sử Delta.
-Khi khôi phục Direct Lake, nạp Parquet thành bảng Delta trong lakehouse mới.
+This export preserves verified snapshot data rather than the full Delta history.
+To recover a Direct Lake model, load the Parquet files into Delta tables in the new lakehouse.
 
-## Nội dung manifest
+## Manifest contents
 
-`manifest.json` ghi Gold/Silver/pipeline run ID; định danh nguồn; Delta version;
-schema từng cột; số dòng; SHA-256 từng file; checksum và ETag file nguồn;
-primary keys; năm quan hệ many-to-one, chiều lọc dimension → fact;
-kết quả kiểm tra dữ liệu; và checksum các file bằng chứng.
+`manifest.json` records Gold/Silver/pipeline run IDs, source identifiers, Delta version,
+column schemas, row counts, file SHA-256 values, source checksums and ETags,
+primary keys, five many-to-one relationships with dimension-to-fact filtering,
+validation results, and evidence file checksums.
 
-`manifest.sha256` kiểm tra tính toàn vẹn của manifest. Hash này không phải chữ ký số.
-Bằng chứng nguồn và cấu hình đối chiếu được giữ trong `evidence/`.
-Hai bảng aggregate chỉ phục vụ audit, không thêm vào semantic model.
+`manifest.sha256` verifies manifest integrity; it is not a digital signature.
+Source evidence and reconciliation settings are retained in `evidence/`.
+The two aggregate tables are for audit only and are not added to the semantic model.
 
-## Kiểm tra tại máy khác
+## Verify on another machine
 
-Giữ nguyên thư mục export và các script `export_gold_snapshot.py`, `star_schema.py`.
-Từ thư mục project:
+Keep the export directory and the `export_gold_snapshot.py` and `star_schema.py`
+scripts. From the project directory:
 
 ```powershell
 python -m pip install -r requirements-export.txt
-python scripts/export_gold_snapshot.py verify --output <thu-muc-export>
+python scripts/export_gold_snapshot.py verify --output <export-directory>
 ```
 
-Verifier đọc manifest, kiểm tra checksum và schema, sau đó tính lại KPI và khóa
-từ Parquet. Không cần truy cập Fabric để kiểm tra bản export đã tải.
+The verifier checks the manifest, checksums, and schemas, then recomputes KPI and
+keys from Parquet. No Fabric access is needed to verify a downloaded export.
 
-Quy trình lấy nguồn và tạo lại export bằng connector:
+To retrieve source files and build a new export with the connector:
 
 ```powershell
 python scripts/export_gold_snapshot.py plan --staging output/gold_export_staging
-# Connector tải đúng các file trong download_plan.json và lưu transfer receipts.
-python scripts/export_gold_snapshot.py build --staging output/gold_export_staging --output <thu-muc-export-moi>
+# Use the connector to download the exact download_plan.json files and save receipts.
+python scripts/export_gold_snapshot.py build --staging output/gold_export_staging --output <new-export-directory>
 ```
 
-Lệnh `build` từ chối ghi đè thư mục export có sẵn. Runtime PyArrow cục bộ của lần
-thực hiện này nằm trong `.tools/parquet-runtime`, ngoài dữ liệu export.
+`build` refuses to overwrite an existing export directory. The local PyArrow runtime
+used for this export is in `.tools/parquet-runtime`, outside the exported data.
 
-## Giới hạn nghiệm thu
+## Acceptance scope
 
-KPI của Parquet: **668665 / 116779 / 551886**, tỷ lệ `0.17464500160768098`.
-Không có khóa ngoại mồ côi; 35 nhóm audit khớp dữ liệu fact sau khi nối dimensions.
-Kiểm tra này xác minh export và việc truyền file, chưa chứng minh đã khôi phục
-semantic model hoặc report vào môi trường riêng.
+Parquet KPI: **668665 / 116779 / 551886**, rate `0.17464500160768098`.
+There are zero orphan foreign keys; all 35 audit groups match the fact joined to dimensions.
+These checks establish export and transfer integrity. Evidence of semantic model
+and report recovery is recorded separately in the closeout.
 
-Tham khảo: [Delta protocol](https://github.com/delta-io/delta/blob/master/PROTOCOL.md),
+References: [Delta protocol](https://github.com/delta-io/delta/blob/master/PROTOCOL.md),
 [Apache Arrow Parquet](https://arrow.apache.org/docs/python/parquet.html).
