@@ -1,0 +1,20 @@
+{
+  "scope": "Offline preparation and package tooling; no Fabric recovery executed",
+  "recovery_unit_tests": {"passed": 9, "failed": 0},
+  "export_guard_tests": {"passed": 6, "failed": 0},
+  "python_and_notebook_syntax": "passed",
+  "model_bindings": {"tables": 6, "relationships": 5, "measures": 12, "source_database_id_removed": true},
+  "report_visuals_unchanged": 57,
+  "pbir_validation": {
+    "errors": 0,
+    "warnings": 1,
+    "warning": "PBIR_SCHEMA_UNREACHABLE: Microsoft visualContainer/2.12.0 schema could not be downloaded; validation of that schema was skipped",
+    "evidence": "metadata/recovery_report_preflight.json"
+  },
+  "spark_restore_execution": "not_run",
+  "fabric_item_create_api": "not_run",
+  "model_refresh": "not_run",
+  "report_publish": "not_run",
+  "isolated_recovery": "not_started",
+  "remaining_dashboard_checks": "skipped_by_user_request"
+}

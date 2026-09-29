@@ -9,5 +9,14 @@ __pycache__/
 *.pyc
 /.playwright-mcp/
 /output/
+/.tools/
+/.playwright-cli/
 /upstream-notebook-source/
 /predicting-electric-vehicle-full-eda.ipynb
+
+# Local Power BI caches and generated deployment request bodies
+**/.pbi/
+/metadata/report_create_payload.json
+/metadata/star_model_binding_request.json
+/metadata/recovery_model_get_definition.json
+/metadata/recovery_model_live_definition.json

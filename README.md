@@ -25,6 +25,29 @@ segment groups and 24 combined-filter groups pass live DAX reconciliation.
 Separate SQL analytics endpoint execution remains pending. See [semantic model instructions](docs/semantic_model.md) and
 [Star Schema design and rollout](docs/star_schema.md).
 
+`RPT_EV_Analytics.pbip` now contains three pages: Executive Overview, Charging & Incentives,
+and Customer Profile, bound to the existing `SM_EV_Analytics`. PBIR validation
+passes with zero errors and warnings. All three pages render in English with
+live data in Desktop; baseline KPI match and screenshots are saved.
+[RPT_EV_Analytics is published](https://app.powerbi.com/groups/5fe78794-25c3-41ee-b35e-bc56542d2cea/reports/ae4d7c59-759e-4462-afed-1717475ae012),
+confirmed in the Fabric catalog on 2026-09-27. The Urban slicer check passes;
+navigation/reset, chart cross-filter and Service rendering checks were skipped at
+the user's request, not marked as passed. SQL endpoint execution was also skipped.
+Phase 7 parts 1â€“2 have a verified local and OneLake export: eight Parquet tables and a manifest,
+with KPI 668665 / 116779 / 551886, zero orphan keys and 35 reconciled segment groups.
+See [export instructions and evidence](docs/gold_export.md) and
+`metadata/gold_export_status.json` for OneLake transfer verification.
+The recovery package includes scripts, notebooks, SQL, TMDL, PBIP and target configuration.
+See [the recovery runbook](docs/recovery_runbook.md) and
+`metadata/gold_recovery_package_status.json` for the ZIP and verification results.
+Isolated Fabric recovery is complete. Eight restored Delta tables match the snapshot;
+all six model partitions are Ready and live DAX matches 668665 / 116779 / 551886.
+The recovery report exists and its target model binding was verified through the Service API;
+the user confirmed the published report KPI checks. No recovery report screenshot was supplied.
+See [phase 7 closeout](docs/phase7_closeout.md) and `metadata/recovery_verification.json`.
+Phase 8 has not started.
+See [Power BI report status and checks](docs/powerbi_report.md).
+
 Start with [the Bronze/Silver runbook](docs/bronze_silver.md).
 Next: [Gold definitions and run instructions](docs/gold_runbook.md).
 Run the full flow using [PL_EV_E2E instructions](docs/pipeline_runbook.md).

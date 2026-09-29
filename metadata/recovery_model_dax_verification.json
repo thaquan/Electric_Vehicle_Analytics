@@ -1,0 +1,51 @@
+{
+  "workspace_id": "d9e8b78a-5c35-4267-b558-1780029a951c",
+  "semantic_model_id": "a0835af9-0dde-42d8-ab16-8439d3a63f09",
+  "refresh_method": "Power BI Modeling MCP RefreshWithXMLA Full",
+  "partition_states_after_refresh": "6/6 Ready",
+  "result": {
+    "message": "DAX query executed successfully, returned 1 rows in 455ms",
+    "operation": "Execute",
+    "data": {
+      "rowCount": 1,
+      "isTruncated": false,
+      "columns": [
+        {
+          "name": "[respondent_count]",
+          "dataType": "Int64",
+          "isNullable": true,
+          "ordinal": 0
+        },
+        {
+          "name": "[yes_count]",
+          "dataType": "Int64",
+          "isNullable": true,
+          "ordinal": 1
+        },
+        {
+          "name": "[no_count]",
+          "dataType": "Int64",
+          "isNullable": true,
+          "ordinal": 2
+        },
+        {
+          "name": "[purchase_intent_rate]",
+          "dataType": "Double",
+          "isNullable": true,
+          "ordinal": 3
+        }
+      ],
+      "rows": [
+        {
+          "[respondent_count]": 668665,
+          "[yes_count]": 116779,
+          "[no_count]": 551886,
+          "[purchase_intent_rate]": 0.17464500160768098
+        }
+      ],
+      "executionTimeMs": 455
+    }
+  },
+  "reported_ui_error_activity_id": "421cdc80-1f7f-4f77-9df7-2c95a0d4af76",
+  "ui_save_issue_root_cause": "Not confirmed; direct XMLA refresh and DAX succeeded without changing model definition."
+}
