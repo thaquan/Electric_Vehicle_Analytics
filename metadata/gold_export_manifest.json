@@ -1,0 +1,1072 @@
+{
+  "manifest_version": 1,
+  "status": "export_verified",
+  "gold_schema_version": 2,
+  "export_id": "20260927T130004568586Z",
+  "created_at_utc": "2026-09-27T13:01:31.772536+00:00",
+  "gold_run_id": "20260925T152721965637Z",
+  "silver_run_id": "20260925T152449241452Z",
+  "pipeline_run_id": "78f9cdfe-1e19-4624-bede-042310ec9bb9",
+  "source_workspace_id": "5fe78794-25c3-41ee-b35e-bc56542d2cea",
+  "source_lakehouse_id": "32e99e91-38e9-4428-8fd2-6bcff6573088",
+  "source_delta_version": 0,
+  "method": "OneLake downloads of exact Delta v0 add files; PyArrow Parquet reserialization",
+  "source_guardrails": {
+    "reader_version": 1,
+    "partitioned": false,
+    "column_mapping": false,
+    "deletion_vectors": false
+  },
+  "pipeline_rerun": false,
+  "timestamp_timezone": "UTC",
+  "timestamp_unit": "microseconds",
+  "checksum_algorithm": "SHA-256",
+  "parquet_compression": "snappy",
+  "pyarrow_version": "25.0.1",
+  "tables": [
+    {
+      "role": "dim_demographics",
+      "source_table": "dim_demographics_20260925t152721965637z",
+      "restore_table": "dim_demographics_20260925t152721965637z",
+      "source_delta_version": 0,
+      "source_delta_table_id": "db7921bb-2027-414f-b714-f86708657fd5",
+      "path": "parquet/dim_demographics.parquet",
+      "rows": 45,
+      "bytes": 5658,
+      "sha256": "e55f7b4565d14b64ca172d77b4d2e28d36f8691ef856fdfb07e2cc3df9661c0a",
+      "schema": {
+        "type": "struct",
+        "fields": [
+          {
+            "name": "demographics_key",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "age_band",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "Gender",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "City_Type",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "silver_run_id",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "gold_run_id",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "age_band_sort",
+            "type": "integer",
+            "nullable": true,
+            "metadata": {}
+          }
+        ]
+      },
+      "arrow_schema": "demographics_key: string\nage_band: string\nGender: string\nCity_Type: string\nsilver_run_id: string\ngold_run_id: string\nage_band_sort: int32",
+      "source_files": [
+        {
+          "path": "Tables/dim_demographics_20260925t152721965637z/part-00000-38d68108-b0fc-4b9b-b082-784a654825da-c000.snappy.parquet",
+          "bytes": 8194,
+          "sha256": "666778996c905f67fa1938520e963028d17688637bc4bcb5804231f8cd3f0bd4",
+          "etag": "\"0x8DF1B1997BBDCCC\"",
+          "rows": 45
+        }
+      ],
+      "readback_exact_equality": true
+    },
+    {
+      "role": "dim_income",
+      "source_table": "dim_income_20260925t152721965637z",
+      "restore_table": "dim_income_20260925t152721965637z",
+      "source_delta_version": 0,
+      "source_delta_table_id": "de90fa97-8355-4cec-9227-a75504f7f325",
+      "path": "parquet/dim_income.parquet",
+      "rows": 4,
+      "bytes": 2257,
+      "sha256": "ba3ddc85562ed21b7d77619f20d852852cd6f4217ff5e89b3db5714bfa60fc16",
+      "schema": {
+        "type": "struct",
+        "fields": [
+          {
+            "name": "income_key",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "income_band",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "silver_run_id",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "gold_run_id",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "income_band_sort",
+            "type": "integer",
+            "nullable": true,
+            "metadata": {}
+          }
+        ]
+      },
+      "arrow_schema": "income_key: string\nincome_band: string\nsilver_run_id: string\ngold_run_id: string\nincome_band_sort: int32",
+      "source_files": [
+        {
+          "path": "Tables/dim_income_20260925t152721965637z/part-00000-7377e520-7037-478a-a506-c56a1c7d79da-c000.snappy.parquet",
+          "bytes": 4322,
+          "sha256": "b4638420fcafdfc7a3a3df9549242aa3fe7d9ed00e432956e0abb692f4bbe0dd",
+          "etag": "\"0x8DF1B199D41A890\"",
+          "rows": 4
+        }
+      ],
+      "readback_exact_equality": true
+    },
+    {
+      "role": "dim_mobility",
+      "source_table": "dim_mobility_20260925t152721965637z",
+      "restore_table": "dim_mobility_20260925t152721965637z",
+      "source_delta_version": 0,
+      "source_delta_table_id": "978d69c7-2495-4ccb-bf40-2991871bb93b",
+      "path": "parquet/dim_mobility.parquet",
+      "rows": 16,
+      "bytes": 3432,
+      "sha256": "3ad51cb48636fab61fb0362e02fe83f161b8883c04e8265090755811bcb23728",
+      "schema": {
+        "type": "struct",
+        "fields": [
+          {
+            "name": "mobility_key",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "commute_band",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "Current_Car_Type",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "silver_run_id",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "gold_run_id",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "commute_band_sort",
+            "type": "integer",
+            "nullable": true,
+            "metadata": {}
+          }
+        ]
+      },
+      "arrow_schema": "mobility_key: string\ncommute_band: string\nCurrent_Car_Type: string\nsilver_run_id: string\ngold_run_id: string\ncommute_band_sort: int32",
+      "source_files": [
+        {
+          "path": "Tables/dim_mobility_20260925t152721965637z/part-00000-6ba0241a-047a-46ac-b07c-51bf25bd468c-c000.snappy.parquet",
+          "bytes": 5794,
+          "sha256": "43e1d64cd2e55308ce17729ae6930e569b418bbea36bb38552370068ac8e02b2",
+          "etag": "\"0x8DF1B19A14D8A80\"",
+          "rows": 16
+        }
+      ],
+      "readback_exact_equality": true
+    },
+    {
+      "role": "dim_charging",
+      "source_table": "dim_charging_20260925t152721965637z",
+      "restore_table": "dim_charging_20260925t152721965637z",
+      "source_delta_version": 0,
+      "source_delta_table_id": "2af51b11-56a5-4532-88fe-bfd5036be70c",
+      "path": "parquet/dim_charging.parquet",
+      "rows": 2,
+      "bytes": 1798,
+      "sha256": "b598f65a14a6bc5e8a01a5b299c36f4ea7c31ae841564e856a8ba509ad6823ad",
+      "schema": {
+        "type": "struct",
+        "fields": [
+          {
+            "name": "charging_key",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "Home_Charging_Possible",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "silver_run_id",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "gold_run_id",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          }
+        ]
+      },
+      "arrow_schema": "charging_key: string\nHome_Charging_Possible: string\nsilver_run_id: string\ngold_run_id: string",
+      "source_files": [
+        {
+          "path": "Tables/dim_charging_20260925t152721965637z/part-00000-95328042-62b9-44e5-9469-902858d953d7-c000.snappy.parquet",
+          "bytes": 3681,
+          "sha256": "0ca9f148f8f59402727c0a7f79c40661b2e327e7c9e8628e50003f0adc7d1ace",
+          "etag": "\"0x8DF1B19A5C4685C\"",
+          "rows": 2
+        }
+      ],
+      "readback_exact_equality": true
+    },
+    {
+      "role": "dim_attitude_incentive",
+      "source_table": "dim_attitude_incentive_20260925t152721965637z",
+      "restore_table": "dim_attitude_incentive_20260925t152721965637z",
+      "source_delta_version": 0,
+      "source_delta_table_id": "1ed9e875-8a4f-4e8e-9eda-676b904f5442",
+      "path": "parquet/dim_attitude_incentive.parquet",
+      "rows": 30,
+      "bytes": 4382,
+      "sha256": "33e53fa652e567e34ad99751dc2a4785810a002f3698082871f522520717896f",
+      "schema": {
+        "type": "struct",
+        "fields": [
+          {
+            "name": "attitude_incentive_key",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "Environmental_Concern_Level",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "Subsidy_Available",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "Range_Anxiety_Level",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "silver_run_id",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "gold_run_id",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          }
+        ]
+      },
+      "arrow_schema": "attitude_incentive_key: string\nEnvironmental_Concern_Level: string\nSubsidy_Available: string\nRange_Anxiety_Level: string\nsilver_run_id: string\ngold_run_id: string",
+      "source_files": [
+        {
+          "path": "Tables/dim_attitude_incentive_20260925t152721965637z/part-00000-74b12c59-9aac-405e-b75d-6f963edf4369-c000.snappy.parquet",
+          "bytes": 6866,
+          "sha256": "35e1a3a74a5dbdb8d94e917c9953aa7cd74d74e5b3e281e7a82f28d96edc87bd",
+          "etag": "\"0x8DF1B19A93F60B8\"",
+          "rows": 30
+        }
+      ],
+      "readback_exact_equality": true
+    },
+    {
+      "role": "fact_ev_purchase_intent",
+      "source_table": "fact_ev_purchase_intent_20260925t152721965637z",
+      "restore_table": "fact_ev_purchase_intent_20260925t152721965637z",
+      "source_delta_version": 0,
+      "source_delta_table_id": "bb9b10fe-4ad7-4978-a3fc-657ca6d168d6",
+      "path": "parquet/fact_ev_purchase_intent.parquet",
+      "rows": 668665,
+      "bytes": 11697886,
+      "sha256": "073784c2d8482a1a6d8b770ff60062dfb31b8e9393c31c10e9014ca9cba41465",
+      "schema": {
+        "type": "struct",
+        "fields": [
+          {
+            "name": "id",
+            "type": "long",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "Age",
+            "type": "integer",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "Annual_Income_USD",
+            "type": "decimal(18,4)",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "Daily_Commute_km",
+            "type": "decimal(18,4)",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "Number_of_Cars_Owned",
+            "type": "integer",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "Charging_Stations_Near_Home",
+            "type": "integer",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "Charging_Stations_Near_Work",
+            "type": "integer",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "Will_Buy_EV",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "will_buy_ev_flag",
+            "type": "integer",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "source_dataset",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "source_file",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "source_sha256",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "processed_at_utc",
+            "type": "timestamp",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "record_key",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "demographics_key",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "income_key",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "mobility_key",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "charging_key",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "attitude_incentive_key",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "silver_run_id",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "gold_run_id",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          }
+        ]
+      },
+      "arrow_schema": "id: int64\nAge: int32\nAnnual_Income_USD: decimal128(18, 4)\nDaily_Commute_km: decimal128(18, 4)\nNumber_of_Cars_Owned: int32\nCharging_Stations_Near_Home: int32\nCharging_Stations_Near_Work: int32\nWill_Buy_EV: string\nwill_buy_ev_flag: int32\nsource_dataset: string\nsource_file: string\nsource_sha256: string\nprocessed_at_utc: timestamp[us, tz=UTC]\nrecord_key: string\ndemographics_key: string\nincome_key: string\nmobility_key: string\ncharging_key: string\nattitude_incentive_key: string\nsilver_run_id: string\ngold_run_id: string",
+      "source_files": [
+        {
+          "path": "Tables/fact_ev_purchase_intent_20260925t152721965637z/part-00000-7420ff03-3d54-45cd-b123-12bf6194165f-c000.snappy.parquet",
+          "bytes": 1953933,
+          "sha256": "78d0bfeb0f61ad89d84f891ff1c9419cace1142977620e1cf5fea543c59c0db9",
+          "etag": "\"0x8DF1B19ADDB678C\"",
+          "rows": 92611
+        },
+        {
+          "path": "Tables/fact_ev_purchase_intent_20260925t152721965637z/part-00001-46d8f27c-5a30-4b0c-9a20-c5249b154572-c000.snappy.parquet",
+          "bytes": 1915474,
+          "sha256": "2097498f02984901c05e962c954c581e87f1711ea159cfb76231ddc798283f9f",
+          "etag": "\"0x8DF1B19ADD866A4\"",
+          "rows": 91191
+        },
+        {
+          "path": "Tables/fact_ev_purchase_intent_20260925t152721965637z/part-00002-f41847b2-fa1f-443d-837a-ff5e34a24342-c000.snappy.parquet",
+          "bytes": 1911963,
+          "sha256": "6f88deefaef99ea44fbadfef5182510340a868c6e723862c69298f84bfaf91ac",
+          "etag": "\"0x8DF1B19ADC2A6AC\"",
+          "rows": 91093
+        },
+        {
+          "path": "Tables/fact_ev_purchase_intent_20260925t152721965637z/part-00003-0bf143c6-603f-44b2-bdb2-6b84b1dbfeba-c000.snappy.parquet",
+          "bytes": 1912132,
+          "sha256": "6a79b0d290a922aeee30ca022b9e11cb964032dfa350006eb011dd18ab0f7191",
+          "etag": "\"0x8DF1B19ADE40EEC\"",
+          "rows": 91058
+        },
+        {
+          "path": "Tables/fact_ev_purchase_intent_20260925t152721965637z/part-00004-b0e616bf-1f42-4453-bc98-ffc3c8e2380b-c000.snappy.parquet",
+          "bytes": 1912062,
+          "sha256": "7cd6ea82198f4bdc4afc8e267c0fdf214bf827096d69c51738feb11154a0421a",
+          "etag": "\"0x8DF1B19ADD8022C\"",
+          "rows": 91084
+        },
+        {
+          "path": "Tables/fact_ev_purchase_intent_20260925t152721965637z/part-00005-33d88916-24b9-4d34-9069-e61ecfcf2faf-c000.snappy.parquet",
+          "bytes": 1912388,
+          "sha256": "f3d211a4fbdc820ffa00041f4907ed6b8a73ee6cafbac0f753525e469b957e93",
+          "etag": "\"0x8DF1B19ADBEBF70\"",
+          "rows": 91080
+        },
+        {
+          "path": "Tables/fact_ev_purchase_intent_20260925t152721965637z/part-00006-5e8e464b-a232-4579-8804-e40a0a9054a6-c000.snappy.parquet",
+          "bytes": 1912123,
+          "sha256": "cc7693c9f3f071f5f827179bacb988d99f4e39af3d15ebdc96793ce7f98eba2d",
+          "etag": "\"0x8DF1B19ADC761B0\"",
+          "rows": 91103
+        },
+        {
+          "path": "Tables/fact_ev_purchase_intent_20260925t152721965637z/part-00007-146ccdc4-5666-4cb5-b57f-d1ef27998a77-c000.snappy.parquet",
+          "bytes": 659937,
+          "sha256": "1ec96ceeddfd4b204a4011bae062ae18f977ecfe40a83925d06b1f7b2c1dd3d8",
+          "etag": "\"0x8DF1B19AD15DD34\"",
+          "rows": 29445
+        }
+      ],
+      "readback_exact_equality": true
+    },
+    {
+      "role": "agg_ev_kpi",
+      "source_table": "agg_ev_kpi_20260925t152721965637z",
+      "restore_table": "agg_ev_kpi_20260925t152721965637z",
+      "source_delta_version": 0,
+      "source_delta_table_id": "c4739233-fea4-4150-bc13-879daab72ae8",
+      "path": "parquet/agg_ev_kpi.parquet",
+      "rows": 1,
+      "bytes": 2427,
+      "sha256": "bcfd97335a1831cd26574474b16364d25e413cd94fe22e949da73e1dcad8c412",
+      "schema": {
+        "type": "struct",
+        "fields": [
+          {
+            "name": "respondent_count",
+            "type": "long",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "yes_count",
+            "type": "long",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "no_count",
+            "type": "long",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "purchase_intent_rate",
+            "type": "double",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "source_dataset",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "silver_run_id",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "gold_run_id",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          }
+        ]
+      },
+      "arrow_schema": "respondent_count: int64\nyes_count: int64\nno_count: int64\npurchase_intent_rate: double\nsource_dataset: string\nsilver_run_id: string\ngold_run_id: string",
+      "source_files": [
+        {
+          "path": "Tables/agg_ev_kpi_20260925t152721965637z/part-00000-cc9eaab3-40a5-4c5c-9d43-cb0f8bc0fb9c-c000.snappy.parquet",
+          "bytes": 4742,
+          "sha256": "2bd137a82a8f21b7032b866231408454933f01fc275524816004988b23e8de9b",
+          "etag": "\"0x8DF1B19BECA2E34\"",
+          "rows": 1
+        }
+      ],
+      "readback_exact_equality": true
+    },
+    {
+      "role": "agg_ev_segments",
+      "source_table": "agg_ev_segments_20260925t152721965637z",
+      "restore_table": "agg_ev_segments_20260925t152721965637z",
+      "source_delta_version": 0,
+      "source_delta_table_id": "3a034b24-71cd-4926-b6bf-f695e7120bc7",
+      "path": "parquet/agg_ev_segments.parquet",
+      "rows": 35,
+      "bytes": 4143,
+      "sha256": "3c815bb6fed036c6a574c60e4a2ff6358fb619cc891e404d016d3c99fd01dcfb",
+      "schema": {
+        "type": "struct",
+        "fields": [
+          {
+            "name": "segment_value",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "respondent_count",
+            "type": "long",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "yes_count",
+            "type": "long",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "no_count",
+            "type": "long",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "purchase_intent_rate",
+            "type": "double",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "segment_dimension",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "silver_run_id",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "gold_run_id",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          }
+        ]
+      },
+      "arrow_schema": "segment_value: string\nrespondent_count: int64\nyes_count: int64\nno_count: int64\npurchase_intent_rate: double\nsegment_dimension: string\nsilver_run_id: string\ngold_run_id: string",
+      "source_files": [
+        {
+          "path": "Tables/agg_ev_segments_20260925t152721965637z/part-00010-c561fd40-35e1-47d5-bff8-461c865b2460-c000.snappy.parquet",
+          "bytes": 5310,
+          "sha256": "10f38e1bd411f15ae484667885e2b6fd50f4018cf821aef3e87cefd42f21fc22",
+          "etag": "\"0x8DF1B19C29FB7BC\"",
+          "rows": 1
+        },
+        {
+          "path": "Tables/agg_ev_segments_20260925t152721965637z/part-00060-e0d074d7-6bde-4ccd-ba77-251729c20ac5-c000.snappy.parquet",
+          "bytes": 5308,
+          "sha256": "5c53972b4c4f5c524b96be65101b74d190f8cf6ee63f910a2168bfadf0b8e650",
+          "etag": "\"0x8DF1B19C2CDB46C\"",
+          "rows": 1
+        },
+        {
+          "path": "Tables/agg_ev_segments_20260925t152721965637z/part-00101-2f8841ce-0854-4af6-a97f-529236a0ba65-c000.snappy.parquet",
+          "bytes": 5310,
+          "sha256": "f30a15c270e376185c4e5c9adf94e11cb20c4373f1c058ebfb1900aa7952ff9f",
+          "etag": "\"0x8DF1B19C3028EAC\"",
+          "rows": 1
+        },
+        {
+          "path": "Tables/agg_ev_segments_20260925t152721965637z/part-00127-761956ef-f427-4a64-9c94-40fa947d2b9f-c000.snappy.parquet",
+          "bytes": 5286,
+          "sha256": "c0c90b2ba9bb4cd585e2a5d936de2d9a42ecf275904152557ec5080d6d652718",
+          "etag": "\"0x8DF1B19C3229AC0\"",
+          "rows": 1
+        },
+        {
+          "path": "Tables/agg_ev_segments_20260925t152721965637z/part-00184-73267a25-2098-4de8-9a75-9aeb01d68974-c000.snappy.parquet",
+          "bytes": 5337,
+          "sha256": "650f110f6aa7ddad55f0dc18c0c78e10e3330b1b3c79c6658f64cc278164828a",
+          "etag": "\"0x8DF1B19C35D724C\"",
+          "rows": 1
+        },
+        {
+          "path": "Tables/agg_ev_segments_20260925t152721965637z/part-00260-18fb275c-c870-40e2-8876-31d3a77ce38b-c000.snappy.parquet",
+          "bytes": 5337,
+          "sha256": "5a0665f31b02c287b74e1e9c062ab2d2f96e0ad044811c480163a4b47a09222f",
+          "etag": "\"0x8DF1B19C3A7B7C4\"",
+          "rows": 1
+        },
+        {
+          "path": "Tables/agg_ev_segments_20260925t152721965637z/part-00310-9c2cb575-974a-4a3c-bfd5-7fd57688dc4e-c000.snappy.parquet",
+          "bytes": 5373,
+          "sha256": "dbce6185a075bdb59b9947a298df5ccead5bb8abf19ee63144aefd57ec431212",
+          "etag": "\"0x8DF1B19C3D80B70\"",
+          "rows": 1
+        },
+        {
+          "path": "Tables/agg_ev_segments_20260925t152721965637z/part-00318-458f474e-230a-4fe4-a541-163b1666de41-c000.snappy.parquet",
+          "bytes": 5362,
+          "sha256": "1ce0c3c2419c243bca516c5cfb5225ef12b3aea5f4efc7b81981979a50ed1445",
+          "etag": "\"0x8DF1B19C3D70C94\"",
+          "rows": 1
+        },
+        {
+          "path": "Tables/agg_ev_segments_20260925t152721965637z/part-00329-bef33600-e56d-4559-8d89-d09aac55ebbd-c000.snappy.parquet",
+          "bytes": 5367,
+          "sha256": "a59d24f37589088006bf4f35d9c269efa054be1993b230ec0a390ea4591139eb",
+          "etag": "\"0x8DF1B19C3EC2BE8\"",
+          "rows": 1
+        },
+        {
+          "path": "Tables/agg_ev_segments_20260925t152721965637z/part-00404-2089b6de-dfe4-482c-aa8c-cc7b186cbbb9-c000.snappy.parquet",
+          "bytes": 5353,
+          "sha256": "74900a25fc11e690027b84bacab61e4b06e0f82c63b2ad462694cbcb235a659d",
+          "etag": "\"0x8DF1B19C44990D4\"",
+          "rows": 1
+        },
+        {
+          "path": "Tables/agg_ev_segments_20260925t152721965637z/part-00460-68263e8d-a478-41e5-b42d-9f2e7f7ce23b-c000.snappy.parquet",
+          "bytes": 5378,
+          "sha256": "3b221b2801f8f8b6b979447f29c6b12b2b839aa5ce2795b3a62b9a9f70ae177c",
+          "etag": "\"0x8DF1B19C477272C\"",
+          "rows": 1
+        },
+        {
+          "path": "Tables/agg_ev_segments_20260925t152721965637z/part-00492-b0b546cb-d6b3-4718-8a8e-d109fea526cb-c000.snappy.parquet",
+          "bytes": 5400,
+          "sha256": "fc5739ce074d07ad68e359e30c553080b4d6fb55208eb4de840ee42d95eef568",
+          "etag": "\"0x8DF1B19C4931F0C\"",
+          "rows": 1
+        },
+        {
+          "path": "Tables/agg_ev_segments_20260925t152721965637z/part-00596-36d8d79d-a8d7-4eb2-a29e-020142ac499c-c000.snappy.parquet",
+          "bytes": 5382,
+          "sha256": "6859895cea280c0031b7dd444e05a2d71ab4dea7d11661d7815fa03286173601",
+          "etag": "\"0x8DF1B19C4E9B3B0\"",
+          "rows": 1
+        },
+        {
+          "path": "Tables/agg_ev_segments_20260925t152721965637z/part-00660-b741c5d8-95fb-4d33-8127-f15884f3fb08-c000.snappy.parquet",
+          "bytes": 5301,
+          "sha256": "223565deb8a4f63fab9f25d67e4d8641c30f7987f1e4f3d2f2c4c043ee65984b",
+          "etag": "\"0x8DF1B19C51B34CC\"",
+          "rows": 1
+        },
+        {
+          "path": "Tables/agg_ev_segments_20260925t152721965637z/part-00683-6b95ea61-c908-4107-beed-2dc0b69b453d-c000.snappy.parquet",
+          "bytes": 5278,
+          "sha256": "a8ee12c7e6a6117fa4401e7fd672854f06a8ebffc19ccada67380cc13378c0bd",
+          "etag": "\"0x8DF1B19C53C8CC0\"",
+          "rows": 1
+        },
+        {
+          "path": "Tables/agg_ev_segments_20260925t152721965637z/part-00759-9cfcb2ab-c683-480b-a07f-77515e7c9364-c000.snappy.parquet",
+          "bytes": 5283,
+          "sha256": "c6d3ff69557f61742485672b11b3990b863fc2d4f169fb76e1832bf265451319",
+          "etag": "\"0x8DF1B19C5A20938\"",
+          "rows": 1
+        },
+        {
+          "path": "Tables/agg_ev_segments_20260925t152721965637z/part-00809-00ccaacc-98cd-49cc-a116-7e4ec8129a76-c000.snappy.parquet",
+          "bytes": 5317,
+          "sha256": "2ff7099e27eb53f3522cc418c717d5cd77d5e5c16b38c0f5b481b122168072af",
+          "etag": "\"0x8DF1B19CE2F2258\"",
+          "rows": 1
+        },
+        {
+          "path": "Tables/agg_ev_segments_20260925t152721965637z/part-00895-b0422a63-8f33-42d9-9400-dae820d1b3ab-c000.snappy.parquet",
+          "bytes": 5344,
+          "sha256": "1dd40f0202dec62e7d1c5627135d6c4ce913baa4068ec22432c181f7b1b99cb8",
+          "etag": "\"0x8DF1B19CE2F226C\"",
+          "rows": 1
+        },
+        {
+          "path": "Tables/agg_ev_segments_20260925t152721965637z/part-00985-8bf82822-8d68-4343-8dbd-998674a4e763-c000.snappy.parquet",
+          "bytes": 5317,
+          "sha256": "f06527c12d4e488629b68973e569096a7b6a45a2651130e5cd646576b49ed1ef",
+          "etag": "\"0x8DF1B19CE35A160\"",
+          "rows": 1
+        },
+        {
+          "path": "Tables/agg_ev_segments_20260925t152721965637z/part-01012-a609416b-2243-41c6-bf73-0f9189dff5d5-c000.snappy.parquet",
+          "bytes": 5414,
+          "sha256": "cf69fe6c3fb3e5c9cf161130b08d896ecf984aa29714a12fe6bf7c88eebd3b42",
+          "etag": "\"0x8DF1B19CE351240\"",
+          "rows": 1
+        },
+        {
+          "path": "Tables/agg_ev_segments_20260925t152721965637z/part-01061-b33b1bc4-653b-4068-8a86-fd1bd2ee724a-c000.snappy.parquet",
+          "bytes": 5362,
+          "sha256": "ee7f3d939cb6130968df14e8350c9bc3256379b79c2d575e36fa18aa426ddb6f",
+          "etag": "\"0x8DF1B19CE344828\"",
+          "rows": 1
+        },
+        {
+          "path": "Tables/agg_ev_segments_20260925t152721965637z/part-01066-84d38fcb-6d1a-4d06-bcbb-886a167f69ec-c000.snappy.parquet",
+          "bytes": 5382,
+          "sha256": "0f6207381649d0b3bb0b23ac81bcaa84c5ce3a2de298bdaf14377b1fb5113811",
+          "etag": "\"0x8DF1B19CE382890\"",
+          "rows": 1
+        },
+        {
+          "path": "Tables/agg_ev_segments_20260925t152721965637z/part-01088-ec156241-ec0f-40f8-925f-b35485ae541b-c000.snappy.parquet",
+          "bytes": 5376,
+          "sha256": "e002022ef2ce7a43dc7d78065f279c9997112ab0cf7cfcd0dbb7650c9e3a486a",
+          "etag": "\"0x8DF1B19D09AD5E4\"",
+          "rows": 1
+        },
+        {
+          "path": "Tables/agg_ev_segments_20260925t152721965637z/part-01328-6c4aa9c6-0170-40d1-9c08-3e897521fd78-c000.snappy.parquet",
+          "bytes": 5405,
+          "sha256": "d4cc9f6d4d1e53c29bdb90fdc6b4c8dbe711a7690a4ef15245dab991434394d4",
+          "etag": "\"0x8DF1B19D09AD5D0\"",
+          "rows": 1
+        },
+        {
+          "path": "Tables/agg_ev_segments_20260925t152721965637z/part-01331-a7808bb9-6e8d-42a9-8dd6-db554f6799a8-c000.snappy.parquet",
+          "bytes": 5414,
+          "sha256": "204e9facb31b8e03de1e5e3b92424be8a5d8fff4d4f1c57f1be4fb0b22e21348",
+          "etag": "\"0x8DF1B19CEB41DD0\"",
+          "rows": 1
+        },
+        {
+          "path": "Tables/agg_ev_segments_20260925t152721965637z/part-01528-91a4257c-f191-4a58-9b27-18d9567c31fd-c000.snappy.parquet",
+          "bytes": 5362,
+          "sha256": "c7ec439b9c92c14bb6dedd2c39e542856171f1d85ebe96d5a2f6274439ffc55e",
+          "etag": "\"0x8DF1B19CF31B744\"",
+          "rows": 1
+        },
+        {
+          "path": "Tables/agg_ev_segments_20260925t152721965637z/part-01531-9c8304d1-56b2-4609-ac6f-47fea392ba65-c000.snappy.parquet",
+          "bytes": 5371,
+          "sha256": "a590a3e70e02d963f86c51155623bda2d009939e27a095507e270945e5e0b08c",
+          "etag": "\"0x8DF1B19CF3471E4\"",
+          "rows": 1
+        },
+        {
+          "path": "Tables/agg_ev_segments_20260925t152721965637z/part-01612-d566f793-b520-4246-a18f-40c2ded9e072-c000.snappy.parquet",
+          "bytes": 5388,
+          "sha256": "c9cad5996eb1a734d319aad7b4801a702bd2a8713494d45063cd3a056301c2e2",
+          "etag": "\"0x8DF1B19CF8A6E18\"",
+          "rows": 1
+        },
+        {
+          "path": "Tables/agg_ev_segments_20260925t152721965637z/part-01636-4d013cbd-78ed-4538-b815-d0d79220fedb-c000.snappy.parquet",
+          "bytes": 5391,
+          "sha256": "a1f9f5083be0313bbd075891dac3d8bfc09f9387a3b3a32cfc739abae214933e",
+          "etag": "\"0x8DF1B19CFA05FA8\"",
+          "rows": 1
+        },
+        {
+          "path": "Tables/agg_ev_segments_20260925t152721965637z/part-01678-a1544cbc-ee32-49c7-b6dd-cce8dff1b406-c000.snappy.parquet",
+          "bytes": 5412,
+          "sha256": "e5fb289d4e8e802f2ef320f1ce6a30924ee2e7149a7a6978fb94068d0a78d785",
+          "etag": "\"0x8DF1B19D09AD5BC\"",
+          "rows": 1
+        },
+        {
+          "path": "Tables/agg_ev_segments_20260925t152721965637z/part-01801-3ac5c874-3460-47ae-b52f-599d7d1001f2-c000.snappy.parquet",
+          "bytes": 5457,
+          "sha256": "497c835e5ae86854f323af9505efd1ed86562734f77f985c8806ebf606fd3e11",
+          "etag": "\"0x8DF1B19D0132ABC\"",
+          "rows": 1
+        },
+        {
+          "path": "Tables/agg_ev_segments_20260925t152721965637z/part-01882-a3fe914e-bc1c-41cf-ba6c-ee0f4036513c-c000.snappy.parquet",
+          "bytes": 5457,
+          "sha256": "630aa609f16600d3247c63f8c8a37bced64ac0e5e22a075e8fd1305a9ab6a587",
+          "etag": "\"0x8DF1B19D043D6A8\"",
+          "rows": 1
+        },
+        {
+          "path": "Tables/agg_ev_segments_20260925t152721965637z/part-01907-5803befa-a03b-4f89-9b87-f9652c90264f-c000.snappy.parquet",
+          "bytes": 5457,
+          "sha256": "b782fd86c8a3ee0cd46f34d7f86035ddb78d6053bfd1dfa11e9aa9f5c3411088",
+          "etag": "\"0x8DF1B19D09A796C\"",
+          "rows": 1
+        },
+        {
+          "path": "Tables/agg_ev_segments_20260925t152721965637z/part-01941-eae5377f-610a-4a1a-ad94-fd8d94205918-c000.snappy.parquet",
+          "bytes": 5459,
+          "sha256": "048cf704b8fbb51bf8f3a3f0e1079c343e51766a9a2cdde8fd65ebbe3d385ab2",
+          "etag": "\"0x8DF1B19D0649A8C\"",
+          "rows": 1
+        },
+        {
+          "path": "Tables/agg_ev_segments_20260925t152721965637z/part-01979-b1f16780-9ab8-482c-b7d5-94a84986a073-c000.snappy.parquet",
+          "bytes": 5461,
+          "sha256": "73a835b2c4aa54c37563b6cca3f45d50b99d4b4620873820a48d02e043feea68",
+          "etag": "\"0x8DF1B19D09962D4\"",
+          "rows": 1
+        }
+      ],
+      "readback_exact_equality": true
+    }
+  ],
+  "primary_keys": {
+    "fact_ev_purchase_intent": [
+      "id"
+    ],
+    "agg_ev_segments": [
+      "segment_dimension",
+      "segment_value"
+    ],
+    "dim_demographics": [
+      "demographics_key"
+    ],
+    "dim_income": [
+      "income_key"
+    ],
+    "dim_mobility": [
+      "mobility_key"
+    ],
+    "dim_charging": [
+      "charging_key"
+    ],
+    "dim_attitude_incentive": [
+      "attitude_incentive_key"
+    ]
+  },
+  "single_row_tables": [
+    "agg_ev_kpi"
+  ],
+  "relationships": [
+    {
+      "from_table": "fact_ev_purchase_intent",
+      "from_column": "demographics_key",
+      "to_table": "dim_demographics",
+      "to_column": "demographics_key",
+      "cardinality": "many_to_one",
+      "filter_direction": "dimension_to_fact",
+      "active": true
+    },
+    {
+      "from_table": "fact_ev_purchase_intent",
+      "from_column": "income_key",
+      "to_table": "dim_income",
+      "to_column": "income_key",
+      "cardinality": "many_to_one",
+      "filter_direction": "dimension_to_fact",
+      "active": true
+    },
+    {
+      "from_table": "fact_ev_purchase_intent",
+      "from_column": "mobility_key",
+      "to_table": "dim_mobility",
+      "to_column": "mobility_key",
+      "cardinality": "many_to_one",
+      "filter_direction": "dimension_to_fact",
+      "active": true
+    },
+    {
+      "from_table": "fact_ev_purchase_intent",
+      "from_column": "charging_key",
+      "to_table": "dim_charging",
+      "to_column": "charging_key",
+      "cardinality": "many_to_one",
+      "filter_direction": "dimension_to_fact",
+      "active": true
+    },
+    {
+      "from_table": "fact_ev_purchase_intent",
+      "from_column": "attitude_incentive_key",
+      "to_table": "dim_attitude_incentive",
+      "to_column": "attitude_incentive_key",
+      "cardinality": "many_to_one",
+      "filter_direction": "dimension_to_fact",
+      "active": true
+    }
+  ],
+  "validation": {
+    "status": "passed",
+    "kpi": {
+      "respondent_count": 668665,
+      "yes_count": 116779,
+      "no_count": 551886,
+      "purchase_intent_rate": 0.17464500160768098
+    },
+    "orphan_keys": 0,
+    "primary_keys": "passed",
+    "dimension_hashes_and_sort": "passed",
+    "lineage": "passed",
+    "segment_groups": 35
+  },
+  "isolated_recovery_test": "not_started",
+  "remaining_dashboard_checks": "skipped_by_user_request",
+  "evidence_files": [
+    {
+      "path": "evidence/download_receipts.json",
+      "bytes": 15223,
+      "sha256": "53f9daab64113cc06acd62b6c1d9f74156dcb3b801aee1a9ab919f24e06880f5"
+    },
+    {
+      "path": "evidence/gold_expected_metrics.json",
+      "bytes": 5762,
+      "sha256": "14c4f71f65b0b80b23f8fa71ba6e9c87dc26936c9d45c8f433740e591a43578d"
+    },
+    {
+      "path": "evidence/gold_spec.json",
+      "bytes": 1003,
+      "sha256": "99af7f1f91a21c8001d6fbd7664ad7a2bc59c82c51d9c31b6b9f0a74b9d75f84"
+    },
+    {
+      "path": "evidence/log_download_receipts.json",
+      "bytes": 2477,
+      "sha256": "e1a53cf794311aecb89cb744ce5e84b722caba3e224aaec4e3e19941ac56152c"
+    },
+    {
+      "path": "evidence/source_audit.json",
+      "bytes": 7338,
+      "sha256": "cf75a1e1b771e667b108dfe7e4de03ee2ff6a50f5064cecb049f42bd791ade15"
+    },
+    {
+      "path": "evidence/source_delta_logs/agg_ev_kpi.jsonl",
+      "bytes": 2326,
+      "sha256": "ee79a65b5333591462d00e3b41c0040324233b0a58b669f30f907138c9c21bf7"
+    },
+    {
+      "path": "evidence/source_delta_logs/agg_ev_segments.jsonl",
+      "bytes": 35173,
+      "sha256": "21ff1cee74a0f86e40da6374837ec5b184e89cb6c96d1ba1edb0ff6025e54089"
+    },
+    {
+      "path": "evidence/source_delta_logs/dim_attitude_incentive.jsonl",
+      "bytes": 2343,
+      "sha256": "940b43be4702b98332fbfa1e4c443fcbe02647e2ab3a38c09701a93bb9925b3c"
+    },
+    {
+      "path": "evidence/source_delta_logs/dim_charging.jsonl",
+      "bytes": 1927,
+      "sha256": "9b12cb90637c0efd86856d8fbc5fa273a5283c30e3f2805b801d1311d70421cb"
+    },
+    {
+      "path": "evidence/source_delta_logs/dim_demographics.jsonl",
+      "bytes": 2316,
+      "sha256": "4d214ff3a8e398907e659a40796ce9843cfc37b46331d28621d543e6b5db79a5"
+    },
+    {
+      "path": "evidence/source_delta_logs/dim_income.jsonl",
+      "bytes": 2040,
+      "sha256": "75b13e9d1f2bf2d5c367ab9064751a2059a2aa01934691b28f49f70dd3487ad9"
+    },
+    {
+      "path": "evidence/source_delta_logs/dim_mobility.jsonl",
+      "bytes": 2239,
+      "sha256": "5a8473a3639ae2ebf51dcccd7ad885bd2550cc67ee5eaca98fee427ece42566f"
+    },
+    {
+      "path": "evidence/source_delta_logs/fact_ev_purchase_intent.jsonl",
+      "bytes": 21137,
+      "sha256": "a9a1604174e61fbe1a56d2b91709c8208525cb95653911478a7d69b9447867d5"
+    }
+  ]
+}

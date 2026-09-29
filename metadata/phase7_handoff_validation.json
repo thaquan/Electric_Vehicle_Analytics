@@ -1,0 +1,22 @@
+{
+  "status": "verified",
+  "scope": "Updated handoff archive; original recovery drill evidence retained separately",
+  "zip_relative_path": "output/releases/20260929_phase7_closeout/EV_Analytics_Recovery_20260925T152721965637Z.zip",
+  "sha256": "a595f3c0cfd3eff7c91c2ce7e2b61257a4fbd73e974879012912ef107d7b78b5",
+  "bytes": 6410154,
+  "files": 230,
+  "snapshot_manifest_sha256": "0da1b98e56c024261d247e3cfe94efaddb594cd52cce4eee89f6a8955cf1ad9f",
+  "tests": {
+    "project_tests_passed": 41,
+    "unpacked_recovery_tests_passed": 10
+  },
+  "original_recovery_evidence": "metadata/recovery_verification.json",
+  "fresh_restore_of_this_revised_archive": "not_run",
+  "phase_8_started": false,
+  "onelake_workspace_id": "d9e8b78a-5c35-4267-b558-1780029a951c",
+  "onelake_lakehouse_id": "48ebc295-3cc7-4f2e-bdcd-c6e15260d9ac",
+  "onelake_zip_path": "Files/recovery/releases/20260929_phase7_closeout/EV_Analytics_Recovery_20260925T152721965637Z.zip",
+  "onelake_upload": "completed",
+  "onelake_readback_sha256": "a595f3c0cfd3eff7c91c2ce7e2b61257a4fbd73e974879012912ef107d7b78b5",
+  "onelake_readback": "passed"
+}
