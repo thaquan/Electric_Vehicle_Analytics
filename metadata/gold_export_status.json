@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "gold_run_id": "20260925T152721965637Z",
+  "export_id": "20260927T130004568586Z",
+  "local_directory": "output/exports/gold_v2/20260925T152721965637Z/20260927T130004568586Z",
+  "workspace_id": "5fe78794-25c3-41ee-b35e-bc56542d2cea",
+  "lakehouse_id": "32e99e91-38e9-4428-8fd2-6bcff6573088",
+  "onelake_directory": "Files/exports/gold_v2/20260925T152721965637Z/20260927T130004568586Z",
+  "manifest_sha256": "0da1b98e56c024261d247e3cfe94efaddb594cd52cce4eee89f6a8955cf1ad9f",
+  "parts": {
+    "1_export_parquet": "completed",
+    "2_manifest": "completed",
+    "3_project_packaging": "completed",
+    "4_recovery_procedure": "completed",
+    "5_isolated_recovery": "completed_with_user_attested_report_kpi"
+  },
+  "tables": 8,
+  "parquet_files": 8,
+  "parquet_bytes": 11721983,
+  "source_parquet_files": 49,
+  "source_parquet_bytes": 14311522,
+  "kpi": {
+    "respondents": 668665,
+    "yes": 116779,
+    "no": 551886
+  },
+  "orphan_keys": 0,
+  "segment_groups": 35,
+  "pipeline_rerun": false,
+  "remaining_dashboard_checks": "skipped_by_user_request",
+  "script_tests": {
+    "passed": 6
+  },
+  "onelake_readback": "passed",
+  "onelake_files_verified": 23,
+  "verified_at_utc": "2026-09-27 13:21:42 UTC",
+  "transfer_evidence": "metadata/gold_export_transfer_verification.json",
+  "closeout_evidence": "metadata/recovery_verification.json"
+}

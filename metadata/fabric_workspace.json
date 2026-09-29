@@ -12,7 +12,7 @@
   "silver_executed_on_fabric": true,
   "notebook_name": "NB_EV_Bronze_To_Silver",
   "notebook_deployment": "Both notebooks executed successfully through PL_EV_E2E.",
-  "pending": "Execute separate SQL analytics endpoint reconciliation; build RPT_EV_Analytics dashboard.",
+  "pending": "Phase 7 completed with tool-verified data/model and user-attested report KPI. Phase 8 not started. SQL endpoint and remaining dashboard checks remain skipped_by_user_request.",
   "silver_published_run_id": "20260925T152449241452Z",
   "gold_lakehouse_id": "32e99e91-38e9-4428-8fd2-6bcff6573088",
   "gold_lakehouse_name": "LH_EV_Gold",
@@ -29,5 +29,10 @@
   "semantic_model_deployment": "Deployed on Fabric, full refresh and live DAX validation passed.",
   "gold_v2_deployment": "Verified E2E audit downloaded from OneLake; star and Spark SQL checks passed.",
   "gold_v2_executed_on_fabric": true,
-  "semantic_model_id": "8e7e37b7-7bab-4122-84fb-3ae7b2121cd7"
+  "semantic_model_id": "8e7e37b7-7bab-4122-84fb-3ae7b2121cd7",
+  "report_name": "RPT_EV_Analytics",
+  "report_id": "ae4d7c59-759e-4462-afed-1717475ae012",
+  "report_url": "https://app.powerbi.com/groups/5fe78794-25c3-41ee-b35e-bc56542d2cea/reports/ae4d7c59-759e-4462-afed-1717475ae012",
+  "report_published": true,
+  "phase_7_evidence": "metadata/recovery_verification.json"
 }

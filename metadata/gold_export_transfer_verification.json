@@ -1,0 +1,139 @@
+{
+  "status": "passed",
+  "verified_at_utc": "2026-09-27 13:21:42 UTC",
+  "workspace_id": "5fe78794-25c3-41ee-b35e-bc56542d2cea",
+  "lakehouse_id": "32e99e91-38e9-4428-8fd2-6bcff6573088",
+  "onelake_directory": "Files/exports/gold_v2/20260925T152721965637Z/20260927T130004568586Z",
+  "verification": "Downloaded all 23 published files; SHA-256 equals each local export file. Data was verified locally before transfer.",
+  "files_verified": 23,
+  "failures": [],
+  "manifest_sha256": "0da1b98e56c024261d247e3cfe94efaddb594cd52cce4eee89f6a8955cf1ad9f",
+  "data_and_evidence_download_receipts": [
+    {
+      "file": "evidence/download_receipts.json",
+      "bytes": 15223,
+      "etag": "\"0x8DF1C97D11403BC\"",
+      "requestId": "e9fd4361-401e-0027-7482-4e0af9000000"
+    },
+    {
+      "file": "evidence/gold_expected_metrics.json",
+      "bytes": 5762,
+      "etag": "\"0x8DF1C982B609D74\"",
+      "requestId": "7eec3c5b-f01e-0061-5582-4e25b0000000"
+    },
+    {
+      "file": "evidence/gold_spec.json",
+      "bytes": 1003,
+      "etag": "\"0x8DF1C98AF0C49C4\"",
+      "requestId": "12f7b1d0-c01e-003f-3182-4e4b99000000"
+    },
+    {
+      "file": "evidence/log_download_receipts.json",
+      "bytes": 2477,
+      "etag": "\"0x8DF1C98C16DAF28\"",
+      "requestId": "e5b9e970-001e-003b-2982-4e2331000000"
+    },
+    {
+      "file": "evidence/source_audit.json",
+      "bytes": 7338,
+      "etag": "\"0x8DF1C98C911D250\"",
+      "requestId": "42fcc105-c01e-0069-7982-4e3ec3000000"
+    },
+    {
+      "file": "evidence/source_delta_logs/agg_ev_kpi.jsonl",
+      "bytes": 2326,
+      "etag": "\"0x8DF1C98CE5D7870\"",
+      "requestId": "e9fd43c0-401e-0027-4d82-4e0af9000000"
+    },
+    {
+      "file": "evidence/source_delta_logs/agg_ev_segments.jsonl",
+      "bytes": 35173,
+      "etag": "\"0x8DF1C98D8295CE0\"",
+      "requestId": "be20c74b-d01e-001a-2382-4e7ce2000000"
+    },
+    {
+      "file": "evidence/source_delta_logs/dim_attitude_incentive.jsonl",
+      "bytes": 2343,
+      "etag": "\"0x8DF1C98EFA986B8\"",
+      "requestId": "42fcc27e-c01e-0069-4e82-4e3ec3000000"
+    },
+    {
+      "file": "evidence/source_delta_logs/dim_charging.jsonl",
+      "bytes": 1927,
+      "etag": "\"0x8DF1C9920C18228\"",
+      "requestId": "e5b9eb25-001e-003b-3582-4e2331000000"
+    },
+    {
+      "file": "evidence/source_delta_logs/dim_demographics.jsonl",
+      "bytes": 2316,
+      "etag": "\"0x8DF1C99319A3DA4\"",
+      "requestId": "42fcc1d0-c01e-0069-3782-4e3ec3000000"
+    },
+    {
+      "file": "evidence/source_delta_logs/dim_income.jsonl",
+      "bytes": 2040,
+      "etag": "\"0x8DF1C9936E9D5EC\"",
+      "requestId": "e5b9eb4b-001e-003b-5782-4e2331000000"
+    },
+    {
+      "file": "evidence/source_delta_logs/dim_mobility.jsonl",
+      "bytes": 2239,
+      "etag": "\"0x8DF1C9964A07AC0\"",
+      "requestId": "e5b9eaed-001e-003b-0282-4e2331000000"
+    },
+    {
+      "file": "evidence/source_delta_logs/fact_ev_purchase_intent.jsonl",
+      "bytes": 21137,
+      "etag": "\"0x8DF1C996E8E934C\"",
+      "requestId": "42fcc228-c01e-0069-0282-4e3ec3000000"
+    },
+    {
+      "file": "parquet/agg_ev_kpi.parquet",
+      "bytes": 2427,
+      "etag": "\"0x8DF1C9973FA6360\"",
+      "requestId": "12f7b407-c01e-003f-4882-4e4b99000000"
+    },
+    {
+      "file": "parquet/agg_ev_segments.parquet",
+      "bytes": 4143,
+      "etag": "\"0x8DF1C99812CC44C\"",
+      "requestId": "42fcc3dd-c01e-0069-0382-4e3ec3000000"
+    },
+    {
+      "file": "parquet/dim_attitude_incentive.parquet",
+      "bytes": 4382,
+      "etag": "\"0x8DF1C99A762BE40\"",
+      "requestId": "e5b9ec91-001e-003b-8082-4e2331000000"
+    },
+    {
+      "file": "parquet/dim_charging.parquet",
+      "bytes": 1798,
+      "etag": "\"0x8DF1C99AC86AEB0\"",
+      "requestId": "e5b9ec38-001e-003b-2e82-4e2331000000"
+    },
+    {
+      "file": "parquet/dim_demographics.parquet",
+      "bytes": 5658,
+      "etag": "\"0x8DF1C99B174BD48\"",
+      "requestId": "e5b9edbf-001e-003b-1782-4e2331000000"
+    },
+    {
+      "file": "parquet/dim_income.parquet",
+      "bytes": 2257,
+      "etag": "\"0x8DF1C99BBA787B4\"",
+      "requestId": "42fcc4fc-c01e-0069-0f82-4e3ec3000000"
+    },
+    {
+      "file": "parquet/dim_mobility.parquet",
+      "bytes": 3432,
+      "etag": "\"0x8DF1C99DCAAD12C\"",
+      "requestId": "42fcc43f-c01e-0069-5c82-4e3ec3000000"
+    },
+    {
+      "file": "parquet/fact_ev_purchase_intent.parquet",
+      "bytes": 11697886,
+      "etag": "\"0x8DF1C99E8D723F8\"",
+      "requestId": "12f7b79a-c01e-003f-2b82-4e4b99000000"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "status": "not_started",
+  "gold_run_id": "20260925T152721965637Z",
+  "workspace_id": null,
+  "lakehouse_id": null,
+  "semantic_model_id": null,
+  "report_id": null,
+  "report_url": null,
+  "checks": {
+    "package_integrity": "not_run",
+    "parquet_to_delta": "not_run",
+    "table_schema_and_rows": "not_run",
+    "primary_and_foreign_keys": "not_run",
+    "model_target_binding": "not_run",
+    "model_refresh": "not_run",
+    "dax_kpi": "not_run",
+    "report_publish": "not_run",
+    "report_kpi": "not_run"
+  },
+  "expected_kpi": {"respondents": 668665, "yes": 116779, "no": 551886},
+  "actual_kpi": null,
+  "evidence": {
+    "restore_data_log": null,
+    "refresh_history": null,
+    "dax_result": null,
+    "report_kpi_screenshot": null
+  },
+  "remaining_dashboard_checks": {
+    "navigation_reset": "skipped_by_user_request",
+    "chart_cross_filter": "skipped_by_user_request",
+    "service_rendering_remaining_checks": "skipped_by_user_request"
+  },
+  "pipeline_rerun": false
+}
