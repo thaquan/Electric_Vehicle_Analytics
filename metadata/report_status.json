@@ -1,0 +1,63 @@
+{
+  "report_name": "RPT_EV_Analytics",
+  "status": "published_slicer_verified_remaining_checks_skipped_by_user_request",
+  "workspace_id": "5fe78794-25c3-41ee-b35e-bc56542d2cea",
+  "semantic_model_id": "8e7e37b7-7bab-4122-84fb-3ae7b2121cd7",
+  "pages": [
+    "Executive Overview",
+    "Charging & Incentives",
+    "Customer Profile"
+  ],
+  "visual_count": 57,
+  "slicer_count": 12,
+  "chart_count": 9,
+  "multi_value_card_count": 3,
+  "sql_endpoint": "skipped_by_user_request",
+  "pipeline_rerun": false,
+  "published": true,
+  "rendering_verified": true,
+  "interactions_verified_live": false,
+  "screenshots": [
+    "docs/screenshots/Executive Overview.png",
+    "docs/screenshots/Charging & Incentives.png",
+    "docs/screenshots/Customer Profile.png"
+  ],
+  "phase_6_complete": false,
+  "phase_7_started": true,
+  "verification_blocker": null,
+  "remaining_dashboard_checks": {
+    "navigation_reset": "skipped_by_user_request",
+    "chart_cross_filter": "skipped_by_user_request",
+    "service_rendering": "skipped_by_user_request"
+  },
+  "desktop_pid": 5580,
+  "kpi_verified_from_rendered_report": {
+    "respondents": 668665,
+    "yes": 116779,
+    "no": 551886,
+    "rate_display": "17.46%"
+  },
+  "report_language": "English",
+  "button_count": 12,
+  "theme": "Automotive dark",
+  "canvas": {
+    "width": 1600,
+    "height": 900
+  },
+  "navigation_actions_configured": true,
+  "reset_slicers_action_configured": true,
+  "report_id": "ae4d7c59-759e-4462-afed-1717475ae012",
+  "report_url": "https://app.powerbi.com/groups/5fe78794-25c3-41ee-b35e-bc56542d2cea/reports/ae4d7c59-759e-4462-afed-1717475ae012",
+  "publication_verified_date": "2026-09-27",
+  "publication_evidence": "User published; Fabric catalog confirms exact report name and workspace.",
+  "slicer_verification": {
+    "filter": "City_Type = Urban",
+    "respondents": 289305,
+    "yes": 46595,
+    "no": 242710,
+    "rate_display": "16.11%",
+    "matches_reference": true,
+    "clearing_selection_restores_total": 668665,
+    "evidence": "docs/screenshots/Overview-Urban-filter.png"
+  }
+}
