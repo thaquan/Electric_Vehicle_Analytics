@@ -45,7 +45,11 @@ all six model partitions are Ready and live DAX matches 668665 / 116779 / 551886
 The recovery report exists and its target model binding was verified through the Service API;
 the user confirmed the published report KPI checks. No recovery report screenshot was supplied.
 See [phase 7 closeout](docs/phase7_closeout.md) and `metadata/recovery_verification.json`.
-Phase 8 has not started.
+Phase 8 has a verified first Test deployment and model rollback drill.
+Gold restore, source binding, full refresh, DAX and report binding passed in
+`WS_EV_Analytics_Test`; published report visual verification was confirmed by the user.
+See [Test deployment evidence](docs/phase8_test_deployment.md) and
+[operations runbook](docs/operations_runbook.md) for scope and remaining CI/CD work.
 See [Power BI report status and checks](docs/powerbi_report.md).
 
 Start with [the Bronze/Silver runbook](docs/bronze_silver.md).
