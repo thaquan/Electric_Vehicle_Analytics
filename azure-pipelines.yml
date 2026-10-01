@@ -1,0 +1,42 @@
+trigger:
+  branches:
+    include:
+      - main
+      - feature/phase8-ci
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - checkout: self
+    clean: true
+
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '3.13'
+    displayName: Use Python 3.13
+
+  - bash: |
+      set -euo pipefail
+      python -m pip install -r requirements.txt
+    displayName: Install dependencies
+
+  - bash: |
+      set -euo pipefail
+      python -m compileall -q scripts
+    displayName: Check Python syntax
+
+  - bash: |
+      set -euo pipefail
+
+      for test_file in \
+        test_bronze_silver.py \
+        test_gold_rules.py \
+        test_star_schema.py \
+        test_pipeline.py \
+        test_gold_export.py
+      do
+        test -f "tests/$test_file"
+        python -m unittest discover -s tests -p "$test_file" -v
+      done
+    displayName: Run unit tests
