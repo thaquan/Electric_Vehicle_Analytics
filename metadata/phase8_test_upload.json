@@ -1,0 +1,147 @@
+{
+  "status": "passed",
+  "workspace_id": "27873d0c-580a-4963-9e25-5846948f1c5d",
+  "lakehouse_id": "970801bb-ffc3-4c5a-b25d-a940a5fd697e",
+  "files": [
+    {
+      "path": "Files/recovery/snapshot/evidence/download_receipts.json",
+      "bytes": 15223,
+      "sha256": "53f9daab64113cc06acd62b6c1d9f74156dcb3b801aee1a9ab919f24e06880f5"
+    },
+    {
+      "path": "Files/recovery/snapshot/evidence/gold_expected_metrics.json",
+      "bytes": 5762,
+      "sha256": "14c4f71f65b0b80b23f8fa71ba6e9c87dc26936c9d45c8f433740e591a43578d"
+    },
+    {
+      "path": "Files/recovery/snapshot/evidence/gold_spec.json",
+      "bytes": 1003,
+      "sha256": "99af7f1f91a21c8001d6fbd7664ad7a2bc59c82c51d9c31b6b9f0a74b9d75f84"
+    },
+    {
+      "path": "Files/recovery/snapshot/evidence/log_download_receipts.json",
+      "bytes": 2477,
+      "sha256": "e1a53cf794311aecb89cb744ce5e84b722caba3e224aaec4e3e19941ac56152c"
+    },
+    {
+      "path": "Files/recovery/snapshot/evidence/source_audit.json",
+      "bytes": 7338,
+      "sha256": "cf75a1e1b771e667b108dfe7e4de03ee2ff6a50f5064cecb049f42bd791ade15"
+    },
+    {
+      "path": "Files/recovery/snapshot/evidence/source_delta_logs/agg_ev_kpi.jsonl",
+      "bytes": 2326,
+      "sha256": "ee79a65b5333591462d00e3b41c0040324233b0a58b669f30f907138c9c21bf7"
+    },
+    {
+      "path": "Files/recovery/snapshot/evidence/source_delta_logs/agg_ev_segments.jsonl",
+      "bytes": 35173,
+      "sha256": "21ff1cee74a0f86e40da6374837ec5b184e89cb6c96d1ba1edb0ff6025e54089"
+    },
+    {
+      "path": "Files/recovery/snapshot/evidence/source_delta_logs/dim_attitude_incentive.jsonl",
+      "bytes": 2343,
+      "sha256": "940b43be4702b98332fbfa1e4c443fcbe02647e2ab3a38c09701a93bb9925b3c"
+    },
+    {
+      "path": "Files/recovery/snapshot/evidence/source_delta_logs/dim_charging.jsonl",
+      "bytes": 1927,
+      "sha256": "9b12cb90637c0efd86856d8fbc5fa273a5283c30e3f2805b801d1311d70421cb"
+    },
+    {
+      "path": "Files/recovery/snapshot/evidence/source_delta_logs/dim_demographics.jsonl",
+      "bytes": 2316,
+      "sha256": "4d214ff3a8e398907e659a40796ce9843cfc37b46331d28621d543e6b5db79a5"
+    },
+    {
+      "path": "Files/recovery/snapshot/evidence/source_delta_logs/dim_income.jsonl",
+      "bytes": 2040,
+      "sha256": "75b13e9d1f2bf2d5c367ab9064751a2059a2aa01934691b28f49f70dd3487ad9"
+    },
+    {
+      "path": "Files/recovery/snapshot/evidence/source_delta_logs/dim_mobility.jsonl",
+      "bytes": 2239,
+      "sha256": "5a8473a3639ae2ebf51dcccd7ad885bd2550cc67ee5eaca98fee427ece42566f"
+    },
+    {
+      "path": "Files/recovery/snapshot/evidence/source_delta_logs/fact_ev_purchase_intent.jsonl",
+      "bytes": 21137,
+      "sha256": "a9a1604174e61fbe1a56d2b91709c8208525cb95653911478a7d69b9447867d5"
+    },
+    {
+      "path": "Files/recovery/snapshot/manifest.json",
+      "bytes": 39212,
+      "sha256": "0da1b98e56c024261d247e3cfe94efaddb594cd52cce4eee89f6a8955cf1ad9f"
+    },
+    {
+      "path": "Files/recovery/snapshot/manifest.sha256",
+      "bytes": 81,
+      "sha256": "481f60607636efa7f1bd0ff5060a3b3a814f5f12704b0650f3ec5d77d6545448"
+    },
+    {
+      "path": "Files/recovery/snapshot/parquet/agg_ev_kpi.parquet",
+      "bytes": 2427,
+      "sha256": "bcfd97335a1831cd26574474b16364d25e413cd94fe22e949da73e1dcad8c412"
+    },
+    {
+      "path": "Files/recovery/snapshot/parquet/agg_ev_segments.parquet",
+      "bytes": 4143,
+      "sha256": "3c815bb6fed036c6a574c60e4a2ff6358fb619cc891e404d016d3c99fd01dcfb"
+    },
+    {
+      "path": "Files/recovery/snapshot/parquet/dim_attitude_incentive.parquet",
+      "bytes": 4382,
+      "sha256": "33e53fa652e567e34ad99751dc2a4785810a002f3698082871f522520717896f"
+    },
+    {
+      "path": "Files/recovery/snapshot/parquet/dim_charging.parquet",
+      "bytes": 1798,
+      "sha256": "b598f65a14a6bc5e8a01a5b299c36f4ea7c31ae841564e856a8ba509ad6823ad"
+    },
+    {
+      "path": "Files/recovery/snapshot/parquet/dim_demographics.parquet",
+      "bytes": 5658,
+      "sha256": "e55f7b4565d14b64ca172d77b4d2e28d36f8691ef856fdfb07e2cc3df9661c0a"
+    },
+    {
+      "path": "Files/recovery/snapshot/parquet/dim_income.parquet",
+      "bytes": 2257,
+      "sha256": "ba3ddc85562ed21b7d77619f20d852852cd6f4217ff5e89b3db5714bfa60fc16"
+    },
+    {
+      "path": "Files/recovery/snapshot/parquet/dim_mobility.parquet",
+      "bytes": 3432,
+      "sha256": "3ad51cb48636fab61fb0362e02fe83f161b8883c04e8265090755811bcb23728"
+    },
+    {
+      "path": "Files/recovery/snapshot/parquet/fact_ev_purchase_intent.parquet",
+      "bytes": 11697886,
+      "sha256": "073784c2d8482a1a6d8b770ff60062dfb31b8e9393c31c10e9014ca9cba41465"
+    },
+    {
+      "path": "Files/recovery/scripts/fabric_restore_gold.py",
+      "bytes": 4631,
+      "sha256": "4b158bb20ca320521292903f0d8c290f6d69f332b1e81198d29fb93e6ab13462"
+    },
+    {
+      "path": "Files/recovery/scripts/recovery_common.py",
+      "bytes": 4338,
+      "sha256": "675ec5378f404e0bfa47e4bde5522b1f4589908a7626e91d2d1de92b7ae7f978"
+    },
+    {
+      "path": "Files/recovery/scripts/export_gold_snapshot.py",
+      "bytes": 18052,
+      "sha256": "f86f17e735364ab39b707edb91ce0063da7a10856edeca4cbe34f04bd93db7a9"
+    },
+    {
+      "path": "Files/recovery/scripts/star_schema.py",
+      "bytes": 5191,
+      "sha256": "cdd1ecc0a811619c0a1681e6befabd8555cc531d192e1bb3f6588704e120d3e0"
+    },
+    {
+      "path": "Files/recovery/recovery.config.json",
+      "bytes": 713,
+      "sha256": "8609061723eb5d43d79521764649e289e82bd23ed878ccdfc70caf0df783dc6c"
+    }
+  ]
+}
