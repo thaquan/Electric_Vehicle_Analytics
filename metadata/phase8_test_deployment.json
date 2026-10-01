@@ -1,0 +1,60 @@
+{
+  "status": "test_deployment_and_model_rollback_verified_with_user_attestation",
+  "date": "2026-10-01",
+  "source_commit": "4a00626eba0a0dfe3335f73ae2719d22eef6b1b9",
+  "ci_build_id": 1,
+  "ci_result": "succeeded",
+  "artifact_provenance": "Bootstrap: generated locally from an exact git archive of the CI-verified commit; not downloaded from a CI-published artifact.",
+  "workspace_id": "27873d0c-580a-4963-9e25-5846948f1c5d",
+  "lakehouse_id": "970801bb-ffc3-4c5a-b25d-a940a5fd697e",
+  "semantic_model_id": "a97a9cc1-eaac-4007-b8ad-c146ac1776c5",
+  "report_id": "b7d65039-0413-4ecc-9f7f-33f0098c9cc0",
+  "report_url": "https://app.powerbi.com/groups/27873d0c-580a-4963-9e25-5846948f1c5d/reports/b7d65039-0413-4ecc-9f7f-33f0098c9cc0",
+  "gold_run_id": "20260925T152721965637Z",
+  "checks": {
+    "snapshot_upload": "29 files verified by readback and SHA-256",
+    "delta_restore": "8/8 exact multiset equality",
+    "orphan_keys": 0,
+    "semantic_model_structure": {
+      "tables": 6,
+      "relationships": 5,
+      "measures": 12
+    },
+    "model_source": "Test OneLake binding verified from Service definition",
+    "pbir": {
+      "errors": 0,
+      "warnings": 0
+    },
+    "report_binding": "passed",
+    "refresh_initial": "6/6 partition refresh operations completed",
+    "rollback_definition": "all non-platform definition parts byte-identical to deployed A",
+    "refresh_after_rollback": "6/6 partition refresh operations completed",
+    "dax_after_rollback": {
+      "respondents": 668665,
+      "yes": 116779,
+      "no": 551886
+    }
+  },
+  "rollback_scope": "Model description A -> B -> A; same model ID and same Gold run; B is a local controlled drill variant, not a separate CI release.",
+  "release_archive": "output/phase8/test_release_a.zip",
+  "release_sha256": "ca0507a7dc2213a9ac886dc6f9f7f3dbf7573991809cd5111f11677928ea553e",
+  "pending": {
+    "e2e_test": "not_started; Gold-only scope",
+    "cd_automation": "not_configured",
+    "notifications": "not_configured; recipient/channel not selected",
+    "branch_policy": "not_verified",
+    "new_helpers_ci": "local tests only; not committed or CI-run"
+  },
+  "report_visual_verification": {
+  "status": "passed_user_attested",
+  "source": "user confirmation",
+  "statement": "User confirmed the Test report works correctly.",
+  "screenshot_available": false
+},
+  "evidence": [
+    "metadata/phase8_test_restore.json",
+    "metadata/phase8_test_health.json",
+    "metadata/phase8_test_refresh_rollback.json",
+    "metadata/phase8_test_report_binding.json"
+  ]
+}

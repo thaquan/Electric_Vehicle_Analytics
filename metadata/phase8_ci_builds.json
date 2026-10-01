@@ -1,0 +1,9 @@
+[
+  {
+    "id": 1,
+    "result": "succeeded",
+    "status": "completed",
+    "sourceVersion": "4a00626eba0a0dfe3335f73ae2719d22eef6b1b9",
+    "sourceBranch": "refs/heads/feature/phase8-ci"
+  }
+]
