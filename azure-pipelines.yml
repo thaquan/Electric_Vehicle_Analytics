@@ -1,0 +1,84 @@
+trigger:
+  branches:
+    include:
+      - main
+      - feature/phase8-ci
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - checkout: self
+    clean: true
+
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '3.13'
+    displayName: Use Python 3.13
+
+  - bash: |
+      set -euo pipefail
+      python -m pip install -r requirements.txt
+    displayName: Install dependencies
+
+  - bash: |
+      set -euo pipefail
+      python -m compileall -q scripts
+    displayName: Check Python syntax
+
+  - bash: |
+      set -euo pipefail
+
+      for test_file in \
+        test_bronze_silver.py \
+        test_gold_rules.py \
+        test_star_schema.py \
+        test_pipeline.py \
+        test_gold_export.py \
+        test_fabric_test_api.py \
+        test_test_health.py
+      do
+        test -f "tests/$test_file"
+        python -m unittest discover -s tests -p "$test_file" -v
+      done
+    displayName: Run unit tests
+
+  - bash: |
+      set -euo pipefail
+
+      mkdir -p "$(Build.ArtifactStagingDirectory)/ev-source"
+
+      git archive \
+        --format=zip \
+        --output="$(Build.ArtifactStagingDirectory)/ev-source/source.zip" \
+        HEAD
+
+      python - <<'PY'
+      import hashlib
+      import json
+      import os
+      from pathlib import Path
+
+      folder = Path(os.environ["BUILD_ARTIFACTSTAGINGDIRECTORY"]) / "ev-source"
+      source = folder / "source.zip"
+
+      manifest = {
+          "commit_sha": os.environ["BUILD_SOURCEVERSION"],
+          "build_id": os.environ["BUILD_BUILDID"],
+          "source_branch": os.environ["BUILD_SOURCEBRANCH"],
+          "source_zip_sha256": hashlib.sha256(source.read_bytes()).hexdigest()
+      }
+
+      (folder / "manifest.json").write_text(
+          json.dumps(manifest, indent=2),
+          encoding="utf-8"
+      )
+      PY
+    displayName: Package verified source
+
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: '$(Build.ArtifactStagingDirectory)/ev-source'
+      artifact: ev-source
+      publishLocation: pipeline
+    displayName: Publish verified source artifact
