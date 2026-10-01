@@ -1,0 +1,23 @@
+{
+  "config_version": 1,
+  "environment": "test",
+  "deployment_scope": "gold_model_report",
+  "workspace_name": "WS_EV_Analytics_Test",
+  "workspace_id": "27873d0c-580a-4963-9e25-5846948f1c5d",
+  "lakehouse_name": "LH_EV_Gold",
+  "lakehouse_id": "970801bb-ffc3-4c5a-b25d-a940a5fd697e",
+  "lakehouse_schema": "",
+  "semantic_model_name": "SM_EV_Analytics",
+  "semantic_model_id": "a97a9cc1-eaac-4007-b8ad-c146ac1776c5",
+  "report_name": "RPT_EV_Analytics",
+  "report_id": "b7d65039-0413-4ecc-9f7f-33f0098c9cc0",
+  "gold_run_id": "20260925T152721965637Z",
+  "snapshot_manifest_sha256": "0da1b98e56c024261d247e3cfe94efaddb594cd52cce4eee89f6a8955cf1ad9f",
+  "snapshot_relative_path": "Files/recovery/snapshot",
+  "expected_kpi": {
+    "respondents": 668665,
+    "yes": 116779,
+    "no": 551886
+  },
+  "restore_notebook_id": "2a7ea51b-8a82-4fe2-821e-39555ba2535f"
+}
