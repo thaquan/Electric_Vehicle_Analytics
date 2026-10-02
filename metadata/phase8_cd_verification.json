@@ -1,0 +1,30 @@
+{
+  "verified_date": "2026-10-02",
+  "workspace_id": "27873d0c-580a-4963-9e25-5846948f1c5d",
+  "semantic_model_id": "a97a9cc1-eaac-4007-b8ad-c146ac1776c5",
+  "connection_id": "0e434494-7476-453c-9978-413751237452",
+  "connection_name": "CONN_EV_Gold_Test_Fixed",
+  "deployment_principal_name": "sp-ev-analytics-test-deploy",
+  "connection_role_granted": "User",
+  "ci_build_id": 14,
+  "ci_status": "succeeded",
+  "preflight_build_id": 10,
+  "preflight_status": "succeeded_before_connection_change",
+  "deployment_attempts": [
+    {"build_id": 11, "status": "failed_at_refresh", "reason": "DMTS_MonikerWithUnboundDataSources", "model_definition_updated": true, "report_definition_updated": false},
+    {"build_id": 13, "status": "failed_before_definition_updates", "reason": "BindNotModelOwner"}
+  ],
+  "recovery": {
+    "connection_rebound": true,
+    "refresh_id": "9a809cb5-2574-4741-a39c-7ac009a923a6",
+    "refresh_status": "Completed",
+    "health_status": "passed",
+    "actual_kpi": {"respondents": 668665, "yes": 116779, "no": 551886},
+    "evidence": "output/phase8/cd11_recovered_health.json"
+  },
+  "remaining": "Explicit user approval to transfer ownership of this Test model to the deployment service principal; then rerun CD from successful CI 14 artifact.",
+  "approval_review": "CD queue request rejected before execution because model ownership transfer needs explicit approval.",
+  "pull_request_id": 4,
+  "main_merged": false,
+  "full_cd_verified": false
+}
