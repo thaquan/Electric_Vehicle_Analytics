@@ -114,6 +114,12 @@ class Deployment:
                 "Model cloud connection does not match the configured Test binding")
         write_json(self.evidence / (step + ".json"), {"status": "passed", "binding": binding})
 
+    def take_ownership(self, model):
+        status, _, _ = self.request("take_ownership",
+            f"https://api.powerbi.com/v1.0/myorg/groups/{WORKSPACE}/datasets/{model}/Default.TakeOver",
+            "POST")
+        require(status == 200, "Could not assign Test model ownership to the deployment identity")
+
 
 def deploy(release, evidence, expected_commit=None, expected_build=None, preflight_only=False,
            client=None, timeout=900):
@@ -139,6 +145,7 @@ def deploy(release, evidence, expected_commit=None, expected_build=None, preflig
             require(item["id"] == suffix.rsplit("/", 1)[-1] and item["type"] == expected_type,
                     "Unexpected existing target item")
         check(evidence / "health_before.json", release / "config/environments/test.json", runner.client)
+        runner.take_ownership(config["semantic_model_id"])
         # Prove this identity can bind the selected connection before changing definitions.
         # updateDefinition can clear the mapping even when the OneLake URL is unchanged.
         runner.bind_connection(config, "preflight_connection")
