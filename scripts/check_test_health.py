@@ -12,11 +12,11 @@ from fabric_test_api import Client, WORKSPACE
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def check(output):
-    config = json.loads((ROOT / "config/environments/test.json").read_text())
+def check(output, config_path=None, client=None):
+    config = json.loads((config_path or ROOT / "config/environments/test.json").read_text())
     if config["workspace_id"] != WORKSPACE:
         raise ValueError("Unexpected Test workspace")
-    client = Client()
+    client = client or Client()
     base = "https://api.powerbi.com/v1.0/myorg/groups/" + WORKSPACE
     result = {"status": "running", "checked_at_utc": datetime.now(timezone.utc).isoformat(),
               "workspace_id": WORKSPACE, "semantic_model_id": config["semantic_model_id"],
