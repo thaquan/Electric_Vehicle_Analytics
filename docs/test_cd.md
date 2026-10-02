@@ -42,7 +42,19 @@ controlled test. The pipeline does not check out or rebuild from a newer branch.
 4. Confirm it reads both existing items, checks live KPI, and captures both definitions.
 5. Run the same CI artifact again with `preflightOnly=false` to exercise deployment.
 6. Inspect `test-deployment-evidence/deployment.json` and `health_after.json`.
-7. Merge the implementation through PR/CI. Future successful main runs can deploy automatically.
+7. Merge the implementation through PR/CI. Change the CD pipeline's default branch
+   from `refs/heads/feature/phase8-cd` to `refs/heads/main` after merge. Future
+   successful main runs can deploy automatically.
+
+## Verified deployment
+
+CI build 14 and CD build 15 succeeded on 2026-10-02. CD used source commit
+`8e8e4f74a03efb91fbd2c6211fd2809ca532b851` and service principal
+`sp-ev-analytics-test-deploy`. The user approved transfer of the Test model's
+ownership to this identity. Both existing items were updated, the configured
+connection was restored, refresh completed, and the final KPI matched
+668665 / 116779 / 551886. Build 15 retains `test-deployment-evidence`, including
+the captured rollback package. See `metadata/phase8_cd_verification.json`.
 
 ## Deployment sequence
 
