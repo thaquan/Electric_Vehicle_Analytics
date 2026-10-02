@@ -11,20 +11,84 @@
   "preflight_build_id": 10,
   "preflight_status": "succeeded_before_connection_change",
   "deployment_attempts": [
-    {"build_id": 11, "status": "failed_at_refresh", "reason": "DMTS_MonikerWithUnboundDataSources", "model_definition_updated": true, "report_definition_updated": false},
-    {"build_id": 13, "status": "failed_before_definition_updates", "reason": "BindNotModelOwner"}
+    {
+      "build_id": 11,
+      "status": "failed_at_refresh",
+      "reason": "DMTS_MonikerWithUnboundDataSources",
+      "model_definition_updated": true,
+      "report_definition_updated": false
+    },
+    {
+      "build_id": 13,
+      "status": "failed_before_definition_updates",
+      "reason": "BindNotModelOwner"
+    },
+    {
+      "build_id": 15,
+      "status": "succeeded",
+      "model_definition_updated": true,
+      "report_definition_updated": true,
+      "connection_restored": true,
+      "rollback_captured": true
+    }
   ],
   "recovery": {
     "connection_rebound": true,
     "refresh_id": "9a809cb5-2574-4741-a39c-7ac009a923a6",
     "refresh_status": "Completed",
     "health_status": "passed",
-    "actual_kpi": {"respondents": 668665, "yes": 116779, "no": 551886},
+    "actual_kpi": {
+      "respondents": 668665,
+      "yes": 116779,
+      "no": 551886
+    },
     "evidence": "output/phase8/cd11_recovered_health.json"
   },
-  "remaining": "Explicit user approval to transfer ownership of this Test model to the deployment service principal; then rerun CD from successful CI 14 artifact.",
-  "approval_review": "CD queue request rejected before execution because model ownership transfer needs explicit approval.",
+  "remaining": "Review and merge PR 4; set the CD pipeline default branch to refs/heads/main after merge.",
+  "approval_review": "User explicitly approved the Test model ownership transfer and rerun; CD 15 completed successfully.",
   "pull_request_id": 4,
   "main_merged": false,
-  "full_cd_verified": false
+  "full_cd_verified": true,
+  "deployment_build_id": 15,
+  "deployment_status": "succeeded",
+  "deployed_source_commit": "8e8e4f74a03efb91fbd2c6211fd2809ca532b851",
+  "ownership_transfer": "completed_to_sp-ev-analytics-test-deploy",
+  "final_health": {
+    "status": "passed",
+    "checked_at_utc": "2026-10-02T15:03:54.156213+00:00",
+    "workspace_id": "27873d0c-580a-4963-9e25-5846948f1c5d",
+    "semantic_model_id": "a97a9cc1-eaac-4007-b8ad-c146ac1776c5",
+    "report_id": "b7d65039-0413-4ecc-9f7f-33f0098c9cc0",
+    "checks": {
+      "report_binding": "passed",
+      "latest_refresh": "passed",
+      "dax_kpi": "passed"
+    },
+    "latest_refresh": {
+      "requestId": "b5c237d9-3e90-4645-9794-a6c297f3dc5f",
+      "id": 348015718,
+      "refreshType": "ViaEnhancedApi",
+      "startTime": "2026-10-02T15:03:27.603Z",
+      "endTime": "2026-10-02T15:03:32.38Z",
+      "status": "Completed",
+      "extendedStatus": "Completed",
+      "refreshAttempts": [
+        {
+          "attemptId": 1,
+          "startTime": "2026-10-02T15:03:27.9391937Z",
+          "endTime": "2026-10-02T15:03:32.3798145Z",
+          "type": "Data",
+          "executionMetrics": []
+        }
+      ]
+    },
+    "dax_api": "arrow",
+    "actual_kpi": {
+      "respondents": 668665,
+      "yes": 116779,
+      "no": 551886
+    }
+  },
+  "evidence_artifact": "test-deployment-evidence",
+  "deployment_url": "https://dev.azure.com/thaquan081006/Electric_Vehicle_Analytics/_build/results?buildId=15"
 }
