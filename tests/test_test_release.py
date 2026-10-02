@@ -86,7 +86,8 @@ class ReleaseTests(unittest.TestCase):
         responses += [RuntimeError('update rejected')]
         client.request.side_effect=responses
         evidence=Path(self.temp.name)/'evidence'
-        with patch('deploy_test_release.check'), patch.object(Deployment, 'bind_connection'):
+        with patch('deploy_test_release.check'), patch.object(Deployment, 'bind_connection'), \
+             patch.object(Deployment, 'take_ownership'):
             with self.assertRaisesRegex(RuntimeError,'update rejected'):
                 deploy(self.release,evidence,client=client)
         self.assertEqual(client.request.call_count,5)
@@ -109,11 +110,13 @@ class ReleaseTests(unittest.TestCase):
                 return read_json(self.release / 'report-update.json')
             return {}
         with patch('deploy_test_release.check'), \
+             patch.object(Deployment, 'take_ownership', side_effect=lambda model: steps.append('take_ownership')), \
              patch.object(Deployment, 'fabric_operation', side_effect=operation), \
              patch.object(Deployment, 'bind_connection', side_effect=lambda config, step: steps.append(step)), \
              patch.object(Deployment, 'refresh', side_effect=lambda model: steps.append('refresh')):
             result = deploy(self.release, Path(self.temp.name) / 'evidence', client=client)
         self.assertEqual(result['status'], 'passed')
+        self.assertLess(steps.index('take_ownership'), steps.index('preflight_connection'))
         self.assertLess(steps.index('preflight_connection'), steps.index('update_model'))
         self.assertLess(steps.index('update_model'), steps.index('restore_connection'))
         self.assertLess(steps.index('restore_connection'), steps.index('refresh'))
@@ -170,6 +173,12 @@ class PollingTests(unittest.TestCase):
         self.assertEqual(self.binding['id'], config['cloud_connection_id'])
         self.assertTrue(self.client.request.call_args_list[0].args[0].endswith('/bindConnection'))
         self.assertEqual(read_json(self.runner.evidence / 'restore_connection.json')['status'], 'passed')
+
+    def test_ownership_failure_stops_without_retry(self):
+        self.client.request.side_effect = RuntimeError('HTTP 403')
+        with self.assertRaisesRegex(RuntimeError, '403'):
+            self.runner.take_ownership('a97a9cc1-eaac-4007-b8ad-c146ac1776c5')
+        self.assertEqual(self.client.request.call_count, 1)
 
     def test_unbound_connection_stops_before_refresh(self):
         self.client.request.side_effect = [(200, {}, b'{}'),

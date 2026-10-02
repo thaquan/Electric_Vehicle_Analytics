@@ -29,6 +29,10 @@ controlled test. The pipeline does not check out or rebuild from a newer branch.
   Its ID is recorded in `config/environments/test.json`. The semantic model owner
   must be able to bind it. Preflight applies and verifies this mapping before any
   definition changes, including when `preflightOnly=true`.
+  CD first uses `Default.TakeOver` on the existing Test model so the deployment
+  identity becomes its owner, as required by `bindConnection`. Preflight therefore
+  changes ownership and applies the connection mapping even though it does not
+  update definitions or refresh. CD run 13 confirmed the `BindNotModelOwner` guard.
 
 ## First run
 

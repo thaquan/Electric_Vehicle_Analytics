@@ -5,7 +5,7 @@ pr: none
 
 parameters:
   - name: preflightOnly
-    displayName: Verify access and capture rollback without updating items
+    displayName: Set ownership and connection, verify access, capture rollback only
     type: boolean
     default: false
 
