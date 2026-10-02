@@ -99,6 +99,21 @@ class Deployment:
                 raise RuntimeError("Refresh failed; see refresh.json")
         raise TimeoutError("Refresh unresolved; inspect saved refresh ID before retrying")
 
+    def bind_connection(self, config, step):
+        binding = {"id": str(UUID(config["cloud_connection_id"])),
+                   "connectivityType": "ShareableCloud",
+                   "connectionDetails": {"type": "AzureDataLakeStorage",
+                       "path": f"https://onelake.dfs.fabric.microsoft.com/{WORKSPACE}/{config['lakehouse_id']}/"}}
+        model = config["semantic_model_id"]
+        self.fabric_operation(step, f"/semanticModels/{model}/bindConnection",
+                              {"connectionBinding": binding})
+        _, _, data = self.request(step + "_verify", FABRIC +
+            f"/v1/workspaces/{WORKSPACE}/items/{model}/connections")
+        actual = data.get("value", [])
+        require(len(actual) == 1 and all(actual[0].get(k) == v for k, v in binding.items()),
+                "Model cloud connection does not match the configured Test binding")
+        write_json(self.evidence / (step + ".json"), {"status": "passed", "binding": binding})
+
 
 def deploy(release, evidence, expected_commit=None, expected_build=None, preflight_only=False,
            client=None, timeout=900):
@@ -124,6 +139,9 @@ def deploy(release, evidence, expected_commit=None, expected_build=None, preflig
             require(item["id"] == suffix.rsplit("/", 1)[-1] and item["type"] == expected_type,
                     "Unexpected existing target item")
         check(evidence / "health_before.json", release / "config/environments/test.json", runner.client)
+        # Prove this identity can bind the selected connection before changing definitions.
+        # updateDefinition can clear the mapping even when the OneLake URL is unchanged.
+        runner.bind_connection(config, "preflight_connection")
         prior_model = runner.fabric_operation("capture_model", model_path + "/getDefinition", result=True)
         prior_report = runner.fabric_operation("capture_report", report_path + "/getDefinition", result=True)
         for body in (prior_model, prior_report):
@@ -148,6 +166,7 @@ def deploy(release, evidence, expected_commit=None, expected_build=None, preflig
             summary["status"] = "preflight_passed_no_updates"
         else:
             runner.fabric_operation("update_model", model_path + "/updateDefinition", model)
+            runner.bind_connection(config, "restore_connection")
             live = runner.fabric_operation("verify_model", model_path + "/getDefinition", result=True)
             validate_definitions(live, report, config)
             write_json(evidence / "model_binding.json", {"status": "passed", "workspace_id": WORKSPACE,

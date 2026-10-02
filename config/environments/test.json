@@ -9,6 +9,7 @@
   "lakehouse_schema": "",
   "semantic_model_name": "SM_EV_Analytics",
   "semantic_model_id": "a97a9cc1-eaac-4007-b8ad-c146ac1776c5",
+  "cloud_connection_id": "0e434494-7476-453c-9978-413751237452",
   "report_name": "RPT_EV_Analytics",
   "report_id": "b7d65039-0413-4ecc-9f7f-33f0098c9cc0",
   "gold_run_id": "20260925T152721965637Z",
