@@ -1,0 +1,78 @@
+# Register as EV-Analytics-Test-CD after this file is available in Azure Repos.
+# Configure an Exclusive lock check on environment EV-Analytics-Test.
+trigger: none
+pr: none
+
+parameters:
+  - name: preflightOnly
+    displayName: Verify access and capture rollback without updating items
+    type: boolean
+    default: false
+
+resources:
+  pipelines:
+    - pipeline: verifiedCI
+      source: EV-Analytics-CI
+      trigger:
+        branches:
+          include:
+            - refs/heads/main
+
+pool:
+  vmImage: ubuntu-latest
+
+lockBehavior: sequential
+
+stages:
+  - stage: DeployTest
+    displayName: Deploy verified release to Test
+    condition: and(succeeded(), or(eq(variables['Build.Reason'], 'Manual'), eq(variables['resources.pipeline.verifiedCI.sourceBranch'], 'refs/heads/main')))
+    jobs:
+      - deployment: UpdateTest
+        environment: EV-Analytics-Test
+        timeoutInMinutes: 60
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: none
+                - download: none
+                - download: verifiedCI
+                  artifact: ev-test-release
+
+                - task: UsePythonVersion@0
+                  inputs:
+                    versionSpec: '3.13'
+
+                - task: AzureCLI@2
+                  displayName: Verify artifact, deploy, refresh and check KPI
+                  inputs:
+                    azureSubscription: sc-fabric-ev-test
+                    scriptType: bash
+                    scriptLocation: inlineScript
+                    workingDirectory: '$(Pipeline.Workspace)/verifiedCI/ev-test-release'
+                    inlineScript: |
+                      set -euo pipefail
+                      args=()
+                      if [ "${PREFLIGHT_ONLY,,}" = "true" ]; then
+                        args+=(--preflight-only)
+                      fi
+                      python -B scripts/deploy_test_release.py \
+                        --release . \
+                        --evidence "$EVIDENCE_DIR" \
+                        --expected-commit "$CI_COMMIT" \
+                        --expected-build "$CI_BUILD" \
+                        "${args[@]}"
+                  env:
+                    PREFLIGHT_ONLY: ${{ parameters.preflightOnly }}
+                    CI_COMMIT: $(resources.pipeline.verifiedCI.sourceCommit)
+                    CI_BUILD: $(resources.pipeline.verifiedCI.runID)
+                    EVIDENCE_DIR: $(Pipeline.Workspace)/test-evidence
+
+                - task: PublishPipelineArtifact@1
+                  displayName: Retain deployment evidence and rollback definitions
+                  condition: always()
+                  inputs:
+                    targetPath: '$(Pipeline.Workspace)/test-evidence'
+                    artifact: test-deployment-evidence
+                    publishLocation: pipeline
