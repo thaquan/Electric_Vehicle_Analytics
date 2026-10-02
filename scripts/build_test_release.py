@@ -23,7 +23,7 @@ TARGET_LAKEHOUSE = "970801bb-ffc3-4c5a-b25d-a940a5fd697e"
 ROLES = {"fact_ev_purchase_intent", "dim_demographics", "dim_income", "dim_mobility",
          "dim_charging", "dim_attitude_incentive"}
 RUNTIME = ["build_test_release.py", "deploy_test_release.py", "fabric_test_api.py",
-           "recovery_common.py", "check_test_health.py"]
+           "recovery_common.py", "check_test_health.py", "dax_query.py"]
 
 
 def digest(path):
@@ -159,6 +159,7 @@ def build(project, output, commit, build_id, branch):
     (output / "scripts").mkdir()
     for name in RUNTIME:
         shutil.copyfile(project / "scripts" / name, output / "scripts" / name)
+    shutil.copyfile(project / "requirements-cd.txt", output / "requirements-cd.txt")
     seal_release(output, commit, build_id, branch)
     verify_release(output, commit, build_id)
     print("Verified release:", output)

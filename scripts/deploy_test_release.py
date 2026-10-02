@@ -137,6 +137,7 @@ def deploy(release, evidence, expected_commit=None, expected_build=None, preflig
         write_json(rollback / "config/environments/test.json", config)
         for name in RUNTIME:
             shutil.copyfile(release / "scripts" / name, rollback / "scripts" / name)
+        shutil.copyfile(release / "requirements-cd.txt", rollback / "requirements-cd.txt")
         seal_release(rollback, manifest["commit_sha"], "capture-before-" + manifest["build_id"], manifest["source_branch"])
         # This is a live capture; the previous deployment's source commit may be unknown.
         capture = read_json(rollback / "manifest.json")

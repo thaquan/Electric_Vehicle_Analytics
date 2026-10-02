@@ -16,10 +16,11 @@ controlled test. The pipeline does not check out or rebuild from a newer branch.
 
 - Azure DevOps service connection `sc-fabric-ev-test` (Azure Resource Manager).
 - Deployment identity permitted by Fabric tenant settings and granted Test access.
-- The identity must read the current model with Execute Queries. Models using SSO
-  or RLS can restrict service-principal Execute Queries. Preflight fails before
-  updates if this identity cannot run the KPI query; do not replace the check with
-  a user login or silently skip it.
+- The identity must read the current model with the modern `executeDaxQueries`
+  API. CD explicitly selects the Arrow response backend (`EV_DAX_API=arrow`).
+  The older JSON `executeQueries` API returned HTTP 401 for this service principal.
+  Arrow error rowsets are checked even when HTTP is 200. Preflight fails before
+  updates if the deployment identity cannot query KPI; no user-login fallback.
 - Environment `EV-Analytics-Test`, with an **Exclusive lock** check. The YAML sets
   sequential lock behavior, but the environment check must also exist to serialize
   deployments. Stop a failed/uncertain operation before starting another release.
@@ -60,6 +61,8 @@ Use a fresh output/evidence path for every run:
 ```powershell
 $commit = git rev-parse HEAD
 python scripts/build_test_release.py --output output/test-release --commit $commit --build-id local --branch local
+python -m pip install -r requirements-cd.txt
+$env:EV_DAX_API = "arrow"
 python scripts/deploy_test_release.py --release output/test-release --evidence output/test-preflight --preflight-only
 ```
 
@@ -73,6 +76,8 @@ directory is an executable release of the definitions captured before changes.
 After checking that no API operation or refresh is still pending:
 
 ```powershell
+python -m pip install -r rollback/requirements-cd.txt
+$env:EV_DAX_API = "arrow"
 python -B rollback/scripts/deploy_test_release.py --release rollback --evidence output/rollback-attempt
 ```
 

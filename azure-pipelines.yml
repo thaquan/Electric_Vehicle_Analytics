@@ -19,6 +19,7 @@ steps:
   - bash: |
       set -euo pipefail
       python -m pip install -r requirements.txt
+      python -m pip install -r requirements-cd.txt
     displayName: Install dependencies
 
   - bash: |
@@ -37,7 +38,8 @@ steps:
         test_gold_export.py \
         test_fabric_test_api.py \
         test_test_health.py \
-        test_test_release.py
+        test_test_release.py \
+        test_dax_query.py
       do
         test -f "tests/$test_file"
         python -m unittest discover -s tests -p "$test_file" -v
