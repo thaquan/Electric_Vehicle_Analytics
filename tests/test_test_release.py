@@ -86,13 +86,37 @@ class ReleaseTests(unittest.TestCase):
         responses += [RuntimeError('update rejected')]
         client.request.side_effect=responses
         evidence=Path(self.temp.name)/'evidence'
-        with patch('deploy_test_release.check'):
+        with patch('deploy_test_release.check'), patch.object(Deployment, 'bind_connection'):
             with self.assertRaisesRegex(RuntimeError,'update rejected'):
                 deploy(self.release,evidence,client=client)
         self.assertEqual(client.request.call_count,5)
         verify_release(evidence/'rollback')
         self.assertFalse(any('/reports/' in c.args[0] and 'updateDefinition' in c.args[0]
                              for c in client.request.call_args_list))
+
+
+    def test_deployment_rebinds_between_model_update_and_refresh(self):
+        from build_test_release import TARGET_MODEL, TARGET_REPORT
+        client = Mock()
+        client.request.side_effect = [(200, {}, json.dumps({'id': i, 'type': t}).encode())
+            for i, t in [(TARGET_MODEL, 'SemanticModel'), (TARGET_REPORT, 'Report')]]
+        steps = []
+        def operation(step, path, body=None, result=False):
+            steps.append(step)
+            if step in ('capture_model', 'verify_model'):
+                return read_json(self.release / 'model-update.json')
+            if step == 'capture_report':
+                return read_json(self.release / 'report-update.json')
+            return {}
+        with patch('deploy_test_release.check'), \
+             patch.object(Deployment, 'fabric_operation', side_effect=operation), \
+             patch.object(Deployment, 'bind_connection', side_effect=lambda config, step: steps.append(step)), \
+             patch.object(Deployment, 'refresh', side_effect=lambda model: steps.append('refresh')):
+            result = deploy(self.release, Path(self.temp.name) / 'evidence', client=client)
+        self.assertEqual(result['status'], 'passed')
+        self.assertLess(steps.index('preflight_connection'), steps.index('update_model'))
+        self.assertLess(steps.index('update_model'), steps.index('restore_connection'))
+        self.assertLess(steps.index('restore_connection'), steps.index('refresh'))
 
 
 class PollingTests(unittest.TestCase):
@@ -133,6 +157,31 @@ class PollingTests(unittest.TestCase):
             (200,{},b'{"status":"Failed"}')]
         with self.assertRaisesRegex(RuntimeError,'Refresh failed'):
             self.runner.refresh('model')
+
+    def test_connection_binding_is_verified_after_post(self):
+        config = read_json(ROOT / 'config/environments/test.json')
+        def respond(url, method='GET', body=None):
+            if method == 'POST':
+                self.binding = body['connectionBinding']
+                return 200, {}, b'{}'
+            return 200, {}, json.dumps({'value': [self.binding]}).encode()
+        self.client.request.side_effect = respond
+        self.runner.bind_connection(config, 'restore_connection')
+        self.assertEqual(self.binding['id'], config['cloud_connection_id'])
+        self.assertTrue(self.client.request.call_args_list[0].args[0].endswith('/bindConnection'))
+        self.assertEqual(read_json(self.runner.evidence / 'restore_connection.json')['status'], 'passed')
+
+    def test_unbound_connection_stops_before_refresh(self):
+        self.client.request.side_effect = [(200, {}, b'{}'),
+            (200, {}, b'{"value": [{"connectivityType": "None"}]}')]
+        with self.assertRaisesRegex(ValueError, 'cloud connection'):
+            self.runner.bind_connection(read_json(ROOT / 'config/environments/test.json'), 'restore_connection')
+
+    def test_connection_permission_failure_is_not_retried(self):
+        self.client.request.side_effect = RuntimeError('HTTP 403')
+        with self.assertRaisesRegex(RuntimeError, '403'):
+            self.runner.bind_connection(read_json(ROOT / 'config/environments/test.json'), 'preflight_connection')
+        self.assertEqual(self.client.request.call_count, 1)
 
 
 if __name__ == '__main__':

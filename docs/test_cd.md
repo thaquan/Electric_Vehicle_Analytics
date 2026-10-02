@@ -25,6 +25,10 @@ controlled test. The pipeline does not check out or rebuild from a newer branch.
   sequential lock behavior, but the environment check must also exist to serialize
   deployments. Stop a failed/uncertain operation before starting another release.
 - Authorize this pipeline to use the service connection and environment.
+- Share `CONN_EV_Gold_Test_Fixed` with the deployment identity as a connection User.
+  Its ID is recorded in `config/environments/test.json`. The semantic model owner
+  must be able to bind it. Preflight applies and verifies this mapping before any
+  definition changes, including when `preflightOnly=true`.
 
 ## First run
 
@@ -43,6 +47,9 @@ controlled test. The pipeline does not check out or rebuild from a newer branch.
 2. Verify live item identity and current health using the deployment identity.
 3. Capture current model/report definitions into a separately sealed `rollback/` package.
 4. Update the existing model; poll the Fabric operation with a bounded timeout.
+   Reapply the configured cloud connection and verify its ID and OneLake path.
+   `updateDefinition` can clear the mapping; CD run 11 demonstrated this with
+   `DMTS_MonikerWithUnboundDataSources`. Restore the mapping before refresh.
 5. Read the model definition back and verify Test source and Gold run.
 6. Start full transactional refresh; poll that exact refresh ID.
 7. Check DAX KPI before updating the report.
