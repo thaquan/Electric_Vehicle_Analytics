@@ -53,6 +53,7 @@ stages:
                     workingDirectory: '$(Pipeline.Workspace)/verifiedCI/ev-test-release'
                     inlineScript: |
                       set -euo pipefail
+                      python -m pip install -r requirements-cd.txt
                       args=()
                       if [ "${PREFLIGHT_ONLY,,}" = "true" ]; then
                         args+=(--preflight-only)
@@ -65,6 +66,7 @@ stages:
                         "${args[@]}"
                   env:
                     PREFLIGHT_ONLY: ${{ parameters.preflightOnly }}
+                    EV_DAX_API: arrow
                     CI_COMMIT: $(resources.pipeline.verifiedCI.sourceCommit)
                     CI_BUILD: $(resources.pipeline.verifiedCI.runID)
                     EVIDENCE_DIR: $(Pipeline.Workspace)/test-evidence
