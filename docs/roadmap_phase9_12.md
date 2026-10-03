@@ -6,7 +6,8 @@ Cập nhật ngày 2026-10-03 theo lộ trình người dùng cung cấp.
 
 - Giai đoạn 7 đã có backup Gold và khôi phục trong Fabric. Kết quả này chưa chứng minh hệ thống chạy được khi không còn Fabric; xem [biên bản giai đoạn 7](phase7_closeout.md).
 - Giai đoạn 8 giải quyết CI/CD và vận hành trên Fabric. Lộ trình này tiếp nhận thông tin người dùng cung cấp rằng các bước còn lại đã hoàn tất. Bằng chứng CI/CD hiện lưu trong repo được mô tả tại [triển khai Test tự động](test_cd.md); tài liệu này không phải một lần kiểm tra lại dịch vụ.
-- Giai đoạn 9 là việc tiếp theo, ưu tiên trước khi trial kết thúc. Trạng thái: **chưa nghiệm thu khôi phục độc lập**.
+- Giai đoạn 9: **đã nghiệm thu khôi phục độc lập**. ZIP release-02 và lần kiểm tra lại ngày 2026-10-03 đều đạt; xem [biên bản giai đoạn 9](phase9_closeout.md).
+- Giai đoạn 10: **đã nghiệm thu PySpark và Airflow DAG**, gồm các bổ sung quality gate, kiểm checksum khi retry và run ID an toàn; xem [biên bản giai đoạn 10](phase10_closeout.md). Bước tiếp theo là giai đoạn 11.
 
 | Giai đoạn | Mục tiêu | Kết quả cần đạt |
 | --- | --- | --- |
@@ -109,12 +110,12 @@ Giai đoạn 9 kiểm chứng khả năng khôi phục dữ liệu và giữ đ�
 
 ### Điều kiện nghiệm thu giai đoạn 9
 
-- [ ] Kiểm kê đủ các thành phần ở mục 9.1 và xử lý các phần thiếu.
-- [ ] Backup nằm ngoài Fabric; chứa dữ liệu nguồn và cả ba tầng Bronze, Silver, Gold.
-- [ ] Manifest, checksum, schema, số dòng, khóa và run ID được kiểm chứng.
-- [ ] Không có token, mật khẩu hoặc client secret trong gói.
-- [ ] Khôi phục trong môi trường sạch thành công mà không đọc lại OneLake/Fabric.
-- [ ] KPI, orphan và các đối chiếu chuẩn đều đạt; lưu báo cáo và lệnh tái hiện.
+- [x] Kiểm kê đủ các thành phần ở mục 9.1 và xử lý các phần thiếu.
+- [x] Backup nằm ngoài Fabric; chứa dữ liệu nguồn và cả ba tầng Bronze, Silver, Gold.
+- [x] Manifest, checksum, schema, số dòng, khóa và run ID được kiểm chứng.
+- [x] Không có token, mật khẩu hoặc client secret trong gói.
+- [x] Khôi phục trong môi trường sạch thành công mà không đọc lại OneLake/Fabric.
+- [x] KPI, orphan và các đối chiếu chuẩn đều đạt; lưu báo cáo và lệnh tái hiện.
 
 **Giai đoạn 9 chỉ hoàn thành khi lần khôi phục độc lập đạt. Có file ZIP hoặc tải được dữ liệu xuống chưa đủ.**
 

@@ -3,6 +3,7 @@ from __future__ import annotations
 import logging
 import os
 import sys
+import shlex
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -26,9 +27,9 @@ def failure_alert(context):
 
 def stage_command(stage: str) -> str:
     return (
-        f'cd "{ROOT}" && '
-        f'"{PYTHON}" -m src.stage_runner {stage} '
-        '--run-id "{{ dag_run.conf.get(\'run_id\') or ts_nodash }}"'
+        f'cd {shlex.quote(str(ROOT))} && '
+        f'{shlex.quote(str(PYTHON))} -m src.stage_runner {shlex.quote(stage)} '
+        '--run-id "$EV_RUN_ID"'
     )
 
 
@@ -37,6 +38,8 @@ default_args = {
     'retries': 2,
     'retry_delay': timedelta(minutes=2),
     'on_failure_callback': failure_alert,
+    'env': {'EV_RUN_ID': "{{ dag_run.conf.get('run_id') or ('airflow_' ~ ts_nodash ~ '_' ~ dag_run.id) }}"},
+    'append_env': True,
 }
 
 with DAG(

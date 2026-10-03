@@ -2,6 +2,11 @@
 
 EV purchase analytics in Microsoft Fabric, versioned in Azure DevOps.
 
+Independent recovery is verified in [Phase 9 closeout](docs/phase9_closeout.md).
+The standalone PySpark pipeline and Airflow DAG, including artifact checksums,
+safe run IDs, retry checks and Gold reconciliation, are documented in
+[Phase 10 closeout](docs/phase10_closeout.md#11-bổ-sung-sau-review-ngày-2026-10-03).
+
 | Artifact | Name |
 | --- | --- |
 | Workspace | WS_EV_Analytics |

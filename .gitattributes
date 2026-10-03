@@ -1,3 +1,4 @@
 # Preserve the byte-level SHA-256 of the exported manifest across platforms.
 metadata/gold_export_manifest.json -text whitespace=cr-at-eol
 metadata/gold_export_manifest.sha256 -text
+*.sh text eol=lf
