@@ -57,7 +57,13 @@ completed environment inventory. The restore notebook also refuses existing tabl
 | Release defect | Apply the prior saved definition to existing items, refresh, then verify DAX and report. |
 | Missing Gold data | Use the separately retained verified backup; code rollback does not restore data. |
 
-## Complete CI/CD integration
+## CI/CD integration
+
+The implementation is in `scripts/build_test_release.py`,
+`scripts/deploy_test_release.py` and `azure-pipelines-test-cd.yml`.
+See [automated Test deployment](test_cd.md) for first-run setup, preflight,
+artifact selection and rollback. The remaining operational checks below still
+apply; code availability alone does not verify the service principal.
 
 1. Merge the existing CI branch through the required build policy.
 2. Add the new helper tests to CI; the original five-file allowlist does not include them.
