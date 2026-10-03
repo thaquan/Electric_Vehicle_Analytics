@@ -45,11 +45,20 @@ all six model partitions are Ready and live DAX matches 668665 / 116779 / 551886
 The recovery report exists and its target model binding was verified through the Service API;
 the user confirmed the published report KPI checks. No recovery report screenshot was supplied.
 See [phase 7 closeout](docs/phase7_closeout.md) and `metadata/recovery_verification.json`.
-Phase 8 has a verified first Test deployment and model rollback drill.
-Gold restore, source binding, full refresh, DAX and report binding passed in
-`WS_EV_Analytics_Test`; published report visual verification was confirmed by the user.
-See [Test deployment evidence](docs/phase8_test_deployment.md) and
-[operations runbook](docs/operations_runbook.md) for scope and remaining CI/CD work.
+Phase 8 covers Fabric CI/CD and operations. Automated CI build 14 and CD build 15
+succeeded on 2026-10-02; see [automated Test deployment](docs/test_cd.md).
+The roadmap accepts the user's update that the remaining phase 8 work is complete;
+this documentation update does not re-audit the live services.
+See [initial Test deployment evidence](docs/phase8_test_deployment.md) and
+[operations runbook](docs/operations_runbook.md) for historical scope and procedures.
+
+Next: [the updated phases 9–12 roadmap](docs/roadmap_phase9_12.md).
+Phase 9 backs up source data, Bronze/Silver/Gold, code and configuration outside
+Fabric, then restores them in a clean independent environment without reading
+OneLake. This independent recovery has not yet been accepted. Phase 10 moves the
+full flow to PySpark/Airflow; phase 11 integrates Snowflake or Databricks; phase 12
+covers final acceptance and handoff. Phase 7 recovery inside Fabric does not prove
+independent recovery, and a downloaded ZIP alone does not complete phase 9.
 See [Power BI report status and checks](docs/powerbi_report.md).
 
 Start with [the Bronze/Silver runbook](docs/bronze_silver.md).
