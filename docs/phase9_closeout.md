@@ -80,3 +80,12 @@ Chín kiểm thử Phase 9 đã đạt, gồm inventory hợp lệ, dữ liệu 
 - Chạy lại đầy đủ Bronze → Silver → Gold bằng PySpark/Airflow thuộc **giai đoạn 10**.
 
 Xem [hướng dẫn khôi phục](phase9_backup.md) và [lộ trình](roadmap_phase9_12.md).
+
+## Kiểm tra lại ngày 2026-10-03
+
+Đã đối chiếu checksum ZIP, toàn bộ 4223 mục inventory và chạy lại script khôi phục
+trong backup bằng `python -I -S -B`. Kết quả mới: `passed`, đủ 15 bảng, KPI
+668665 / 116779 / 551886, orphan 0, 35 segment, không dùng credential Fabric.
+Bằng chứng: `output/review_phase9_10_20261003/restore/restore_report.json`.
+Lần này dùng bản giải nén clean-room hiện có; script kiểm tra lại inventory trước
+khi đọc dữ liệu. Không thay đổi ZIP release-02 đã nghiệm thu.
