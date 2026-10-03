@@ -20,11 +20,12 @@ steps:
       set -euo pipefail
       python -m pip install -r requirements.txt
       python -m pip install -r requirements-cd.txt
+      python -m pip install -r requirements-phase10.txt
     displayName: Install dependencies
 
   - bash: |
       set -euo pipefail
-      python -m compileall -q scripts
+      python -m compileall -q scripts src dags
     displayName: Check Python syntax
 
   - bash: |
@@ -35,6 +36,8 @@ steps:
         test_gold_rules.py \
         test_star_schema.py \
         test_pipeline.py \
+        test_phase9_backup.py \
+        test_phase10_orchestration.py \
         test_gold_export.py \
         test_fabric_test_api.py \
         test_test_health.py \
