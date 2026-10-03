@@ -19,6 +19,7 @@ steps:
   - bash: |
       set -euo pipefail
       python -m pip install -r requirements.txt
+      python -m pip install -r requirements-cd.txt
     displayName: Install dependencies
 
   - bash: |
@@ -36,12 +37,30 @@ steps:
         test_pipeline.py \
         test_gold_export.py \
         test_fabric_test_api.py \
-        test_test_health.py
+        test_test_health.py \
+        test_test_release.py \
+        test_dax_query.py
       do
         test -f "tests/$test_file"
         python -m unittest discover -s tests -p "$test_file" -v
       done
     displayName: Run unit tests
+
+  - bash: |
+      set -euo pipefail
+      python scripts/build_test_release.py \
+        --output "$(Build.ArtifactStagingDirectory)/ev-test-release" \
+        --commit "$BUILD_SOURCEVERSION" \
+        --build-id "$BUILD_BUILDID" \
+        --branch "$BUILD_SOURCEBRANCH"
+    displayName: Build and verify Test release
+
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: '$(Build.ArtifactStagingDirectory)/ev-test-release'
+      artifact: ev-test-release
+      publishLocation: pipeline
+    displayName: Publish Test release
 
   - bash: |
       set -euo pipefail

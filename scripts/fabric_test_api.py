@@ -43,6 +43,9 @@ class Client:
             resource = FABRIC
         elif parsed.hostname == "api.powerbi.com":
             allowed = parsed.path.startswith(f"/v1.0/myorg/groups/{WORKSPACE}/")
+            # Modern DAX API has no workspace segment. Restrict it to the one
+            # existing Test model and to query POSTs only.
+            allowed |= method == "POST" and parsed.path == "/v1.0/myorg/datasets/a97a9cc1-eaac-4007-b8ad-c146ac1776c5/executeDaxQueries"
             resource = "https://analysis.windows.net/powerbi/api"
         elif parsed.hostname == "onelake.blob.fabric.microsoft.com":
             allowed = parsed.path.startswith(f"/{WORKSPACE}/")
