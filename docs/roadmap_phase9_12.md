@@ -127,9 +127,11 @@ Nghiệm thu bằng một lần chạy toàn bộ từ nguồn trong backup trê
 
 ## Giai đoạn 11 — Tích hợp Snowflake hoặc Databricks
 
-Chọn nền tảng khi bắt đầu giai đoạn này. Triển khai cùng bài toán và hợp đồng dữ liệu, ghi rõ cách ánh xạ kiểu dữ liệu và những phần xử lý cần điều chỉnh.
+**Trạng thái: Hoàn tất bằng Databricks serverless.**
 
-Nghiệm thu bằng báo cáo đối chiếu với bản chuẩn và kết quả giai đoạn 10; mọi sai khác phải được giải thích. Ghi lại cấu hình, quyền truy cập, thời gian chạy và chi phí đo được.
+Đã triển khai cùng pipeline/hợp đồng dữ liệu của giai đoạn 10 trên Databricks, tạo đủ Bronze → Silver → Gold → Quality → Publish. Run nghiệm thu `phase11_20261005T041811Z` đạt quality checks và đối chiếu trực tiếp cả 8 bảng Gold với Phase 10 `review_fix_20261003_03` đều khớp hoàn toàn về schema và dữ liệu nghiệp vụ; chỉ các giá trị lineage theo từng lần chạy (`processed_at_utc`, `silver_run_id`, `gold_run_id`) được phép khác.
+
+Workspace chỉ hỗ trợ serverless nên runtime thực tế là Spark 4.2.0/Python 3.12.3 thay vì classic DBR pin trước đó. Các điều chỉnh tương thích Spark Connect/serverless và kết quả runtime, quyền, billing probe được ghi tại `docs/phase11_closeout.md`. Billing system table chưa có record tại thời điểm probe nên không suy diễn chi phí bằng 0.
 
 ## Giai đoạn 12 — Nghiệm thu và bàn giao
 
