@@ -1,0 +1,32 @@
+{
+  "job_permissions": {
+    "access_control_list": [
+      {
+        "all_permissions": [
+          {
+            "inherited": false,
+            "permission_level": "IS_OWNER"
+          }
+        ],
+        "user_name": "thaquan@users.noreply.github.com"
+      },
+      {
+        "all_permissions": [
+          {
+            "inherited": true,
+            "inherited_from_object": [
+              "/jobs/"
+            ],
+            "permission_level": "CAN_MANAGE"
+          }
+        ],
+        "group_name": "admins"
+      }
+    ],
+    "object_id": "/jobs/149867914773886",
+    "object_type": "job"
+  },
+  "schema_owner": "thaquan@users.noreply.github.com",
+  "note": "Owner evidence; no recipient-specific or least-privilege certification",
+  "volume_owner": "thaquan@users.noreply.github.com"
+}

@@ -38,7 +38,7 @@ live data in Desktop; baseline KPI match and screenshots are saved.
 confirmed in the Fabric catalog on 2026-09-27. The Urban slicer check passes;
 navigation/reset, chart cross-filter and Service rendering checks were skipped at
 the user's request, not marked as passed. SQL endpoint execution was also skipped.
-Phase 7 parts 1â€“2 have a verified local and OneLake export: eight Parquet tables and a manifest,
+Phase 7 parts 1–2 have a verified local and OneLake export: eight Parquet tables and a manifest,
 with KPI 668665 / 116779 / 551886, zero orphan keys and 35 reconciled segment groups.
 See [export instructions and evidence](docs/gold_export.md) and
 `metadata/gold_export_status.json` for OneLake transfer verification.
@@ -57,13 +57,16 @@ this documentation update does not re-audit the live services.
 See [initial Test deployment evidence](docs/phase8_test_deployment.md) and
 [operations runbook](docs/operations_runbook.md) for historical scope and procedures.
 
-Next: [the updated phases 9–12 roadmap](docs/roadmap_phase9_12.md).
-Phase 9 backs up source data, Bronze/Silver/Gold, code and configuration outside
-Fabric, then restores them in a clean independent environment without reading
-OneLake. This independent recovery has not yet been accepted. Phase 10 moves the
-full flow to PySpark/Airflow; phase 11 integrates Snowflake or Databricks; phase 12
-covers final acceptance and handoff. Phase 7 recovery inside Fabric does not prove
-independent recovery, and a downloaded ZIP alone does not complete phase 9.
+Current status, updated 2026-10-06:
+
+| Phase | Status | Evidence |
+| --- | --- | --- |
+| 9 — Independent backup and recovery | Accepted; restored outside Fabric without reading OneLake | [Phase 9 closeout](docs/phase9_closeout.md) |
+| 10 — Standalone PySpark and Airflow | Accepted; pipeline, quality gates and orchestration verified | [Phase 10 closeout](docs/phase10_closeout.md) |
+| 11 — Databricks integration | Accepted; clean package run succeeded, 116 artifact checksums and all eight Gold tables verified | [Phase 11 closeout](docs/phase11_closeout.md) |
+| 12 — Final acceptance and handoff | Technical checks passed: offline restore, Airflow/publish, Gold reconciliation and service checks; recipient sign-off and independent backup copy pending | [Phase 12 closeout](docs/phase12_closeout.md) |
+
+See [the phases 9–12 roadmap](docs/roadmap_phase9_12.md) for scope and acceptance criteria.
 See [Power BI report status and checks](docs/powerbi_report.md).
 
 For Phase 11, use the [Databricks packaging, execution and reconciliation runbook](docs/phase11_databricks.md).
@@ -77,7 +80,7 @@ Source schema and checksums are in `metadata/`; raw/generated data is excluded
 from Git. The original reference remains separate from competition train/test.
 
 ```powershell
-python -m pip install -r requirements.txt
+python -m pip install -r requirements.txt -r requirements-cd.txt -r requirements-phase10.txt -r requirements-phase11.txt
 python -m unittest discover -s tests -v
 python scripts/bronze_silver.py --stage-bronze
 python scripts/build_fabric_notebook.py
@@ -94,3 +97,7 @@ effects or population-level EV demand.
 
 Live model: [SM_EV_Analytics](https://app.powerbi.com/groups/5fe78794-25c3-41ee-b35e-bc56542d2cea/datasets/8e7e37b7-7bab-4122-84fb-3ae7b2121cd7/details).
 The exported live TMDL snapshot is in `models/SM_EV_Analytics/`.
+
+Documentation is stored as UTF-8. In Windows PowerShell, use
+`Get-Content -Encoding utf8 README.md`; in an editor, reopen the file as UTF-8
+if Vietnamese text or punctuation appears garbled.

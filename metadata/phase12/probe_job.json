@@ -1,0 +1,42 @@
+{
+  "run_id": 749656111780848,
+  "state": {
+    "life_cycle_state": "TERMINATED",
+    "result_state": "SUCCESS",
+    "state_message": "",
+    "user_cancelled_or_timedout": false
+  },
+  "tasks": [
+    {
+      "attempt_number": 0,
+      "cleanup_duration": 0,
+      "effective_performance_target": "PERFORMANCE_OPTIMIZED",
+      "end_time": 1791266523270,
+      "execution_duration": 45000,
+      "notebook_task": {
+        "notebook_path": "/Shared/ev_phase11/phase12_probe_20261006",
+        "source": "WORKSPACE"
+      },
+      "run_id": 138928197356216,
+      "run_if": "ALL_SUCCESS",
+      "run_page_url": "https://dbc-c096f3b6-3e9a.cloud.databricks.com/?o=7474647141574206#job/114527575024708/run/138928197356216",
+      "setup_duration": 5000,
+      "start_time": 1791266472982,
+      "state": {
+        "life_cycle_state": "TERMINATED",
+        "result_state": "SUCCESS",
+        "state_message": "",
+        "user_cancelled_or_timedout": false
+      },
+      "status": {
+        "state": "TERMINATED",
+        "termination_details": {
+          "code": "SUCCESS",
+          "message": "",
+          "type": "SUCCESS"
+        }
+      },
+      "task_key": "phase12_probe"
+    }
+  ]
+}
