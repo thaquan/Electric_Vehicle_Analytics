@@ -1,12 +1,33 @@
 # Databricks notebook source
 import json
+import hashlib
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from pyspark.sql import SparkSession
 
-PROJECT_ROOT = Path('/Volumes/workspace/ev_phase11/ev_phase11/project')
+dbutils.widgets.text('project_root', '/Volumes/workspace/ev_phase11/ev_phase11/project')
+PROJECT_ROOT = Path(dbutils.widgets.get('project_root'))
+package = json.loads((PROJECT_ROOT / 'package_manifest.json').read_text(encoding='utf-8'))
+expected_overlay = {f'src/{name}.py': f'databricks/runtime_src/{name}.py'
+                    for name in ('bronze', 'silver', 'gold', 'quality_checks')}
+if package.get('platform') != 'databricks-serverless' or package.get('runtime_overlay') != expected_overlay:
+    raise RuntimeError('Build the serverless project with scripts/phase11_package.py')
+if not set(expected_overlay).issubset(package['files']):
+    raise RuntimeError('Package manifest is missing runtime modules')
+for relative, expected in package['files'].items():
+    path = PROJECT_ROOT / relative
+    if not path.resolve().is_relative_to(PROJECT_ROOT.resolve()):
+        raise RuntimeError(f'Invalid package path: {relative}')
+    with path.open('rb') as stream:
+        digest = hashlib.file_digest(stream, 'sha256').hexdigest()
+    if digest != expected['sha256'] or path.stat().st_size != expected['bytes']:
+        raise RuntimeError(f'Package checksum mismatch: {relative}')
 sys.path.insert(0, str(PROJECT_ROOT))
+# A notebook may be rerun in a Python session that imported a different release.
+for name in list(sys.modules):
+    if name == 'src' or name.startswith('src.') or name in ('gold_rules', 'star_schema'):
+        del sys.modules[name]
 
 from src.bronze import build_bronze
 from src.silver import build_silver

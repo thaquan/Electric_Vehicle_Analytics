@@ -1,0 +1,25 @@
+{
+  "status": "passed",
+  "pipeline_run_id": "phase11_20261006T013808Z",
+  "verified_artifact_files": 116,
+  "deployed_code_matches_package": true,
+  "quality": {
+    "status": "passed",
+    "respondents": 668665,
+    "yes": 116779,
+    "no": 551886,
+    "orphan_keys": 0,
+    "segment_groups": 35,
+    "dimension_rows": {
+      "dim_demographics": 45,
+      "dim_income": 4,
+      "dim_mobility": 16,
+      "dim_charging": 2,
+      "dim_attitude_incentive": 30
+    },
+    "tables": 8,
+    "schema_checks": "passed",
+    "silver_reconstruction": "exact",
+    "aggregate_checks": "passed"
+  }
+}

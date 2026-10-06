@@ -129,6 +129,8 @@ Nghiệm thu bằng một lần chạy toàn bộ từ nguồn trong backup trê
 
 **Trạng thái: Hoàn tất bằng Databricks serverless.**
 
+Ngày 2026-10-06 đã bổ sung đóng gói runtime và công cụ đối chiếu có thể tái hiện; chạy package sạch trên Databricks với run `phase11_20261006T013808Z` đạt SUCCESS, kiểm tra checksum 116 artifact và đối chiếu cả 8 bảng Gold đều đạt. Xem [hướng dẫn tái triển khai](phase11_databricks.md) và [kết quả khắc phục review](phase11_review.md).
+
 Đã triển khai cùng pipeline/hợp đồng dữ liệu của giai đoạn 10 trên Databricks, tạo đủ Bronze → Silver → Gold → Quality → Publish. Run nghiệm thu `phase11_20261005T041811Z` đạt quality checks và đối chiếu trực tiếp cả 8 bảng Gold với Phase 10 `review_fix_20261003_03` đều khớp hoàn toàn về schema và dữ liệu nghiệp vụ; chỉ các giá trị lineage theo từng lần chạy (`processed_at_utc`, `silver_run_id`, `gold_run_id`) được phép khác.
 
 Workspace chỉ hỗ trợ serverless nên runtime thực tế là Spark 4.2.0/Python 3.12.3 thay vì classic DBR pin trước đó. Các điều chỉnh tương thích Spark Connect/serverless và kết quả runtime, quyền, billing probe được ghi tại `docs/phase11_closeout.md`. Billing system table chưa có record tại thời điểm probe nên không suy diễn chi phí bằng 0.
