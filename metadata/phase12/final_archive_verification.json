@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "checked_at_utc": "2026-10-06T12:56:37.788523+00:00",
+  "final_archive_sha256": "302009e7d31492c762ff6f951ba4dd4899165d8aa38d6f0d2c45a40edebf176b",
+  "final_archive_bytes": 159666986,
+  "final_manifest_sha256": "5c48708cfc8bc82cc924d6311c88915165722f58010129b6d4e610393fc0be95",
+  "final_inventory_files": 561,
+  "recovery_payload_files_identical_to_successfully_restored_trial": 258,
+  "trial_archive_sha256": "3567727032b11eec9cf425d45c2a77ba5c68b23816aacf6b7af16284b216c01e",
+  "verification_method": "Fresh ZIP extraction and complete inventory verification; baseline archive, Databricks snapshots, Phase 10 reference Gold, DuckDB runtime and restore/reconcile/inventory code hashes exactly match the successfully restored r2 bundle",
+  "full_baseline_restore_repeated_for_final_archive": false,
+  "restored_trial_report": "metadata/phase12/restore_report.json",
+  "recipient_signoff": false
+}
