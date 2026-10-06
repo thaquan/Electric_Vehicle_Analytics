@@ -66,6 +66,10 @@ covers final acceptance and handoff. Phase 7 recovery inside Fabric does not pro
 independent recovery, and a downloaded ZIP alone does not complete phase 9.
 See [Power BI report status and checks](docs/powerbi_report.md).
 
+For Phase 11, use the [Databricks packaging, execution and reconciliation runbook](docs/phase11_databricks.md).
+It installs the serverless runtime into the deployed `src` package and provides
+the versionable CLI for comparing all eight Gold tables against Phase 10.
+
 Start with [the Bronze/Silver runbook](docs/bronze_silver.md).
 Next: [Gold definitions and run instructions](docs/gold_runbook.md).
 Run the full flow using [PL_EV_E2E instructions](docs/pipeline_runbook.md).
