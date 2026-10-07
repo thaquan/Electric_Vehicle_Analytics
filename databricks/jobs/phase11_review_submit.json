@@ -1,0 +1,17 @@
+{
+  "run_name": "EV Analytics Phase 11 clean package verification",
+  "tasks": [
+    {
+      "task_key": "phase11_e2e",
+      "notebook_task": {
+        "notebook_path": "/Shared/ev_phase11/phase11_runner_review_20261006",
+        "source": "WORKSPACE",
+        "base_parameters": {
+          "project_root": "/Volumes/workspace/ev_phase11/ev_phase11/releases/review_20261006/project"
+        }
+      },
+      "timeout_seconds": 7200,
+      "max_retries": 0
+    }
+  ]
+}

@@ -1,0 +1,2 @@
+# Local reconciliation only. Spark is provided by Databricks serverless.
+duckdb==1.5.6

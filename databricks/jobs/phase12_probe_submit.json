@@ -1,0 +1,12 @@
+{
+  "run_name": "EV Analytics Phase 12 runtime and billing evidence",
+  "tasks": [{
+    "task_key": "phase12_probe",
+    "notebook_task": {
+      "notebook_path": "/Shared/ev_phase11/phase12_probe_20261006",
+      "source": "WORKSPACE"
+    },
+    "timeout_seconds": 600,
+    "max_retries": 0
+  }]
+}

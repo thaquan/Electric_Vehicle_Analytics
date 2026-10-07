@@ -1,0 +1,1 @@
+{"name":"EV Analytics Phase 11 Databricks","max_concurrent_runs":1,"tasks":[{"task_key":"phase11_e2e","notebook_task":{"notebook_path":"/Shared/ev_phase11/phase11_runner","source":"WORKSPACE"},"timeout_seconds":7200,"max_retries":0}]}

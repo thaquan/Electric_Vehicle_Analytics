@@ -1,0 +1,56 @@
+{
+  "status": "passed",
+  "started_at_utc": "2026-10-06T06:06:31.799700+00:00",
+  "bundle_files_verified": 551,
+  "credentials_forwarded": false,
+  "source": "Only files inside the extracted Phase 12 archive",
+  "baseline_command": [
+    "C:\\Users\\TRANG\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-I",
+    "-S",
+    "-B",
+    "D:\\electric_vehical_sales\\output\\phase12\\restore02\\baseline\\ev-analytics-backup\\code\\scripts\\phase9_restore.py",
+    "--backup",
+    "D:\\electric_vehical_sales\\output\\phase12\\restore02\\baseline\\ev-analytics-backup",
+    "--output",
+    "D:\\electric_vehical_sales\\output\\phase12\\restore02\\baseline_verification"
+  ],
+  "baseline_restore": {
+    "respondents": 668665,
+    "yes": 116779,
+    "no": 551886,
+    "orphan_keys": 0,
+    "segment_groups": 35,
+    "tables": 15
+  },
+  "baseline_isolation": {
+    "mode": "Python audit guard, isolated imports, local file readers",
+    "self_tests": "network and outside-file reads denied",
+    "self_test_blocked_operations": {
+      "network_blocked": 1,
+      "process_blocked": 0,
+      "file_blocked": 1
+    },
+    "setup_blocked_operations": {
+      "network_blocked": 1,
+      "process_blocked": 0,
+      "file_blocked": 3
+    },
+    "blocked_operations": {
+      "network_blocked": 2,
+      "process_blocked": 0,
+      "file_blocked": 4
+    },
+    "unexpected_blocked_operations": 0,
+    "fabric_credentials_used": false,
+    "limitation": "Process-level protection for this trusted script, not an OS firewall or native-code sandbox."
+  },
+  "phase11_snapshot_files": 116,
+  "gold_tables_reconciled": 8,
+  "finished_at_utc": "2026-10-06T06:15:28.978703+00:00",
+  "limitations": [
+    "Windows x64 CPython 3.13 required for bundled native libraries",
+    "Phase 9 restore has a Python process audit guard; outer restore is not an OS network sandbox",
+    "Spark/Java/Airflow and cloud services are not bundled; this command verifies recovery, not a fresh cloud deployment"
+  ]
+}
