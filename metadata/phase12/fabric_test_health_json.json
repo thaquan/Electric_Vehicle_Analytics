@@ -1,0 +1,36 @@
+{
+  "status": "passed",
+  "checked_at_utc": "2026-10-06T05:58:37.914049+00:00",
+  "workspace_id": "27873d0c-580a-4963-9e25-5846948f1c5d",
+  "semantic_model_id": "a97a9cc1-eaac-4007-b8ad-c146ac1776c5",
+  "report_id": "b7d65039-0413-4ecc-9f7f-33f0098c9cc0",
+  "checks": {
+    "report_binding": "passed",
+    "latest_refresh": "passed",
+    "dax_kpi": "passed"
+  },
+  "latest_refresh": {
+    "requestId": "9557f257-122e-4c56-a41f-8bddb4e0a899",
+    "id": 348384501,
+    "refreshType": "ViaEnhancedApi",
+    "startTime": "2026-10-03T16:09:23.4Z",
+    "endTime": "2026-10-03T16:09:27.243Z",
+    "status": "Completed",
+    "extendedStatus": "Completed",
+    "refreshAttempts": [
+      {
+        "attemptId": 1,
+        "startTime": "2026-10-03T16:09:23.786501Z",
+        "endTime": "2026-10-03T16:09:27.2447241Z",
+        "type": "Data",
+        "executionMetrics": []
+      }
+    ]
+  },
+  "dax_api": "json",
+  "actual_kpi": {
+    "respondents": 668665,
+    "yes": 116779,
+    "no": 551886
+  }
+}

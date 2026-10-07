@@ -1,0 +1,33 @@
+{
+  "note": "Agent rehearsal from freshly extracted r2 bundle; not recipient sign-off",
+  "mounts": [
+    {
+      "Type": "bind",
+      "Source": "D:/electric_vehical_sales/output/phase12/r2/clean-room/handoff/project",
+      "Destination": "/opt/ev",
+      "Mode": "",
+      "RW": false,
+      "Propagation": "rprivate"
+    },
+    {
+      "Type": "bind",
+      "Source": "D:/electric_vehical_sales/output/phase12/r2/clean-room/handoff/snapshots/phase11/bronze/csv",
+      "Destination": "/opt/ev/data/raw/kaggle",
+      "Mode": "",
+      "RW": false,
+      "Propagation": "rprivate"
+    },
+    {
+      "Type": "bind",
+      "Source": "D:/electric_vehical_sales/output/phase12/airflow_e2e",
+      "Destination": "/opt/ev/output",
+      "Mode": "",
+      "RW": true,
+      "Propagation": "rprivate"
+    }
+  ],
+  "hostname": "ev-phase12",
+  "network_mode": "none",
+  "image_tag": "ev-phase10-airflow:2.10.5",
+  "image_id": "sha256:cbd187f1ce2cb85a9eff493d2acb3df232be97ffa6717b7634f3c17073b6d1b5"
+}

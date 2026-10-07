@@ -1,0 +1,21 @@
+{
+  "status": "packaged",
+  "archive": "D:\\electric_vehical_sales\\output\\phase12\\final\\ev-analytics-handoff.zip",
+  "archive_sha256": "302009e7d31492c762ff6f951ba4dd4899165d8aa38d6f0d2c45a40edebf176b",
+  "archive_bytes": 159666986,
+  "files": 561,
+  "base_commit": "a618597e515f55fe930df6c6ec2e8dd1a0483c9f",
+  "manifest_sha256": "5c48708cfc8bc82cc924d6311c88915165722f58010129b6d4e610393fc0be95",
+  "phase11_run": "phase11_20261006T013808Z",
+  "secret_scan": {
+    "status": "passed",
+    "text_files_checked": 281,
+    "method": "Git-visible project selection and credential-pattern scan; native runtime excluded from text scan",
+    "excluded": [
+      "Git-ignored files",
+      "credential stores",
+      ".git",
+      "native runtime text scan"
+    ]
+  }
+}

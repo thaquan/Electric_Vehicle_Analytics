@@ -1,0 +1,16 @@
+{
+  "profile": "ev-phase11",
+  "host": "https://dbc-c096f3b6-3e9a.cloud.databricks.com",
+  "catalog": "workspace",
+  "schema": "ev_phase11",
+  "volume": "workspace.ev_phase11.ev_phase11",
+  "compute": "serverless",
+  "spark_version": "4.2.0",
+  "python_version": "3.12.3",
+  "phase10_reference_run": "review_fix_20261003_03",
+  "phase11_success_run": "phase11_20261005T041811Z",
+  "databricks_job_id": 149867914773886,
+  "databricks_job_run_id": 23656547233351,
+  "runtime_probe_job_id": 485143118947131,
+  "runtime_probe_run_id": 549984065494379
+}

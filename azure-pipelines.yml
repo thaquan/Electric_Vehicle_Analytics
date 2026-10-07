@@ -21,6 +21,7 @@ steps:
       python -m pip install -r requirements.txt
       python -m pip install -r requirements-cd.txt
       python -m pip install -r requirements-phase10.txt
+      python -m pip install -r requirements-phase11.txt
     displayName: Install dependencies
 
   - bash: |
@@ -38,6 +39,8 @@ steps:
         test_pipeline.py \
         test_phase9_backup.py \
         test_phase10_orchestration.py \
+        test_phase11.py \
+        test_phase12.py \
         test_gold_export.py \
         test_fabric_test_api.py \
         test_test_health.py \
