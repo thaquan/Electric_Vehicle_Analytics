@@ -1,14 +1,10 @@
-# Phase 7 ? Parquet export and manifest
+# Gold Parquet export and manifest
 
 ## Scope
 
-Parts 1?2 export the verified Gold v2 snapshot `20260925T152721965637Z`.
-The export did not rerun the pipeline or transformation notebooks, refresh the model,
-or modify source tables. Parts 3?4 cover packaging and the recovery procedure;
-see the [recovery runbook](../recovery/recovery_runbook.md) and
-`metadata/gold_recovery_package_status.json`. Isolated recovery had not run at the
-export date; subsequent results are in the [phase 7 closeout](../milestones/phase7_closeout.md).
-Remaining dashboard checks stay **skipped by user request**, not passed.
+Export the pinned Gold v2 snapshot without rerunning transformations or changing source tables.
+Package and restore it using the [recovery runbook](../recovery/recovery_runbook.md).
+See [validation and limitations](../validation.md) for the implemented checks.
 
 ## Export details
 

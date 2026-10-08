@@ -1,4 +1,4 @@
-# Giai đoạn 9 — Backup và khôi phục độc lập
+# Backup và khôi phục snapshot
 
 ## Chạy từ bản backup trên máy khác
 
@@ -64,6 +64,6 @@ TMDL, report và định nghĩa pipeline được lưu từ phiên bản hiện 
 không tuyên bố đây là một lần đồng bộ lại mọi chỉnh sửa trực tiếp trên dịch vụ.
 Bằng chứng và ID Fabric cũ được giữ để truy xuất nguồn gốc. Việc chạy lại toàn bộ
 Bronze → Silver → Gold bằng PySpark/Airflow, chuyển model/report sang nền tảng khác
-và cài Spark/Java/Airflow thuộc các giai đoạn sau.
+và cài Spark/Java/Airflow được mô tả trong [runbook standalone](../pipelines/standalone_pipeline.md).
 
-Xem [lộ trình và điều kiện nghiệm thu](../milestones/roadmap_phase9_12.md).
+Xem [tổng kết và điều kiện nghiệm thu](../validation.md).

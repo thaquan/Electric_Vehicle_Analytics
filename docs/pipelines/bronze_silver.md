@@ -3,10 +3,8 @@
 Workspace: `WS_EV_Analytics` (`5fe78794-25c3-41ee-b35e-bc56542d2cea`).
 Bronze: `LH_EV_Bronze` (`c1516bc3-3ae5-4a7f-966e-16a6c8126ec5`).
 Silver: `LH_EV_Silver` (`676ba346-22dd-4eeb-92ec-4f53f09ccca7`).
-All four raw CSVs have been uploaded to Bronze with user authorization.
-Silver run `20260924T031507399976Z` completed successfully. Its publication
-marker and quality report have been verified directly on OneLake and saved
-in `metadata/silver_published_run.json` and `metadata/silver_fabric_quality_report.json`.
+The pipeline validates source snapshots before publishing typed Silver tables.
+Runtime reports are generated locally and are excluded from Git.
 Continue with [the Gold runbook](gold_runbook.md).
 For repeatable orchestration, use [PL_EV_E2E](pipeline_runbook.md).
 
@@ -21,7 +19,7 @@ python -m unittest discover -s tests -v
 
 Local Bronze stores unchanged bytes at `data/bronze/<sha256>/<filename>`.
 Existing matching snapshots are reused; conflicting bytes fail validation.
-The quality report is `metadata/silver_quality_report.json`. Local validation
+The quality report is `metadata/silver_quality_report.json` (local output; excluded from Git). Local validation
 prepares typed data in memory; it does not create Silver Delta tables.
 
 ## Fabric layout and execution

@@ -15,7 +15,7 @@ The older executions below remain historical reference.
 - `WS_EV_Analytics`: `5fe78794-25c3-41ee-b35e-bc56542d2cea`.
 - `LH_EV_Gold` created: `32e99e91-38e9-4428-8fd2-6bcff6573088`.
 - Silver success marker and quality report downloaded from OneLake into
-  `metadata/silver_published_run.json` and `metadata/silver_fabric_quality_report.json`.
+  `metadata/silver_published_run.json` and `metadata/silver_fabric_quality_report.json` (local output; excluded from Git).
 - Gold run `20260924T131322687853Z` published successfully; its OneLake marker
   is saved as `metadata/gold_published_run.json`.
 - The updated notebook supports the E2E pipeline. See [pipeline instructions](pipeline_runbook.md).

@@ -11,8 +11,7 @@ The rollout below describes the procedure for future snapshots.
 
 ## Design decision
 
-Keep `LH_EV_Gold` (Delta Lakehouse). Stage 5 permits Warehouse **or** Lakehouse;
-a star schema is a logical design and does not require adding a Warehouse.
+Keep `LH_EV_Gold` (Delta Lakehouse). A star schema is a logical design and does not require adding a Warehouse.
 The existing Spark transformation and immutable snapshot publication are retained.
 
 One fact row is one labeled synthetic train respondent. It measures purchase
@@ -99,7 +98,7 @@ permission to both endpoints. Spark SQL success does not prove endpoint access.
    python scripts/prepare_star_binding.py --audit metadata/e2e_star_verified_run.json --connection-name "<MCP connection name>"
    ```
 
-   Apply `metadata/star_model_binding_request.json` with Modeling MCP
+   Apply `metadata/star_model_binding_request.json` (local output; excluded from Git) with Modeling MCP
    `table_operations`, then export TMDL. The helper refuses legacy, incomplete
    or mixed-run audits. It also creates runnable `sql/gold_reconciliation.sql`.
 5. Deploy `SM_EV_Analytics`, configure its authorized data connection and refresh.
