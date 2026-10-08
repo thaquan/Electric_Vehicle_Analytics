@@ -5,10 +5,10 @@ Cập nhật ngày 2026-10-06 theo lộ trình người dùng cung cấp và b�
 ## Điểm xuất phát
 
 - Giai đoạn 7 đã có backup Gold và khôi phục trong Fabric. Kết quả này chưa chứng minh hệ thống chạy được khi không còn Fabric; xem [biên bản giai đoạn 7](phase7_closeout.md).
-- Giai đoạn 8 giải quyết CI/CD và vận hành trên Fabric. Lộ trình này tiếp nhận thông tin người dùng cung cấp rằng các bước còn lại đã hoàn tất. Bằng chứng CI/CD hiện lưu trong repo được mô tả tại [triển khai Test tự động](test_cd.md); tài liệu này không phải một lần kiểm tra lại dịch vụ.
+- Giai đoạn 8 giải quyết CI/CD và vận hành trên Fabric. Lộ trình này tiếp nhận thông tin người dùng cung cấp rằng các bước còn lại đã hoàn tất. Bằng chứng CI/CD hiện lưu trong repo được mô tả tại [triển khai Test tự động](../deployment/test_cd.md); tài liệu này không phải một lần kiểm tra lại dịch vụ.
 - Giai đoạn 9: **đã nghiệm thu khôi phục độc lập**. ZIP release-02 và lần kiểm tra lại ngày 2026-10-03 đều đạt; xem [biên bản giai đoạn 9](phase9_closeout.md).
 - Giai đoạn 10: **đã nghiệm thu PySpark và Airflow DAG**, gồm các bổ sung quality gate, kiểm checksum khi retry và run ID an toàn; xem [biên bản giai đoạn 10](phase10_closeout.md).
-- Giai đoạn 11: **đã nghiệm thu Databricks serverless và tái triển khai package sạch**; xem [biên bản giai đoạn 11](phase11_closeout.md). Bước tiếp theo là [giai đoạn 12 — nghiệm thu và bàn giao](phase12_handoff.md).
+- Giai đoạn 11: **đã nghiệm thu Databricks serverless và tái triển khai package sạch**; xem [biên bản giai đoạn 11](phase11_closeout.md). Bước tiếp theo là [giai đoạn 12 — nghiệm thu và bàn giao](../operations/phase12_handoff.md).
 
 | Giai đoạn | Mục tiêu | Kết quả cần đạt |
 | --- | --- | --- |
@@ -36,11 +36,11 @@ Không đưa token, mật khẩu hoặc client secret vào gói backup. Với th
 
 Các tài nguyên sẵn có để bắt đầu kiểm kê:
 
-- Nguồn và schema: `metadata/source_manifest.json`, `metadata/schema_contract.yaml`, [Bronze/Silver](bronze_silver.md).
-- Gold: [hướng dẫn export](gold_export.md), `metadata/gold_export_manifest.json` và `metadata/e2e_star_verified_run.json`.
+- Nguồn và schema: `metadata/source_manifest.json`, `metadata/schema_contract.yaml`, [Bronze/Silver](../pipelines/bronze_silver.md).
+- Gold: [hướng dẫn export](../pipelines/gold_export.md), `metadata/gold_export_manifest.json` và `metadata/e2e_star_verified_run.json`.
 - Code và định nghĩa: `scripts/`, `notebooks/`, các thư mục `.Notebook`, `PL_EV_E2E.DataPipeline/`, `sql/`, các file `requirements*.txt`.
 - Power BI: `models/`, `SM_EV_Analytics.SemanticModel/`, `RPT_EV_Analytics.Report/` và `RPT_EV_Analytics.pbip`.
-- Cấu hình và bằng chứng: `config/`, `metadata/`, [runbook khôi phục](recovery_runbook.md), [vận hành](operations_runbook.md).
+- Cấu hình và bằng chứng: `config/`, `metadata/`, [runbook khôi phục](../recovery/recovery_runbook.md), [vận hành](../operations/operations_runbook.md).
 
 Sự tồn tại của file trong repo chưa xác nhận gói backup đầy đủ. Danh mục phải ghi đường dẫn trong backup, nguồn, phiên bản/run ID, trạng thái đã sao chép và kết quả kiểm chứng của từng thành phần. Dữ liệu và ZIP đang bị loại khỏi Git, nên clone repo không đủ để khôi phục.
 
@@ -130,15 +130,15 @@ Nghiệm thu bằng một lần chạy toàn bộ từ nguồn trong backup trê
 
 **Trạng thái: Hoàn tất bằng Databricks serverless.**
 
-Ngày 2026-10-06 đã bổ sung đóng gói runtime và công cụ đối chiếu có thể tái hiện; chạy package sạch trên Databricks với run `phase11_20261006T013808Z` đạt SUCCESS, kiểm tra checksum 116 artifact và đối chiếu cả 8 bảng Gold đều đạt. Xem [hướng dẫn tái triển khai](phase11_databricks.md) và [kết quả khắc phục review](phase11_review.md).
+Ngày 2026-10-06 đã bổ sung đóng gói runtime và công cụ đối chiếu có thể tái hiện; chạy package sạch trên Databricks với run `phase11_20261006T013808Z` đạt SUCCESS, kiểm tra checksum 116 artifact và đối chiếu cả 8 bảng Gold đều đạt. Xem [hướng dẫn tái triển khai](../pipelines/phase11_databricks.md) và [kết quả khắc phục review](phase11_review.md).
 
 Đã triển khai cùng pipeline/hợp đồng dữ liệu của giai đoạn 10 trên Databricks, tạo đủ Bronze → Silver → Gold → Quality → Publish. Run nghiệm thu `phase11_20261005T041811Z` đạt quality checks và đối chiếu trực tiếp cả 8 bảng Gold với Phase 10 `review_fix_20261003_03` đều khớp hoàn toàn về schema và dữ liệu nghiệp vụ; chỉ các giá trị lineage theo từng lần chạy (`processed_at_utc`, `silver_run_id`, `gold_run_id`) được phép khác.
 
-Workspace chỉ hỗ trợ serverless nên runtime thực tế là Spark 4.2.0/Python 3.12.3 thay vì classic DBR pin trước đó. Các điều chỉnh tương thích Spark Connect/serverless và kết quả runtime, quyền, billing probe được ghi tại `docs/phase11_closeout.md`. Billing system table chưa có record tại thời điểm probe nên không suy diễn chi phí bằng 0.
+Workspace chỉ hỗ trợ serverless nên runtime thực tế là Spark 4.2.0/Python 3.12.3 thay vì classic DBR pin trước đó. Các điều chỉnh tương thích Spark Connect/serverless và kết quả runtime, quyền, billing probe được ghi tại `docs/milestones/phase11_closeout.md`. Billing system table chưa có record tại thời điểm probe nên không suy diễn chi phí bằng 0.
 
 ## Giai đoạn 12 — Nghiệm thu và bàn giao
 
-**Trạng thái: các kiểm chứng kỹ thuật đã đạt; chờ xác nhận bàn giao của người tiếp nhận và bản sao backup ngoài máy.** Đã khôi phục offline 15 bảng, kiểm 116 artifact snapshot Databricks, chạy/tiếp tục Airflow qua sáu stage đến publish, đối chiếu đủ tám bảng Gold và kiểm tra Fabric Test. Xem [biên bản kỹ thuật](phase12_closeout.md), [runbook](phase12_operations.md) và [checklist bàn giao](phase12_handoff.md).
+**Trạng thái: các kiểm chứng kỹ thuật đã đạt; chờ xác nhận bàn giao của người tiếp nhận và bản sao backup ngoài máy.** Đã khôi phục offline 15 bảng, kiểm 116 artifact snapshot Databricks, chạy/tiếp tục Airflow qua sáu stage đến publish, đối chiếu đủ tám bảng Gold và kiểm tra Fabric Test. Xem [biên bản kỹ thuật](phase12_closeout.md), [runbook](../operations/phase12_operations.md) và [checklist bàn giao](../operations/phase12_handoff.md).
 
 Chốt tính đúng, quyền, hiệu năng và vận hành trên phạm vi nền tảng đã triển khai. Bàn giao hướng dẫn cài đặt, chạy, kiểm tra, xử lý lỗi, backup, khôi phục và tiếp tục phát triển; chỉ rõ người phụ trách và nơi lưu bằng chứng.
 

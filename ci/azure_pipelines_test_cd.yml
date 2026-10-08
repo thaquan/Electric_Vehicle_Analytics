@@ -53,7 +53,7 @@ stages:
                     workingDirectory: '$(Pipeline.Workspace)/verifiedCI/ev-test-release'
                     inlineScript: |
                       set -euo pipefail
-                      python -m pip install -r requirements-cd.txt
+                      python -m pip install -r requirements/requirements_cd.txt
                       args=()
                       if [ "${PREFLIGHT_ONLY,,}" = "true" ]; then
                         args+=(--preflight-only)

@@ -5,7 +5,7 @@ Gold v2 snapshot: **20260925T152721965637Z**. Expected KPI: **668665 / 116779 / 
 The package contains eight Parquet files and a manifest, notebooks/scripts, SQL,
 semantic model TMDL, report PBIP, visual resources, and configuration instructions.
 Parts 3?4 prepared the package and procedure. Recovery had not run when the original
-ZIP was released; see the repository's `docs/phase7_closeout.md` for subsequent results.
+ZIP was released; see the repository's `docs/milestones/phase7_closeout.md` for subsequent results.
 Remaining dashboard tests are **skipped by user request**, not passed.
 
 ## Get started
@@ -25,7 +25,7 @@ Remaining dashboard tests are **skipped by user request**, not passed.
    python verify_package.py <zip-path>
    ```
 
-3. Read `project/docs/recovery_runbook.md` in the extracted package. In the source
+3. Read `project/docs/recovery/recovery_runbook.md` in the extracted package. In the source
    repository, use the [recovery runbook](recovery_runbook.md).
 4. For a new recovery attempt, create a workspace/lakehouse, fill in
    `recovery.config.json`, load the snapshot, create the model, refresh it,
