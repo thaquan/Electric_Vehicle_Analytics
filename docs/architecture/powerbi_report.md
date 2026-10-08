@@ -1,28 +1,9 @@
-# RPT_EV_Analytics ? Phase 6
+# Power BI report
 
-## Status on 2026-09-27
-
-- Created `RPT_EV_Analytics.pbip` and `RPT_EV_Analytics.Report`.
-- The report connects to the existing `SM_EV_Analytics`
-  (`8e7e37b7-7bab-4122-84fb-3ae7b2121cd7`) in `WS_EV_Analytics`.
-- No pipeline rerun, model refresh, or model modification was performed for this report work.
-- SQL analytics endpoint execution was skipped by user request, not passed.
-- PBIR CLI validation: **zero errors and zero warnings**; see `metadata/report_validation.json`.
-- Opened the report in Power BI Desktop and checked live data and screenshots of all
-  three pages. Overview matches 668,665 / 116,779 / 551,886 / 17.46%; the other eight
-  KPI match the DAX evidence after rounding. Screenshots are in `docs/screenshots/`.
-- All report text is in English and uses **EV purchase intent**. Reloaded and checked
-  for visual errors and clipped text.
-- Published to `WS_EV_Analytics`; the Fabric catalog confirmed report ID
-  `ae4d7c59-759e-4462-afed-1717475ae012` on 2026-09-27.
-  [Open report](https://app.powerbi.com/groups/5fe78794-25c3-41ee-b35e-bc56542d2cea/reports/ae4d7c59-759e-4462-afed-1717475ae012).
-- Tested City type = Urban using Windows UI Automation: 289,305 respondents,
-  46,595 intending, 242,710 not intending, and a 16.11% rate; all match the reference.
-  Clearing the slicer restores 668,665. Evidence: `docs/screenshots/overview_urban_filter.png`.
-- Navigation/reset, chart cross-filter, and remaining Service rendering tests are
-  **skipped by user request**, not passed. Playwright was not used.
-- Phase 7 export and manifest evidence is in the [export guide](../pipelines/gold_export.md).
-  For subsequent isolated recovery results, see the [phase 7 closeout](../milestones/phase7_closeout.md).
+Three pages connect to the Fabric semantic model and describe EV purchase intent.
+The saved Desktop screenshots are in `docs/screenshots/`; see the [README](../../README.md#dashboard).
+Structural validation and KPI comparisons have passed for the recorded report version.
+Full navigation/reset, chart cross-filter and Service rendering acceptance remain unverified.
 
 ## Contents
 
@@ -59,7 +40,7 @@ represent actual sales, conversion rates, or causal effects.
 4. Publish to `WS_EV_Analytics` as `RPT_EV_Analytics`.
 5. Save the report URL/ID and screenshots with the acceptance evidence.
 
-`metadata/report_create_payload.json` was generated locally with CLI `pack --mode create`.
+`metadata/report_create_payload.json` (local output; excluded from Git) was generated locally with CLI `pack --mode create`.
 Its Fabric API request body is `data.body`, not the whole envelope. This generated
 file is excluded from Git and is not evidence of publication to the Service.
 
@@ -85,8 +66,7 @@ The following values come from saved DAX evidence and were compared with all
 
 The following checklist describes expected behavior; it does not override skipped tests:
 
-- Compare KPI and groups with `metadata/semantic_model_live_dax.json`,
-  `metadata/semantic_model_profile_dax.json`, and `metadata/star_expected_metrics.json`.
+- Compare KPI and groups with `metadata/star_expected_metrics.json` and `metadata/gold_expected_metrics.json`.
 - Select an age/income band: KPI and charts should update together; the rate should
   equal intending respondents divided by respondents in the current filter context.
 - Combine city type, home charging, and subsidy in the Filter pane and compare

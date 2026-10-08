@@ -1,16 +1,9 @@
 # EV Analytics recovery runbook
 
-> Updated 2026-09-29: the recovery drill is complete; see the
-> [closeout results](../milestones/phase7_closeout.md). Historical statements about work not yet
-> performed refer to the original ZIP release. Verify every step for each new
-> recovery attempt; historical results are not evidence for a new attempt.
+Restore the exported Gold v2 snapshot, then create and validate a model/report in a separate workspace.
+A new restore must pass its own checks; prior results do not validate a new deployment.
 
-## 1. Scope and status
-
-This runbook restores the exported Gold v2 snapshot without rerunning the pipeline.
-Parts 3?4 prepared the package, notebooks/scripts, and procedure. Creating the
-workspace, loading tables, deploying and refreshing the model, and publishing the
-report belong to **part 5** and had not run at the original package release date.
+## 1. Snapshot reference
 
 | Component | Reference value |
 | --- | --- |
