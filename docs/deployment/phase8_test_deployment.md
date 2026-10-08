@@ -1,5 +1,9 @@
 # Phase 8: first Test deployment
 
+Historical bootstrap record for 2026-10-01. The pending items below describe that
+deployment, not the current CI/CD status. See the [project summary](../project_summary.md)
+and [Test CD guide](test_cd.md) for subsequent delivery and operational instructions.
+
 ## Verified on 2026-10-01
 
 Workspace: `WS_EV_Analytics_Test` (`27873d0c-580a-4963-9e25-5846948f1c5d`).
@@ -54,9 +58,9 @@ remained `20260925T152721965637Z`. No data rollback was needed.
 - Target configuration: `config/environments/test.json`.
 - Source reference: `config/environments/dev.json` (from historical repository metadata).
 - Deployment summary: `metadata/phase8_test_deployment.json`.
-- Restore: `metadata/phase8_test_restore.json`.
-- Health: `metadata/phase8_test_health.json`.
-- Upload, PBIR, refresh, report binding and CI evidence: `metadata/phase8_*.json`.
+- Automated CD evidence: `metadata/phase8_cd_verification.json`.
+- Later JSON API health check: `metadata/phase12/fabric_test_health_json.json`.
+- Intermediate upload, restore, PBIR, refresh, report binding and bootstrap CI responses are archived locally at `output/repository_cleanup_20261008/archive/metadata/`; the deployment summary retains the accepted results.
 - Full request/response journals and prepared definitions: `output/phase8/`.
 - Release A: `output/phase8/test_release_a.zip`; checksum in the deployment summary.
 

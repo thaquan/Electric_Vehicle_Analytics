@@ -22,7 +22,7 @@
 - Navigation/reset, chart cross-filter, and remaining Service rendering tests are
   **skipped by user request**, not passed. Playwright was not used.
 - Phase 7 export and manifest evidence is in the [export guide](../pipelines/gold_export.md).
-  For subsequent isolated recovery results, see the [phase 7 closeout](../milestones/phase7_closeout.md).
+  For subsequent isolated recovery results, see the [project acceptance summary](../project_summary.md).
 
 ## Contents
 

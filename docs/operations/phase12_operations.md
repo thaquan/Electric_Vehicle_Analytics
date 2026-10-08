@@ -34,7 +34,7 @@ python -m src.run_pipeline --raw C:/restore/verification-01/baseline/ev-analytic
 python scripts/phase11_reconcile.py --reference-gold C:/restore/handoff/reference/phase10/gold --candidate-gold C:/restore/pipeline-results/runs/handoff_01/gold --output C:/restore/handoff_01_reconciliation.json
 ```
 
-`scripts/phase10_env.ps1` hỗ trợ máy phát triển hiện tại, cần chỉnh Java/Hadoop cho máy khác; Hadoop binaries không được gói kèm release này. Hướng dẫn Airflow/Docker và DAG ở [phase10_closeout.md](../milestones/phase10_closeout.md). Với Databricks, chạy `phase11_package.py --raw <raw-đã-khôi-phục> --output <project-mới>` rồi làm theo [phase11_databricks.md](../pipelines/phase11_databricks.md).
+`scripts/phase10_env.ps1` hỗ trợ máy phát triển hiện tại, cần chỉnh Java/Hadoop cho máy khác; Hadoop binaries không được gói kèm release này. Hướng dẫn Airflow/Docker và DAG ở [runbook PySpark/Airflow](../pipelines/standalone_pipeline.md). Với Databricks, chạy `phase11_package.py --raw <raw-đã-khôi-phục> --output <project-mới>` rồi làm theo [phase11_databricks.md](../pipelines/phase11_databricks.md).
 
 ### Diễn tập Airflow với image đã có trên máy
 

@@ -13,14 +13,14 @@
 | `ci/` | YAML cho Azure Pipelines |
 | `requirements/` | Dependencies Python theo môi trường; `requirements.txt` ở gốc là entry point trỏ đến `requirements/base.txt` |
 | `config/` | Cấu hình môi trường và mẫu recovery |
-| `metadata/` | Contract, manifest và bằng chứng kiểm chứng; giữ nguyên hồ sơ lịch sử |
+| `metadata/` | Contract, manifest và bằng chứng nghiệm thu tiêu biểu; xem `metadata/README.md` |
 | `docs/architecture/` | Mô hình dữ liệu và thiết kế báo cáo |
 | `docs/pipelines/` | Hướng dẫn pipeline và xuất dữ liệu |
 | `docs/deployment/` | CI/CD và triển khai Test |
 | `docs/recovery/` | Backup và khôi phục |
 | `docs/operations/` | Vận hành và bàn giao |
-| `docs/milestones/` | Kết quả, đánh giá và roadmap các giai đoạn |
-| `docs/maintenance/` | Quy ước cấu trúc và hồ sơ dọn dẹp |
+| `docs/project_summary.md` | Tổng kết kết quả, bằng chứng và giới hạn nghiệm thu |
+| `docs/maintenance/` | Quy ước cấu trúc repo |
 | `docs/screenshots/` | Ảnh báo cáo, tên dùng `_` |
 | `references/` | Repository và notebook tham khảo, không đưa lên Git |
 | `data/` | Dữ liệu nguồn và các lớp dữ liệu local |
@@ -40,4 +40,4 @@
 
 Release Test và rollback mới đặt dependencies tại `requirements/requirements_cd.txt`. Các bản release/backup cũ vẫn giữ nguyên cấu trúc và công cụ đi kèm.
 
-Danh sách di chuyển local: `output/reorganization_20261008/moves.json`.
+Hồ sơ quá trình và bằng chứng trung gian được lưu local tại `output/repository_cleanup_20261008/archive/`; manifest ở thư mục cha ghi đường dẫn gốc và checksum. Repo giữ tests và script build/deploy/backup/restore/retry, kể cả tên có `phase`. Công cụ điều khiển Desktop riêng cho phiên kiểm tra (`desktop_ui.ps1`) được lưu cùng hồ sơ local. Nhật ký mới và API response trung gian nên ghi vào `output/` hoặc CI artifacts. File đã được Git theo dõi phải được đưa ra khỏi bản hiện hành bằng commit; thêm `.gitignore` đơn thuần không đủ.

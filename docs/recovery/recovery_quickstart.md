@@ -5,7 +5,7 @@ Gold v2 snapshot: **20260925T152721965637Z**. Expected KPI: **668665 / 116779 / 
 The package contains eight Parquet files and a manifest, notebooks/scripts, SQL,
 semantic model TMDL, report PBIP, visual resources, and configuration instructions.
 Parts 3?4 prepared the package and procedure. Recovery had not run when the original
-ZIP was released; see the repository's `docs/milestones/phase7_closeout.md` for subsequent results.
+ZIP was released; see the repository's `docs/project_summary.md` for subsequent results.
 Remaining dashboard tests are **skipped by user request**, not passed.
 
 ## Get started
