@@ -58,7 +58,7 @@ in the runbook. `tests/test_recovery_package.py` uses that location or the `snap
 folder next to `project/` in an extracted package. A missing snapshot on a fresh
 clone does not indicate a failed recovery.
 
-See the [recovery runbook](recovery_runbook.md) and [export guide](gold_export.md).
+See the [recovery runbook](../recovery/recovery_runbook.md) and [export guide](../pipelines/gold_export.md).
 
 ## Updated handoff package
 

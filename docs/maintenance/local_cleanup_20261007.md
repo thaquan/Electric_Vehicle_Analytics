@@ -23,7 +23,7 @@ Phương pháp: kiểm kê đệ quy từng đường dẫn; đối chiếu Git,
 | `scripts/__pycache__` | 39 | 0.33 | Bytecode Python tự sinh; mã nguồn .py được giữ, Python sẽ tạo lại khi chạy. |
 | `src/__pycache__` | 15 | 0.10 | Bytecode Python tự sinh; mã nguồn .py được giữ, Python sẽ tạo lại khi chạy. |
 | `tests/__pycache__` | 16 | 0.14 | Bytecode Python tự sinh; mã nguồn .py được giữ, Python sẽ tạo lại khi chạy. |
-| `metadata/report_create_payload.json` | 1 | 0.49 | Request triển khai được sinh từ PBIR bằng lệnh pack trong docs/powerbi_report.md; không phải nguồn report, có thể tạo lại. |
+| `metadata/report_create_payload.json` | 1 | 0.49 | Request triển khai được sinh từ PBIR bằng lệnh pack trong docs/architecture/powerbi_report.md; không phải nguồn report, có thể tạo lại. |
 | `metadata/star_model_binding_request.json` | 1 | 0.00 | Request cập nhật binding đã sinh bởi scripts/prepare_star_binding.py; model TMDL và bằng chứng triển khai vẫn được giữ. |
 | `output/gold_export_remote_readback` | 23 | 11.31 | Bản tải lại để kiểm chứng truyền OneLake: 23/23 file đã so SHA-256 và giống hoàn toàn output/exports/gold_v2/20260925T152721965637Z/20260927T130004568586Z. Bản export gốc và metadata/gold_export_transfer_verification.json được giữ. |
 | `output/phase12/airflow_e2e/phase10/runs/airflow_test_57a67695d9a94ddb90f97bab5ec768e2/bronze/parquet/test.parquet/_temporary` | 4 | 1.22 | File ghi Spark chưa commit còn lại từ lần chạy Airflow bị ngắt. Không có tiến trình Spark/Java đang chạy; run nghiệm thu khác có published marker được giữ nguyên. |
@@ -60,13 +60,13 @@ Mọi thư mục con bên trong mục xóa kế thừa lý do của thư mục c
 | `sql` | 2 | SQL mẫu và truy vấn đối chiếu. |
 | `src` | 23 | Mã pipeline PySpark. |
 | `tests` | 33 | Tests và DAX kiểm chứng. |
-| `upstream-notebook-source` | 66 | Nguồn tham khảo lấy dữ liệu; có mã nghiên cứu và notebook riêng, không xóa chỉ vì bị Git ignore. |
+| `references/upstream_notebook_source` | 66 | Nguồn tham khảo lấy dữ liệu; có mã nghiên cứu và notebook riêng, không xóa chỉ vì bị Git ignore. |
 
-Các file tại thư mục gốc (README, requirements, pipeline YAML, PBIP, cấu hình Git/editor) được giữ. `predicting-electric-vehicle-full-eda.ipynb` khác checksum với notebook trong clone tham khảo, nên không xóa như bản trùng.
+Các file tại thư mục gốc (README, requirements, pipeline YAML, PBIP, cấu hình Git/editor) được giữ. `references/predicting_electric_vehicle_full_eda.ipynb` khác checksum với notebook trong clone tham khảo, nên không xóa như bản trùng.
 
 ## Những mục đáng chú ý được giữ
 
-- `output/phase9/release-01`: docs/phase9_closeout.md yêu cầu giữ làm bằng chứng chẩn đoán; việc chạy thất bại không đồng nghĩa file rác.
+- `output/phase9/release-01`: docs/milestones/phase9_closeout.md yêu cầu giữ làm bằng chứng chẩn đoán; việc chạy thất bại không đồng nghĩa file rác.
 - `output/phase9/release-02`, `output/phase12/r2`, `output/phase12/final`, `output/phase12/restore02` và các run đã publish: backup, nghiệm thu và nguồn cho quy trình phục hồi.
 - Các bản backup nháp Phase 9, bản giải nén và run cũ còn lại: chưa đủ bằng chứng rằng mọi nội dung đều dư thừa hoặc không cần lưu; giữ lại. Không suy luận rằng một file không có import/tham chiếu trực tiếp là không dùng.
 - `.tools/cd-runtime`, `.tools/parquet-runtime`, `.tools/node_modules`: môi trường phụ thuộc, không phải cache rác; scripts và runbook còn dùng.
@@ -84,9 +84,9 @@ Các file tại thư mục gốc (README, requirements, pipeline YAML, PBIP, c�
 
 ## Hồ sơ chi tiết
 
-- [Danh sách từng thư mục và quyết định](../output/local_cleanup_20261007/directory_review.csv)
-- [Kiểm kê trước dọn](../output/local_cleanup_20261007/inventory_before.json)
-- [Danh sách và lý do xóa](../output/local_cleanup_20261007/deletion_results.json)
-- [Kết quả kiểm chứng](../output/local_cleanup_20261007/verification.json)
+- [Danh sách từng thư mục và quyết định](../../output/local_cleanup_20261007/directory_review.csv)
+- [Kiểm kê trước dọn](../../output/local_cleanup_20261007/inventory_before.json)
+- [Danh sách và lý do xóa](../../output/local_cleanup_20261007/deletion_results.json)
+- [Kết quả kiểm chứng](../../output/local_cleanup_20261007/verification.json)
 
 Hồ sơ chi tiết đặt trong output (Git-ignored); các liên kết trên chỉ mở được trong bản local có hồ sơ này. Báo cáo Markdown được đồng bộ lên GitHub và Azure DevOps. Các file đã xóa đều không được Git quản lý, nên việc dọn local không tạo thay đổi xóa file trên hai remote.

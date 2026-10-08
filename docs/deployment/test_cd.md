@@ -8,11 +8,20 @@ commit/build identity, and a SHA-256 inventory. The release is restricted to the
 already verified Gold run `20260925T152721965637Z` and existing Test item IDs.
 This does not provision data or run the Bronze/Silver pipeline.
 
-`azure-pipelines-test-cd.yml` consumes artifacts from `EV-Analytics-CI`. Successful
+`ci/azure_pipelines_test_cd.yml` consumes artifacts from `EV-Analytics-CI`. Successful
 main builds trigger CD; a manual run can select another successful CI run for a
 controlled test. The pipeline does not check out or rebuild from a newer branch.
 
 ## Prerequisites
+
+Azure DevOps pipeline definitions use these repository paths (default branch: `refs/heads/main`):
+
+| Pipeline | ID | YAML path |
+| --- | --- | --- |
+| EV-Analytics-CI | 1 | `ci/azure_pipelines.yml` |
+| EV-Analytics-Test-CD | 2 | `ci/azure_pipelines_test_cd.yml` |
+
+Update the pipeline definition as well as repository references whenever a YAML file moves.
 
 - Azure DevOps service connection `sc-fabric-ev-test` (Azure Resource Manager).
 - Deployment identity permitted by Fabric tenant settings and granted Test access.
@@ -37,7 +46,7 @@ controlled test. The pipeline does not check out or rebuild from a newer branch.
 ## First run
 
 1. Run CI on the implementation branch; confirm `ev-test-release` is published.
-2. Register `azure-pipelines-test-cd.yml` as `EV-Analytics-Test-CD`.
+2. Register `ci/azure_pipelines_test_cd.yml` as `EV-Analytics-Test-CD`.
 3. Run CD manually, select that CI run under Resources, and set `preflightOnly=true`.
 4. Confirm it reads both existing items, checks live KPI, and captures both definitions.
 5. Run the same CI artifact again with `preflightOnly=false` to exercise deployment.
@@ -84,7 +93,7 @@ Use a fresh output/evidence path for every run:
 ```powershell
 $commit = git rev-parse HEAD
 python scripts/build_test_release.py --output output/test-release --commit $commit --build-id local --branch local
-python -m pip install -r requirements-cd.txt
+python -m pip install -r requirements/requirements_cd.txt
 $env:EV_DAX_API = "arrow"
 python scripts/deploy_test_release.py --release output/test-release --evidence output/test-preflight --preflight-only
 ```
@@ -99,7 +108,7 @@ directory is an executable release of the definitions captured before changes.
 After checking that no API operation or refresh is still pending:
 
 ```powershell
-python -m pip install -r rollback/requirements-cd.txt
+python -m pip install -r rollback/requirements/requirements_cd.txt
 $env:EV_DAX_API = "arrow"
 python -B rollback/scripts/deploy_test_release.py --release rollback --evidence output/rollback-attempt
 ```

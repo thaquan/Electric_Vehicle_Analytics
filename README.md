@@ -27,7 +27,7 @@ The project uses the **Kaggle Playground Series S6E9: Predicting Electric Vehicl
 | `EV_Adoption_and_Range_Anxiety_Dataset.csv` | 10,000 | Original reference data; retained separately rather than combined with training records. |
 | `sample_submission.csv` | 286,571 | Competition submission template; excluded from analytical outcomes. |
 
-The target is `Will_Buy_EV`. Inputs cover demographics, annual income, city type, commuting distance, vehicle ownership, charging availability, environmental concern, subsidies, and range anxiety. See the [data dictionary](docs/data_dictionary.md) for field definitions.
+The target is `Will_Buy_EV`. Inputs cover demographics, annual income, city type, commuting distance, vehicle ownership, charging availability, environmental concern, subsidies, and range anxiety. See the [data dictionary](docs/architecture/data_dictionary.md) for field definitions.
 
 > This is synthetic competition data. The findings describe this dataset and are not estimates of real-world EV demand or evidence that any factor causes a purchase. There are no transaction dates, purchase prices, brands, or precise geographic locations for sales trends, revenue analysis, or charging-site selection.
 
@@ -64,19 +64,19 @@ The screenshots below show the saved, unfiltered Power BI Desktop report. [Open 
 
 Establish the overall purchase-intent baseline, compare age and income groups, and see how the sample is distributed across city types.
 
-![Executive Overview dashboard showing purchase-intent KPIs and age, income, and city segments](docs/screenshots/Executive%20Overview.png)
+![Executive Overview dashboard showing purchase-intent KPIs and age, income, and city segments](docs/screenshots/executive_overview.png)
 
 ### Charging & Incentives
 
 Explore the relationship between purchase intent, home charging, subsidy availability, and range anxiety. Supporting KPIs summarize charging access and nearby charging infrastructure.
 
-![Charging and Incentives dashboard comparing purchase intent by home charging, subsidies, and range anxiety](docs/screenshots/Charging%20%26%20Incentives.png)
+![Charging and Incentives dashboard comparing purchase intent by home charging, subsidies, and range anxiety](docs/screenshots/charging_incentives.png)
 
 ### Customer Profile
 
 Understand the composition of the sample through income, age, vehicle ownership, and commuting patterns. Compare segment size with intent rate before prioritizing further research.
 
-![Customer Profile dashboard showing demographics, income distribution, and purchase intent by commute distance](docs/screenshots/Customer%20Profile.png)
+![Customer Profile dashboard showing demographics, income distribution, and purchase intent by commute distance](docs/screenshots/customer_profile.png)
 
 ## Key findings and business recommendations
 
@@ -106,7 +106,7 @@ Figures are traceable to the [verified segment metrics](metadata/star_expected_m
 - **Verified delivery:** [Azure CI #30](https://dev.azure.com/thaquan081006/Electric_Vehicle_Analytics/_build/results?buildId=30) passed 86 configured unit tests, and [Test CD #31](https://dev.azure.com/thaquan081006/Electric_Vehicle_Analytics/_build/results?buildId=31) passed deployment, refresh, report/model binding, and KPI checks on 7 October 2026.
 - **Recoverable artifacts:** offline baseline recovery and snapshot reconciliation have been demonstrated. An independently stored backup copy and final recipient handoff remain pending.
 
-Saved report screenshots and the verified Urban slicer check do not constitute full UI acceptance. Remaining navigation/reset, chart cross-filter, Service rendering, and separate SQL endpoint checks were explicitly deferred; see [report validation details](docs/powerbi_report.md).
+Saved report screenshots and the verified Urban slicer check do not constitute full UI acceptance. Remaining navigation/reset, chart cross-filter, Service rendering, and separate SQL endpoint checks were explicitly deferred; see [report validation details](docs/architecture/powerbi_report.md).
 
 ## Explore or run the project
 
@@ -117,19 +117,21 @@ Start with the screenshots above, or open [RPT_EV_Analytics.pbip](RPT_EV_Analyti
 ### Run the standalone data pipeline
 
 1. Obtain the four source CSVs listed above and place them in `data/raw/kaggle/`. Use the recorded snapshot checksums; raw data is not included in Git.
-2. Prepare Python and Java for the pinned PySpark runtime. The verified Windows setup uses Python 3.13, Java 17, and Hadoop compatibility helpers; see the [standalone runtime guide](docs/phase10_closeout.md#7-runtime-windows).
+2. Prepare Python and Java for the pinned PySpark runtime. The verified Windows setup uses Python 3.13, Java 17, and Hadoop compatibility helpers; see the [standalone runtime guide](docs/milestones/phase10_closeout.md#7-runtime-windows).
 3. From the repository root, install the pipeline dependencies and run:
 
 ```bash
-python -m pip install -r requirements.txt -r requirements-phase10.txt
+python -m pip install -r requirements.txt -r requirements/requirements_phase10.txt
 python -m src.run_pipeline --raw data/raw/kaggle --output-root output/local
 ```
 
 Each run uses a new run directory. Inspect `run_report.json` and `published.json` under `output/local/runs/<run_id>/`; publication requires the quality and integrity checks to pass. This command builds local data artifacts, not a cloud deployment or a dashboard refresh.
 
-For other execution paths, use the [Fabric pipeline guide](docs/pipeline_runbook.md), [Databricks guide](docs/phase11_databricks.md), or [recovery guide](docs/phase12_operations.md). Cloning the repository alone is not a data backup: large datasets, runtime artifacts, and recovery ZIPs are intentionally excluded from Git.
+For other execution paths, use the [Fabric pipeline guide](docs/pipelines/pipeline_runbook.md), [Databricks guide](docs/pipelines/phase11_databricks.md), or [recovery guide](docs/operations/phase12_operations.md). Cloning the repository alone is not a data backup: large datasets, runtime artifacts, and recovery ZIPs are intentionally excluded from Git.
 
 ## Repository guide
+
+See the [repository structure and naming convention](docs/maintenance/repository_structure.md) for the functional layout, `snake_case` naming rules, platform exceptions, and Azure Pipelines path migration.
 
 | Location | Contents |
 | --- | --- |
@@ -139,6 +141,7 @@ For other execution paths, use the [Fabric pipeline guide](docs/pipeline_runbook
 | `RPT_EV_Analytics.Report/`, `SM_EV_Analytics.SemanticModel/`, `models/` | Power BI report, semantic model, and exported model snapshot. |
 | `scripts/`, `sql/`, `tests/` | Build/deployment utilities, reconciliation queries, and validation tests. |
 | `config/`, `metadata/` | Environment mappings, schema contracts, source checksums, and verification evidence. |
+| `ci/`, `requirements/`, `references/` | CI/CD definitions, Python dependency sets, and local reference material. |
 | `docs/` | Architecture, analytical definitions, screenshots, and operational runbooks. |
 
-Further reading: [data dictionary](docs/data_dictionary.md) · [star schema](docs/star_schema.md) · [semantic model](docs/semantic_model.md) · [CI/CD](docs/test_cd.md) · [operations](docs/operations_runbook.md).
+Further reading: [data dictionary](docs/architecture/data_dictionary.md) · [star schema](docs/architecture/star_schema.md) · [semantic model](docs/architecture/semantic_model.md) · [CI/CD](docs/deployment/test_cd.md) · [operations](docs/operations/operations_runbook.md).

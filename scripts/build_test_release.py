@@ -159,7 +159,8 @@ def build(project, output, commit, build_id, branch):
     (output / "scripts").mkdir()
     for name in RUNTIME:
         shutil.copyfile(project / "scripts" / name, output / "scripts" / name)
-    shutil.copyfile(project / "requirements-cd.txt", output / "requirements-cd.txt")
+    (output / "requirements").mkdir()
+    shutil.copyfile(project / "requirements/requirements_cd.txt", output / "requirements/requirements_cd.txt")
     seal_release(output, commit, build_id, branch)
     verify_release(output, commit, build_id)
     print("Verified release:", output)

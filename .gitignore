@@ -7,12 +7,18 @@
 .venv/
 __pycache__/
 *.pyc
+.pytest_cache/
+*.tmp
+*.temp
+*~
+Thumbs.db
+.DS_Store
 /.playwright-mcp/
 /output/
 /.tools/
 /.playwright-cli/
-/upstream-notebook-source/
-/predicting-electric-vehicle-full-eda.ipynb
+/references/upstream_notebook_source/
+/references/predicting_electric_vehicle_full_eda.ipynb
 
 # Local Power BI caches and generated deployment request bodies
 **/.pbi/

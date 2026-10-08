@@ -115,9 +115,9 @@ def build(root, staging, gold):
         tables.append({'layer': 'gold', 'name': entry['source_table'], 'role': entry['role'],
                        'path': 'data/gold/' + entry['path'], 'rows': entry['rows'],
                        'schema': entry['arrow_schema'], 'run_id': gm['gold_run_id']})
-    for name in ['scripts', 'tests', 'sql', 'notebooks', 'docs']:
+    for name in ['scripts', 'tests', 'sql', 'notebooks', 'docs', 'requirements', 'ci']:
         copy_folder(PROJECT / name, root / 'code' / name)
-    for name in ['README.md', 'requirements.txt', 'requirements-export.txt', 'requirements-cd.txt', 'azure-pipelines.yml', 'azure-pipelines-test-cd.yml']:
+    for name in ['README.md', 'requirements.txt']:
         copy_file(PROJECT / name, root / 'code' / name)
     copy_folder(PROJECT / 'metadata', root / 'verification/source_metadata')
     copy_folder(PROJECT / 'config', root / 'config')
@@ -147,7 +147,7 @@ def build(root, staging, gold):
         'fabric_ids': 'Historical provenance only; independent restore does not use these IDs.',
         'optional_future_deployment_variables': ['AZURE_TENANT_ID', 'AZURE_CLIENT_ID', 'AZURE_CLIENT_SECRET'],
         'silver_run_id': silver_run, 'gold_run_id': gm['gold_run_id'], 'pipeline_run_id': gm['pipeline_run_id']})
-    copy_file(PROJECT / 'docs/phase9_backup.md', root / 'README.md')
+    copy_file(PROJECT / 'docs/recovery/phase9_backup.md', root / 'README.md')
     write_json(root / 'manifests/tables.json', tables)
     write_json(root / 'verification/secret_scan.json', scan_secrets(root))
     import pandas, numpy

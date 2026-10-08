@@ -10,11 +10,11 @@ from recovery_common import check_snapshot, read_json, require, sha256, write_js
 from verify_recovery_package import verify
 
 PROJECT = Path(__file__).resolve().parents[1]
-FOLDERS = ["scripts", "notebooks", "sql", "tests", "models", "config", "docs", "metadata",
+FOLDERS = ["scripts", "notebooks", "sql", "tests", "models", "config", "docs", "metadata", "requirements", "ci",
            "SM_EV_Analytics.SemanticModel", "RPT_EV_Analytics.Report", "NB_EV_Bronze_To_Silver.Notebook",
            "NB_EV_Silver_To_Gold.Notebook", "LH_EV_Bronze.Lakehouse", "LH_EV_Silver.Lakehouse",
            "LH_EV_Gold.Lakehouse", "PL_EV_E2E.DataPipeline"]
-FILES = ["README.md", "RPT_EV_Analytics.pbip", "requirements.txt", "requirements-export.txt"]
+FILES = ["README.md", "RPT_EV_Analytics.pbip", "requirements.txt"]
 EXCLUDED_PARTS = {".git", ".pbi", ".tools", ".venv", "__pycache__", "output", "node_modules"}
 EXCLUDED_FILES = {"localSettings.json", "report_create_payload.json", "star_model_binding_request.json",
                   "gold_recovery_package_status.json", "recovery_model_get_definition.json",
@@ -52,7 +52,7 @@ def build(snapshot, destination):
                 shutil.copyfile(file, target)
     for name in FILES:
         shutil.copyfile(PROJECT / name, root / "project" / name)
-    shutil.copyfile(PROJECT / "docs/recovery_quickstart.md", root / "README.md")
+    shutil.copyfile(PROJECT / "docs/recovery/recovery_quickstart.md", root / "README.md")
     shutil.copyfile(PROJECT / "config/recovery.example.json", root / "recovery.example.json")
     shutil.copyfile(PROJECT / "scripts/verify_recovery_package.py", root / "verify_package.py")
     export_status = read_json(root / "project/metadata/gold_export_status.json")

@@ -4,7 +4,7 @@ Ngày thực hiện: 2026-10-06. **Các kiểm chứng kỹ thuật đã đạt;
 
 ## Phạm vi đã xử lý
 
-Giữ nguyên phạm vi hệ thống đã xây dựng: Fabric/Power BI hiện có, PySpark/Airflow và Databricks serverless. Không chuyển nguồn Power BI sang Databricks. Tài liệu thực thi: [phase12_operations.md](phase12_operations.md); checklist: [phase12_handoff.md](phase12_handoff.md).
+Giữ nguyên phạm vi hệ thống đã xây dựng: Fabric/Power BI hiện có, PySpark/Airflow và Databricks serverless. Không chuyển nguồn Power BI sang Databricks. Tài liệu thực thi: [phase12_operations.md](../operations/phase12_operations.md); checklist: [phase12_handoff.md](../operations/phase12_handoff.md).
 
 Repo base commit là `a618597e515f55fe930df6c6ec2e8dd1a0483c9f`. Bản bàn giao chứa thêm thay đổi Phase 12 trong working tree; manifest của ZIP định danh chính xác từng file. Code và dữ liệu nguồn được giữ tách biệt; ZIP không được Git quản lý.
 

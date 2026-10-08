@@ -18,11 +18,11 @@
   [Open report](https://app.powerbi.com/groups/5fe78794-25c3-41ee-b35e-bc56542d2cea/reports/ae4d7c59-759e-4462-afed-1717475ae012).
 - Tested City type = Urban using Windows UI Automation: 289,305 respondents,
   46,595 intending, 242,710 not intending, and a 16.11% rate; all match the reference.
-  Clearing the slicer restores 668,665. Evidence: `docs/screenshots/Overview-Urban-filter.png`.
+  Clearing the slicer restores 668,665. Evidence: `docs/screenshots/overview_urban_filter.png`.
 - Navigation/reset, chart cross-filter, and remaining Service rendering tests are
   **skipped by user request**, not passed. Playwright was not used.
-- Phase 7 export and manifest evidence is in the [export guide](gold_export.md).
-  For subsequent isolated recovery results, see the [phase 7 closeout](phase7_closeout.md).
+- Phase 7 export and manifest evidence is in the [export guide](../pipelines/gold_export.md).
+  For subsequent isolated recovery results, see the [phase 7 closeout](../milestones/phase7_closeout.md).
 
 ## Contents
 

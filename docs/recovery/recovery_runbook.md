@@ -1,7 +1,7 @@
 # EV Analytics recovery runbook
 
 > Updated 2026-09-29: the recovery drill is complete; see the
-> [closeout results](phase7_closeout.md). Historical statements about work not yet
+> [closeout results](../milestones/phase7_closeout.md). Historical statements about work not yet
 > performed refer to the original ZIP release. Verify every step for each new
 > recovery attempt; historical results are not evidence for a new attempt.
 
@@ -33,7 +33,7 @@ report KPI below provides separate evidence for part 5.
 ## 2. Tools and access
 
 - Python 3.11 or later; the handoff was tested with Python 3.13.
-- For local Parquet validation, install `project/requirements-export.txt`
+- For local Parquet validation, install `project/requirements/requirements_export.txt`
   (PyArrow 25.0.1, pandas, and numpy).
 - An active Fabric capacity for the target workspace and permission to create
   lakehouses, notebooks, semantic models, and reports.
@@ -71,7 +71,7 @@ To recompute KPI and PK/FK checks locally, create an environment and run:
 
 ```powershell
 python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r project/requirements-export.txt
+.\.venv\Scripts\python.exe -m pip install -r project/requirements/requirements_export.txt
 .\.venv\Scripts\python.exe project/scripts/export_gold_snapshot.py verify --output snapshot
 ```
 

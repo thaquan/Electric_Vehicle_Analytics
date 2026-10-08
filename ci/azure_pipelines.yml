@@ -19,9 +19,9 @@ steps:
   - bash: |
       set -euo pipefail
       python -m pip install -r requirements.txt
-      python -m pip install -r requirements-cd.txt
-      python -m pip install -r requirements-phase10.txt
-      python -m pip install -r requirements-phase11.txt
+      python -m pip install -r requirements/requirements_cd.txt
+      python -m pip install -r requirements/requirements_phase10.txt
+      python -m pip install -r requirements/requirements_phase11.txt
     displayName: Install dependencies
 
   - bash: |

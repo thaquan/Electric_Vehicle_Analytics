@@ -2,7 +2,7 @@
 
 ## Xác minh tái triển khai ngày 2026-10-06
 
-Hai điểm thiếu từ review đã được khắc phục: có script đóng gói runtime serverless vào đúng `src/` và script đối chiếu tám bảng Gold trong `scripts/`, kèm [hướng dẫn chạy lại](phase11_databricks.md).
+Hai điểm thiếu từ review đã được khắc phục: có script đóng gói runtime serverless vào đúng `src/` và script đối chiếu tám bảng Gold trong `scripts/`, kèm [hướng dẫn chạy lại](../pipelines/phase11_databricks.md).
 
 Đã dùng cấu hình Databricks mặc định trên máy để upload một package sạch và chạy riêng: job run `1020983582944630`, pipeline run `phase11_20261006T013808Z` đạt **SUCCESS** trong `241376 ms`. Quality/reconstruction đạt; 116 artifact tải về khớp checksum và code khớp package. Đối chiếu run mới với Phase 10 bằng công cụ mới đạt cả 8 bảng. Bằng chứng nằm ở `metadata/phase11/clean_package_*.json`; xem [review và kết quả khắc phục](phase11_review.md). Các thông tin bên dưới mô tả run nghiệm thu ban đầu.
 

@@ -5,9 +5,9 @@
 Parts 1?2 export the verified Gold v2 snapshot `20260925T152721965637Z`.
 The export did not rerun the pipeline or transformation notebooks, refresh the model,
 or modify source tables. Parts 3?4 cover packaging and the recovery procedure;
-see the [recovery runbook](recovery_runbook.md) and
+see the [recovery runbook](../recovery/recovery_runbook.md) and
 `metadata/gold_recovery_package_status.json`. Isolated recovery had not run at the
-export date; subsequent results are in the [phase 7 closeout](phase7_closeout.md).
+export date; subsequent results are in the [phase 7 closeout](../milestones/phase7_closeout.md).
 Remaining dashboard checks stay **skipped by user request**, not passed.
 
 ## Export details
@@ -66,7 +66,7 @@ Keep the export directory and the `export_gold_snapshot.py` and `star_schema.py`
 scripts. From the project directory:
 
 ```powershell
-python -m pip install -r requirements-export.txt
+python -m pip install -r requirements/requirements_export.txt
 python scripts/export_gold_snapshot.py verify --output <export-directory>
 ```
 
