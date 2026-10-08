@@ -1,6 +1,6 @@
-# Đóng gói, chạy và đối chiếu Phase 11
+# Databricks serverless pipeline
 
-Các lệnh dưới đây chạy từ thư mục gốc repo. CLI dùng cấu hình Databricks mặc định trên máy; chỉ thêm `--profile` khi cần chọn workspace khác. Không cần cung cấp lại tài khoản nếu CLI đã đăng nhập. Môi trường sandbox có thể không đọc được cache đăng nhập; khi đó chạy CLI trong terminal có quyền truy cập cache hiện có.
+Các lệnh dưới đây chạy từ thư mục gốc repo. CLI dùng cấu hình Databricks mặc định trên máy; chỉ thêm `--profile` khi cần chọn workspace khác. Không cần cung cấp lại tài khoản nếu CLI đã đăng nhập.
 
 ## 1. Tạo project serverless sạch
 
@@ -24,7 +24,7 @@ databricks workspace import /Shared/ev_phase11/phase11_runner_review_20261006 --
 databricks jobs submit --json @databricks/jobs/phase11_review_submit.json --no-wait
 ```
 
-`phase11_review_submit.json` là mẫu chạy một lần bằng serverless, có tham số `project_root` trỏ tới release trên. Khi tạo release mới, đổi cả đường dẫn Volume, notebook và tham số trong JSON. Không dùng `phase11_job.json` classic cluster cho workspace serverless này. `phase11_job_serverless.json` là định nghĩa job cũ; muốn chuyển job đó sang release mới phải cập nhật notebook path/base parameters tương ứng.
+`phase11_review_submit.json` là mẫu chạy một lần bằng serverless, có tham số `project_root` trỏ tới release trên. Khi tạo release mới, đổi cả đường dẫn Volume, notebook và tham số trong JSON. `phase11_job_serverless.json` là định nghĩa job cũ; muốn chuyển job đó sang release mới phải cập nhật notebook path/base parameters tương ứng.
 
 Lấy `run_id` trả về rồi đọc trạng thái:
 
@@ -44,11 +44,4 @@ python scripts/phase11_reconcile.py --reference-gold output/phase10/runs/review_
 
 Script nhận thư mục Gold bất kỳ, hỗ trợ cả bảng Parquet dạng thư mục và file đơn. Bắt buộc có đúng tám bảng, so sánh tên/kiểu/thứ tự cột và số dòng, rồi chạy `EXCEPT ALL` hai chiều để giữ đúng số lần xuất hiện của bản ghi trùng. Chỉ bỏ ba giá trị lineage theo run khi so sánh dữ liệu; kiểu/tên các cột đó vẫn được kiểm tra. Nullability không được coi là hợp đồng vật lý của Parquet reader. Thiếu bảng, sai schema, lỗi đọc hoặc dữ liệu khác đều trả `status: failed` và exit code 1; đạt trả exit code 0.
 
-Đối chiếu lại run cũ, không cần truy cập dịch vụ:
-
-```powershell
-python scripts/phase11_reconcile.py --reference-gold output/phase10/runs/review_fix_20261003_03/gold --candidate-gold output/phase11_reconciliation/phase11_20261005T041811Z/gold --output output/phase11_review/reconciliation_20261006.json
-python -m unittest discover -s tests -p test_phase11.py
-```
-
-Dữ liệu lớn trong `output/` không được Git quản lý; cần giữ bản backup riêng. Code đóng gói, đối chiếu, notebook, tests và tài liệu nằm ngoài `output/` để có thể đưa vào cùng commit.
+Dữ liệu lớn và kết quả đối chiếu trong `output/` không được Git quản lý. Tạo đường dẫn release mới và truyền đúng run ID khi tái triển khai.

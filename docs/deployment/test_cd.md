@@ -63,7 +63,7 @@ CI build 14 and CD build 15 succeeded on 2026-10-02. CD used source commit
 ownership to this identity. Both existing items were updated, the configured
 connection was restored, refresh completed, and the final KPI matched
 668665 / 116779 / 551886. Build 15 retains `test-deployment-evidence`, including
-the captured rollback package. See `metadata/phase8_cd_verification.json`.
+the captured rollback package. See `metadata/phase8_cd_verification.json` (local output; excluded from Git).
 
 ## Deployment sequence
 

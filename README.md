@@ -1,151 +1,106 @@
 # Electric Vehicle Purchase Intent Analytics
 
-An end-to-end analytics project that turns EV purchase-intent data into customer insights and Power BI dashboards, supported by a validated data pipeline, automated deployment, and recoverable data snapshots.
+An end-to-end data project that turns **668,665 customer records** into three Power BI dashboards explaining how EV purchase intent varies with income, charging access and incentives.
 
-**Microsoft Fabric · Power BI · PySpark · Apache Airflow · Databricks · Azure DevOps**
+**Microsoft Fabric · Power BI · SQL · Python · PySpark · Airflow · Databricks · Azure DevOps**
 
 ## Business problem
 
-For an EV manufacturer or dealership, understanding who is considering an electric vehicle is a starting point for customer research, marketing, and sales conversations. A single overall interest rate does not explain how interest varies with affordability, charging access, incentives, or everyday travel needs.
+Which customer groups express interest in an EV, and which conditions are associated with that interest? The project helps a manufacturer or dealership explore segments and form hypotheses for customer research and marketing.
 
-This project addresses three questions:
+The outcome is a descriptive analytics tool: **purchase intent, not actual sales or a prediction model**. The source is synthetic competition data, so the findings do not estimate real-world demand or establish causality.
 
-- **Who expresses purchase intent?** Compare customer groups by income, age, city type, and mobility profile.
-- **Which conditions are associated with higher or lower interest?** Examine home charging, subsidy availability, and range anxiety.
-- **How can teams explore these patterns consistently?** Provide a shared set of validated metrics and dashboards instead of separate spreadsheet calculations.
-
-The business output is a descriptive decision-support tool for identifying segments and forming hypotheses to test with real customers. It measures **stated purchase intent, not completed purchases, revenue, or future sales**.
-
-## Data sources and scope
-
-The project uses the **Kaggle Playground Series S6E9: Predicting Electric Vehicle Purchases** dataset and its original reference dataset. The local files were acquired from the public repository linked by the reference analysis; their provenance and SHA-256 checksums are recorded in the [source manifest](metadata/source_manifest.json). A direct Kaggle download comparison remains unverified.
-
-| Input | Rows | Use in this project |
-| --- | ---: | --- |
-| `train.csv` | 668,665 | Labeled records used for dashboard metrics and segment analysis. |
-| `test.csv` | 286,571 | Unlabeled competition records; validated separately and excluded from purchase-intent rates. |
-| `EV_Adoption_and_Range_Anxiety_Dataset.csv` | 10,000 | Original reference data; retained separately rather than combined with training records. |
-| `sample_submission.csv` | 286,571 | Competition submission template; excluded from analytical outcomes. |
-
-The target is `Will_Buy_EV`. Inputs cover demographics, annual income, city type, commuting distance, vehicle ownership, charging availability, environmental concern, subsidies, and range anxiety. See the [data dictionary](docs/architecture/data_dictionary.md) for field definitions.
-
-> This is synthetic competition data. The findings describe this dataset and are not estimates of real-world EV demand or evidence that any factor causes a purchase. There are no transaction dates, purchase prices, brands, or precise geographic locations for sales trends, revenue analysis, or charging-site selection.
-
-## Solution
-
-The solution preserves the source data, validates it, and produces a reusable analytical model for Power BI.
-
-```mermaid
-flowchart LR
-    A[Source CSV files] --> B[Bronze: source snapshots]
-    B --> C[Silver: typed and validated records]
-    C --> D[Gold: fact, dimensions and audit aggregates]
-    D --> E[Power BI semantic model]
-    E --> F[Three business dashboards]
-```
-
-| Component | Purpose |
-| --- | --- |
-| **Fabric and OneLake** | Store the Bronze, Silver, and Gold layers; run notebooks through an orchestrated pipeline. |
-| **Gold star schema** | One respondent-level fact table and five dimensions for demographics, income, mobility, charging, and attitudes/incentives; two additional aggregates support reconciliation. |
-| **Power BI** | A semantic model with 12 measures and three report pages for business exploration. |
-| **PySpark and Airflow** | Run the transformation pipeline independently, with quality gates, artifact integrity checks, and controlled retries. |
-| **Databricks** | Execute the data pipeline on serverless compute and reconcile all eight Gold tables against the standalone baseline. |
-| **Azure DevOps and GitHub** | Version the project; Azure Pipelines validates changes and deploys the model/report to the Test workspace. |
-| **Backup and recovery** | Preserve data, code, definitions, and manifests in checksum-verified packages for offline recovery. |
-
-The Power BI report uses the Fabric model. Databricks demonstrates an alternative execution path for the data pipeline; it is not the report's current data source.
-
-## Dashboard walkthrough
-
-The screenshots below show the saved, unfiltered Power BI Desktop report. [Open the published report](https://app.powerbi.com/groups/5fe78794-25c3-41ee-b35e-bc56542d2cea/reports/ae4d7c59-759e-4462-afed-1717475ae012) if you have workspace access.
+## Dashboard
 
 ### Executive Overview
 
-Establish the overall purchase-intent baseline, compare age and income groups, and see how the sample is distributed across city types.
+Compare overall intent, age, income and city segments.
 
-![Executive Overview dashboard showing purchase-intent KPIs and age, income, and city segments](docs/screenshots/executive_overview.png)
+![Executive Overview](docs/screenshots/executive_overview.png)
 
 ### Charging & Incentives
 
-Explore the relationship between purchase intent, home charging, subsidy availability, and range anxiety. Supporting KPIs summarize charging access and nearby charging infrastructure.
+Explore home charging, subsidies and range anxiety alongside purchase intent.
 
-![Charging and Incentives dashboard comparing purchase intent by home charging, subsidies, and range anxiety](docs/screenshots/charging_incentives.png)
+![Charging and Incentives](docs/screenshots/charging_incentives.png)
 
 ### Customer Profile
 
-Understand the composition of the sample through income, age, vehicle ownership, and commuting patterns. Compare segment size with intent rate before prioritizing further research.
+Compare segment size with intent rate across income, age, vehicle ownership and commuting patterns.
 
-![Customer Profile dashboard showing demographics, income distribution, and purchase intent by commute distance](docs/screenshots/customer_profile.png)
+![Customer Profile](docs/screenshots/customer_profile.png)
 
-## Key findings and business recommendations
+[Open the published report](https://app.powerbi.com/groups/5fe78794-25c3-41ee-b35e-bc56542d2cea/reports/ae4d7c59-759e-4462-afed-1717475ae012) with workspace access, or inspect the [Power BI project](RPT_EV_Analytics.pbip). Screenshots can be viewed without a cloud account.
 
-All figures below describe the **668,665 labeled training records**, with no dashboard filters applied. Purchase-intent rate is the number of `Yes` records divided by the number of records in the relevant group.
+## Key findings
 
-| Labeled records | Intending to buy an EV | Not intending to buy an EV | Overall intent rate |
-| ---: | ---: | ---: | ---: |
-| 668,665 | 116,779 | 551,886 | **17.46%** |
+**116,779 of 668,665 respondents express purchase intent: 17.46%.**
 
-| Finding in the dataset | Evidence | Suggested next step |
+| Pattern in the dataset | Result | Business implication to investigate |
 | --- | --- | --- |
-| **Intent differs substantially by income.** | **29.18%** for annual income of USD 100,000+ versus **4.35%** below USD 50,000. | Test affordability and total-cost-of-ownership messaging across income groups. Assess segment size alongside interest rate. |
-| **Subsidy availability has a large observed association with intent.** | **27.47%** with subsidies versus **0.58%** without. | Make incentive eligibility clear in customer research and test whether better information changes expressed interest. Do not interpret the difference as the causal effect of a subsidy. |
-| **Home charging access is associated with higher intent.** | **19.58%** where home charging is possible versus **12.71%** where it is not. | Include charging feasibility in customer discovery and test whether installation guidance addresses practical concerns. |
-| **Longer commutes do not correspond to higher intent in this sample.** | **21.20%** for commutes of 10–<25 km versus **14.67%** for 50+ km. | Investigate range and charging concerns among long-distance commuters; tailor demonstrations to daily travel needs. |
-| **A higher rate does not necessarily mean a larger opportunity pool.** | Rural records have a **19.34%** intent rate versus **16.11%** for urban records, but urban records contain **46,595 Yes responses**, compared with **23,977** for rural records. | Evaluate both intent rate and interested-record count. Avoid ranking segments by percentage alone. |
+| Annual income | 29.18% intent at USD 100,000+ vs 4.35% below USD 50,000 | Test affordability and total-cost-of-ownership messaging. |
+| Subsidy availability | 27.47% with subsidies vs 0.58% without | Include incentive eligibility in customer research. |
+| Home charging | 19.58% with access vs 12.71% without | Investigate charging feasibility and installation support. |
+| Segment size vs rate | Rural intent is 19.34% vs 16.11% urban, but urban has 46,595 interested respondents vs 23,977 rural | Consider both interested-record count and rate when comparing segments. |
 
-These are unadjusted comparisons, not independent driver effects. Income, incentives, charging access, and other attributes may overlap. The recommendations are hypotheses for validation with representative customer data or controlled experiments, not proven campaign results.
+Figures come from the [reference segment metrics](metadata/star_expected_metrics.json). These are unadjusted associations; no campaign uplift, sales conversion or ROI has been measured.
 
-Figures are traceable to the [verified segment metrics](metadata/star_expected_metrics.json); [live DAX checks](metadata/semantic_model_live_dax.json) reconcile the model's analytical results. No revenue uplift, conversion improvement, or marketing ROI has been measured.
+## Architecture and technical work
 
-## Project outcomes
+```mermaid
+flowchart LR
+    A[Source CSVs] --> B[Bronze: immutable snapshots]
+    B --> C[Silver: typed and validated data]
+    C --> D[Gold: star schema]
+    D --> E[Power BI semantic model]
+    E --> F[Three dashboards]
+```
 
-- **A business-facing report:** three dashboard pages provide a consistent view of purchase intent, charging conditions, and customer profiles.
-- **A validated analytical foundation:** 668,665 fact rows, zero orphan dimension keys, and reconciliation of 35 segment groups. The semantic model's 12 measures and 24 combined-filter groups have also been checked.
-- **Reproducible processing:** Fabric, standalone PySpark/Airflow, and Databricks implementations are supported by quality checks and cross-platform Gold reconciliation.
-- **Verified delivery:** [Azure CI #30](https://dev.azure.com/thaquan081006/Electric_Vehicle_Analytics/_build/results?buildId=30) passed 86 configured unit tests, and [Test CD #31](https://dev.azure.com/thaquan081006/Electric_Vehicle_Analytics/_build/results?buildId=31) passed deployment, refresh, report/model binding, and KPI checks on 7 October 2026.
-- **Recoverable artifacts:** offline baseline recovery and snapshot reconciliation have been demonstrated. An independently stored backup copy and final recipient handoff remain pending.
+| Area | Implementation |
+| --- | --- |
+| Data engineering | Fabric/OneLake Bronze–Silver–Gold pipeline, schema and checksum validation, lineage and quality gates. |
+| Data modeling | One respondent-level fact, five dimensions, two audit aggregates; 12 DAX measures. |
+| Analytics | Segment comparisons for income, demographics, mobility, charging and incentives. |
+| Orchestration | Standalone PySpark with an Airflow DAG, controlled retries and integrity checks before publication. |
+| Cross-platform execution | Databricks serverless runtime with eight-table Gold reconciliation against the standalone output. |
+| Delivery | Azure CI tests and package verification; Test deployment with refresh, binding and KPI checks. |
 
-See the [project acceptance summary](docs/project_summary.md) for retained evidence and outstanding handoff items.
+Power BI uses the Fabric model. Databricks demonstrates an alternative data-processing path. See [validation and limitations](docs/validation.md), [star schema](docs/architecture/star_schema.md) and [semantic model](docs/architecture/semantic_model.md).
 
-Saved report screenshots and the verified Urban slicer check do not constitute full UI acceptance. Remaining navigation/reset, chart cross-filter, Service rendering, and separate SQL endpoint checks were explicitly deferred; see [report validation details](docs/architecture/powerbi_report.md).
+## Data
 
-## Explore or run the project
+Source: Kaggle Playground Series S6E9, *Predicting Electric Vehicle Purchases*, and its original reference dataset. [Provenance and SHA-256](metadata/source_manifest.json) identify the acquired files; direct comparison with a Kaggle download remains unverified.
 
-### View the report
+| File | Rows | Purpose |
+| --- | ---: | --- |
+| `train.csv` | 668,665 | Labeled analytical population; target `Will_Buy_EV`. |
+| `test.csv` | 286,571 | Unlabeled competition data, excluded from intent rates. |
+| `EV_Adoption_and_Range_Anxiety_Dataset.csv` | 10,000 | Separate reference data, not combined with training records. |
+| `sample_submission.csv` | 286,571 | Competition template, excluded from analytical outcomes. |
 
-Start with the screenshots above, or open [RPT_EV_Analytics.pbip](RPT_EV_Analytics.pbip) in Power BI Desktop. Access to the configured Fabric model is required to query live data; cloning the repository does not provision the cloud resources.
+[Data dictionary](docs/architecture/data_dictionary.md). Raw data is obtained separately and is not stored in Git.
 
-### Run the standalone data pipeline
+## Run locally
 
-1. Obtain the four source CSVs listed above and place them in `data/raw/kaggle/`. Use the recorded snapshot checksums; raw data is not included in Git.
-2. Prepare Python and Java for the pinned PySpark runtime. The verified Windows setup uses Python 3.13, Java 17, and Hadoop compatibility helpers; see the [standalone runtime guide](docs/pipelines/standalone_pipeline.md#runtime-windows).
-3. From the repository root, install the pipeline dependencies and run:
+Place the four source CSVs in `data/raw/kaggle/`, matching the manifest. Prepare Python, Java 17 and the [PySpark runtime](docs/pipelines/standalone_pipeline.md#runtime-windows), then run:
 
 ```bash
 python -m pip install -r requirements.txt -r requirements/requirements_phase10.txt
 python -m src.run_pipeline --raw data/raw/kaggle --output-root output/local
 ```
 
-Each run uses a new run directory. Inspect `run_report.json` and `published.json` under `output/local/runs/<run_id>/`; publication requires the quality and integrity checks to pass. This command builds local data artifacts, not a cloud deployment or a dashboard refresh.
+Each run writes to `output/local/runs/<run_id>/`. Inspect `run_report.json` and `published.json`; publication requires passing quality and integrity checks. Opening the live Power BI report requires access to the configured Fabric model. Cloning the repo does not provision cloud resources.
 
-For other execution paths, use the [Fabric pipeline guide](docs/pipelines/pipeline_runbook.md), [Databricks guide](docs/pipelines/phase11_databricks.md), or [recovery guide](docs/operations/phase12_operations.md). Cloning the repository alone is not a data backup: large datasets, runtime artifacts, and recovery ZIPs are intentionally excluded from Git.
+## Explore the code
 
-## Repository guide
-
-See the [repository structure and naming convention](docs/maintenance/repository_structure.md) for the functional layout, `snake_case` naming rules, platform exceptions, and Azure Pipelines path migration.
-
-| Location | Contents |
+| Location | What to review |
 | --- | --- |
-| `src/`, `dags/`, `docker/` | Standalone transformations, Airflow orchestration, and container setup. |
-| `databricks/` | Serverless runtime modules, notebooks, and job definitions. |
-| `*.Lakehouse/`, `*.Notebook/`, `*.DataPipeline/`, `notebooks/` | Fabric item definitions and importable notebooks. |
-| `RPT_EV_Analytics.Report/`, `SM_EV_Analytics.SemanticModel/`, `models/` | Power BI report, semantic model, and exported model snapshot. |
-| `scripts/`, `sql/`, `tests/` | Build/deployment utilities, reconciliation queries, and validation tests. |
-| `config/`, `metadata/` | Environment mappings, schema contracts, source checksums, and [selected acceptance evidence](metadata/README.md). |
-| `ci/`, `requirements/` | CI/CD definitions and Python dependency sets. |
-| `docs/` | Architecture, analytical definitions, screenshots, and operational runbooks. |
+| `src/`, `dags/`, `docker/` | Transformations, quality rules and Airflow orchestration. |
+| `databricks/` | Serverless runtime, notebook and job configurations. |
+| Fabric item folders, `notebooks/` | Lakehouse, notebook and pipeline definitions. |
+| Power BI item folders, `models/` | Report visuals, semantic model and model snapshot. |
+| `sql/`, `metadata/`, `config/` | Reconciliation queries, runtime contracts and environment mappings. |
+| `scripts/`, `tests/`, `ci/` | Reusable utilities, automated regression tests and CI/CD. |
+| `docs/` | Data model, screenshots and technical runbooks. |
 
-Development plans, cleanup journals, intermediate API responses, local tools, datasets, reference material, and generated output are kept outside the tracked source tree. Tests and reusable build/deployment/recovery utilities remain versioned.
-
-Further reading: [data dictionary](docs/architecture/data_dictionary.md) · [star schema](docs/architecture/star_schema.md) · [semantic model](docs/architecture/semantic_model.md) · [CI/CD](docs/deployment/test_cd.md) · [operations](docs/operations/operations_runbook.md).
+Technical guides: [Fabric](docs/pipelines/pipeline_runbook.md) · [PySpark/Airflow](docs/pipelines/standalone_pipeline.md) · [Databricks](docs/pipelines/phase11_databricks.md) · [CI/CD](docs/deployment/test_cd.md) · [tests](tests/README.md) · [recovery](docs/recovery/recovery_runbook.md).
