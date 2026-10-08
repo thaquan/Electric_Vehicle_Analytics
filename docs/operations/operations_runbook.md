@@ -60,8 +60,8 @@ completed environment inventory. The restore notebook also refuses existing tabl
 ## CI/CD integration
 
 The implementation is in `scripts/build_test_release.py`,
-`scripts/deploy_test_release.py` and `azure-pipelines-test-cd.yml`.
-See [automated Test deployment](test_cd.md) for first-run setup, preflight,
+`scripts/deploy_test_release.py` and `ci/azure_pipelines_test_cd.yml`.
+See [automated Test deployment](../deployment/test_cd.md) for first-run setup, preflight,
 artifact selection and rollback. The remaining operational checks below still
 apply; code availability alone does not verify the service principal.
 

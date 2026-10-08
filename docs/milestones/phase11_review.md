@@ -5,7 +5,7 @@
 **Hai phát hiện bên dưới đã được xử lý và xác minh trên Databricks.** Phần review ngày 2026-10-05 được giữ lại như lịch sử, không còn là trạng thái hiện tại.
 
 - `scripts/phase11_package.py` đóng gói project sạch, tự đưa bốn module serverless vào `src/` và tạo manifest checksum. Notebook nhận `project_root`, kiểm tra manifest/checksum rồi import đúng package.
-- `scripts/phase11_reconcile.py` và `requirements-phase11.txt` đưa công cụ đối chiếu ra khỏi `output/`; trả mã lỗi khi thiếu bảng, sai schema hoặc dữ liệu khác. Hướng dẫn: [Phase 11 Databricks](phase11_databricks.md).
+- `scripts/phase11_reconcile.py` và `requirements/requirements_phase11.txt` đưa công cụ đối chiếu ra khỏi `output/`; trả mã lỗi khi thiếu bảng, sai schema hoặc dữ liệu khác. Hướng dẫn: [Phase 11 Databricks](../pipelines/phase11_databricks.md).
 - 4 tests mới và 12 tests điều phối Phase 10 đều đạt.
 - Dùng cấu hình Databricks mặc định có sẵn trên máy, không đăng nhập lại. CLI ngoài sandbox đọc được run cũ `23656547233351` với trạng thái SUCCESS. Lỗi cached credentials trước đó là giới hạn truy cập của môi trường sandbox.
 - Upload package vào release riêng và chạy notebook mới: job run `1020983582944630`, task run `744366088607539`, pipeline run `phase11_20261006T013808Z`, trạng thái **SUCCESS**, tổng thời gian `241376 ms`.

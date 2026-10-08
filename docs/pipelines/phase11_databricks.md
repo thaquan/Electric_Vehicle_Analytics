@@ -37,7 +37,7 @@ Chỉ chốt chạy thành công khi `state.result_state` là `SUCCESS`. `tasks[
 ## 3. Tải dữ liệu và đối chiếu
 
 ```powershell
-python -m pip install -r requirements-phase11.txt
+python -m pip install -r requirements/requirements_phase11.txt
 databricks fs cp dbfs:/Volumes/workspace/ev_phase11/ev_phase11/releases/review_20261006/project/output/phase11/runs/<pipeline_run_id> output/phase11_reconciliation/<pipeline_run_id> --recursive
 python scripts/phase11_reconcile.py --reference-gold output/phase10/runs/review_fix_20261003_03/gold --candidate-gold output/phase11_reconciliation/<pipeline_run_id>/gold --output output/phase11_review/reconciliation_new_run.json
 ```
