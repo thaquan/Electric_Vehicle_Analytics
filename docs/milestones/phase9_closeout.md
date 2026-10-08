@@ -79,7 +79,7 @@ Chín kiểm thử Phase 9 đã đạt, gồm inventory hợp lệ, dữ liệu 
 - Định nghĩa ứng dụng lấy từ repo hiện tại, không phải lần đồng bộ mới mọi chỉnh sửa trên Service.
 - Chạy lại đầy đủ Bronze → Silver → Gold bằng PySpark/Airflow thuộc **giai đoạn 10**.
 
-Xem [hướng dẫn khôi phục](phase9_backup.md) và [lộ trình](roadmap_phase9_12.md).
+Xem [hướng dẫn khôi phục](../recovery/phase9_backup.md) và [lộ trình](roadmap_phase9_12.md).
 
 ## Kiểm tra lại ngày 2026-10-03
 

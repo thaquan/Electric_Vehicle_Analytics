@@ -110,7 +110,7 @@ Sau sửa, DAG test thực tế trong container chạy thành công.
 
 ## 6. Airflow container
 
-Dockerfile: `docker/phase10-airflow/Dockerfile`
+Dockerfile: `docker/phase10_airflow/Dockerfile`
 
 Image đã build và xác minh:
 
@@ -171,7 +171,7 @@ SHA256 helper binaries:
 
 ## 8. Dependencies Phase 10
 
-File: `requirements-phase10.txt`
+File: `requirements/requirements_phase10.txt`
 
 ```text
 pyspark==3.5.9
@@ -251,8 +251,8 @@ khi bàn giao. Backup Phase 9 vẫn là snapshot lịch sử; code Phase 10 mớ
 - Bộ kiểm thử toàn repo: 95 test được phát hiện, 88 đạt trên Windows; 7 test cần
   môi trường riêng được chạy tiếp như dưới đây. Lần chạy toàn repo dùng thư viện
   PyArrow trong backup đã kiểm checksum qua `PYTHONPATH`, với `python -B` để giữ
-  nguyên gói backup. Khi chuẩn bị môi trường mới, cài `requirements-export.txt`
-  cùng `requirements-phase10.txt` để có các thư viện kiểm thử tương ứng.
+  nguyên gói backup. Khi chuẩn bị môi trường mới, cài `requirements/requirements_export.txt`
+  cùng `requirements/requirements_phase10.txt` để có các thư viện kiểm thử tương ứng.
 - 6/6 test Spark trên Parquet thật đạt: dữ liệu hợp lệ; KPI sai; segment trùng;
   khóa fact trùng; thuộc tính dimension bị sửa; schema bị đổi.
 - 1/1 test trong Airflow Linux đạt: render `dag_run.conf.run_id` có shell

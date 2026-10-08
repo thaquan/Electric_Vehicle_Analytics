@@ -66,4 +66,4 @@ Bằng chứng và ID Fabric cũ được giữ để truy xuất nguồn gốc.
 Bronze → Silver → Gold bằng PySpark/Airflow, chuyển model/report sang nền tảng khác
 và cài Spark/Java/Airflow thuộc các giai đoạn sau.
 
-Xem [lộ trình và điều kiện nghiệm thu](roadmap_phase9_12.md).
+Xem [lộ trình và điều kiện nghiệm thu](../milestones/roadmap_phase9_12.md).

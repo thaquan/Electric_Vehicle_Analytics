@@ -1,6 +1,6 @@
 # Giai đoạn 12 — Nghiệm thu và bàn giao
 
-Cập nhật ngày 2026-10-06. **Trạng thái: các kiểm chứng kỹ thuật đã đạt; chưa ký nghiệm thu bàn giao cho người tiếp nhận.** Xem [biên bản kỹ thuật](phase12_closeout.md) và [runbook bàn giao](phase12_operations.md). Các mục yêu cầu người tiếp nhận vẫn để trống cho đến khi có xác nhận thực tế.
+Cập nhật ngày 2026-10-06. **Trạng thái: các kiểm chứng kỹ thuật đã đạt; chưa ký nghiệm thu bàn giao cho người tiếp nhận.** Xem [biên bản kỹ thuật](../milestones/phase12_closeout.md) và [runbook bàn giao](phase12_operations.md). Các mục yêu cầu người tiếp nhận vẫn để trống cho đến khi có xác nhận thực tế.
 
 Mục tiêu là để người tiếp nhận tự vận hành, kiểm tra và khôi phục hệ thống theo tài liệu. Kết quả kỹ thuật của các giai đoạn trước là bằng chứng đầu vào; chưa thay thế việc bàn giao cho người tiếp nhận.
 
@@ -22,12 +22,12 @@ Phase 11 hiện xác minh pipeline dữ liệu trên Databricks. Chưa có bằn
 
 | Nội dung | Tài liệu hiện có |
 | --- | --- |
-| Fabric Bronze/Silver/Gold | [Bronze/Silver](bronze_silver.md), [Gold](gold_runbook.md), [pipeline](pipeline_runbook.md) |
-| Power BI | [Semantic model](semantic_model.md), [report](powerbi_report.md) |
-| CI/CD và xử lý sự cố Fabric Test | [Test CD](test_cd.md), [operations](operations_runbook.md) |
-| Backup độc lập | [Phase 9 backup](phase9_backup.md), [kết quả khôi phục](phase9_closeout.md) |
-| PySpark/Airflow | [Phase 10](phase10_closeout.md) |
-| Databricks và đối chiếu | [Đóng gói, chạy và đối chiếu](phase11_databricks.md), [review đã khắc phục](phase11_review.md) |
+| Fabric Bronze/Silver/Gold | [Bronze/Silver](../pipelines/bronze_silver.md), [Gold](../pipelines/gold_runbook.md), [pipeline](../pipelines/pipeline_runbook.md) |
+| Power BI | [Semantic model](../architecture/semantic_model.md), [report](../architecture/powerbi_report.md) |
+| CI/CD và xử lý sự cố Fabric Test | [Test CD](../deployment/test_cd.md), [operations](operations_runbook.md) |
+| Backup độc lập | [Phase 9 backup](../recovery/phase9_backup.md), [kết quả khôi phục](../milestones/phase9_closeout.md) |
+| PySpark/Airflow | [Phase 10](../milestones/phase10_closeout.md) |
+| Databricks và đối chiếu | [Đóng gói, chạy và đối chiếu](../pipelines/phase11_databricks.md), [review đã khắc phục](../milestones/phase11_review.md) |
 
 Các file Markdown dùng UTF-8. Với Windows PowerShell, đọc bằng `Get-Content -Encoding utf8 <file.md>`. Trong editor, chọn mở lại bằng UTF-8 trước khi lưu nếu chữ hiển thị sai.
 
