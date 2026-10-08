@@ -1,6 +1,6 @@
 # Giai đoạn 12 — Nghiệm thu và bàn giao
 
-Cập nhật ngày 2026-10-06. **Trạng thái: các kiểm chứng kỹ thuật đã đạt; chưa ký nghiệm thu bàn giao cho người tiếp nhận.** Xem [biên bản kỹ thuật](../milestones/phase12_closeout.md) và [runbook bàn giao](phase12_operations.md). Các mục yêu cầu người tiếp nhận vẫn để trống cho đến khi có xác nhận thực tế.
+Cập nhật ngày 2026-10-06. **Trạng thái: các kiểm chứng kỹ thuật đã đạt; chưa ký nghiệm thu bàn giao cho người tiếp nhận.** Xem [biên bản kỹ thuật](../project_summary.md) và [runbook bàn giao](phase12_operations.md). Các mục yêu cầu người tiếp nhận vẫn để trống cho đến khi có xác nhận thực tế.
 
 Mục tiêu là để người tiếp nhận tự vận hành, kiểm tra và khôi phục hệ thống theo tài liệu. Kết quả kỹ thuật của các giai đoạn trước là bằng chứng đầu vào; chưa thay thế việc bàn giao cho người tiếp nhận.
 
@@ -25,9 +25,9 @@ Phase 11 hiện xác minh pipeline dữ liệu trên Databricks. Chưa có bằn
 | Fabric Bronze/Silver/Gold | [Bronze/Silver](../pipelines/bronze_silver.md), [Gold](../pipelines/gold_runbook.md), [pipeline](../pipelines/pipeline_runbook.md) |
 | Power BI | [Semantic model](../architecture/semantic_model.md), [report](../architecture/powerbi_report.md) |
 | CI/CD và xử lý sự cố Fabric Test | [Test CD](../deployment/test_cd.md), [operations](operations_runbook.md) |
-| Backup độc lập | [Phase 9 backup](../recovery/phase9_backup.md), [kết quả khôi phục](../milestones/phase9_closeout.md) |
-| PySpark/Airflow | [Phase 10](../milestones/phase10_closeout.md) |
-| Databricks và đối chiếu | [Đóng gói, chạy và đối chiếu](../pipelines/phase11_databricks.md), [review đã khắc phục](../milestones/phase11_review.md) |
+| Backup độc lập | [Phase 9 backup](../recovery/phase9_backup.md), [kết quả khôi phục](../project_summary.md) |
+| PySpark/Airflow | [PySpark/Airflow](../pipelines/standalone_pipeline.md) |
+| Databricks và đối chiếu | [Đóng gói, chạy và đối chiếu](../pipelines/phase11_databricks.md), [kết quả nghiệm thu](../project_summary.md) |
 
 Các file Markdown dùng UTF-8. Với Windows PowerShell, đọc bằng `Get-Content -Encoding utf8 <file.md>`. Trong editor, chọn mở lại bằng UTF-8 trước khi lưu nếu chữ hiển thị sai.
 
@@ -65,6 +65,6 @@ Run package sạch Phase 11 `phase11_20261006T013808Z` đã đạt SUCCESS trong
 - [x] Tổng hợp kết quả theo từng tiêu chí, liên kết bằng chứng và danh sách tồn đọng trong biên bản kỹ thuật.
 - [ ] Ghi ngày bàn giao, release/commit, người tiếp nhận và xác nhận họ đã chạy/khôi phục được theo tài liệu.
 - [ ] Ghi các ngoại lệ được chấp thuận, người chịu trách nhiệm và thời hạn xử lý.
-- [ ] Cập nhật README, roadmap và biên bản closeout sau khi đáp ứng đủ điều kiện.
+- [ ] Cập nhật README và tổng kết nghiệm thu sau khi đáp ứng đủ điều kiện.
 
 Chỉ đánh dấu giai đoạn 12 hoàn tất khi người tiếp nhận thực hiện được quy trình đã thống nhất và xác nhận kết quả. Đã có diễn tập kỹ thuật do agent thực hiện; chưa có xác nhận bàn giao của người tiếp nhận.

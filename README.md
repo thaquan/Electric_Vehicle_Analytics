@@ -106,6 +106,8 @@ Figures are traceable to the [verified segment metrics](metadata/star_expected_m
 - **Verified delivery:** [Azure CI #30](https://dev.azure.com/thaquan081006/Electric_Vehicle_Analytics/_build/results?buildId=30) passed 86 configured unit tests, and [Test CD #31](https://dev.azure.com/thaquan081006/Electric_Vehicle_Analytics/_build/results?buildId=31) passed deployment, refresh, report/model binding, and KPI checks on 7 October 2026.
 - **Recoverable artifacts:** offline baseline recovery and snapshot reconciliation have been demonstrated. An independently stored backup copy and final recipient handoff remain pending.
 
+See the [project acceptance summary](docs/project_summary.md) for retained evidence and outstanding handoff items.
+
 Saved report screenshots and the verified Urban slicer check do not constitute full UI acceptance. Remaining navigation/reset, chart cross-filter, Service rendering, and separate SQL endpoint checks were explicitly deferred; see [report validation details](docs/architecture/powerbi_report.md).
 
 ## Explore or run the project
@@ -117,7 +119,7 @@ Start with the screenshots above, or open [RPT_EV_Analytics.pbip](RPT_EV_Analyti
 ### Run the standalone data pipeline
 
 1. Obtain the four source CSVs listed above and place them in `data/raw/kaggle/`. Use the recorded snapshot checksums; raw data is not included in Git.
-2. Prepare Python and Java for the pinned PySpark runtime. The verified Windows setup uses Python 3.13, Java 17, and Hadoop compatibility helpers; see the [standalone runtime guide](docs/milestones/phase10_closeout.md#7-runtime-windows).
+2. Prepare Python and Java for the pinned PySpark runtime. The verified Windows setup uses Python 3.13, Java 17, and Hadoop compatibility helpers; see the [standalone runtime guide](docs/pipelines/standalone_pipeline.md#runtime-windows).
 3. From the repository root, install the pipeline dependencies and run:
 
 ```bash
@@ -140,8 +142,10 @@ See the [repository structure and naming convention](docs/maintenance/repository
 | `*.Lakehouse/`, `*.Notebook/`, `*.DataPipeline/`, `notebooks/` | Fabric item definitions and importable notebooks. |
 | `RPT_EV_Analytics.Report/`, `SM_EV_Analytics.SemanticModel/`, `models/` | Power BI report, semantic model, and exported model snapshot. |
 | `scripts/`, `sql/`, `tests/` | Build/deployment utilities, reconciliation queries, and validation tests. |
-| `config/`, `metadata/` | Environment mappings, schema contracts, source checksums, and verification evidence. |
-| `ci/`, `requirements/`, `references/` | CI/CD definitions, Python dependency sets, and local reference material. |
+| `config/`, `metadata/` | Environment mappings, schema contracts, source checksums, and [selected acceptance evidence](metadata/README.md). |
+| `ci/`, `requirements/` | CI/CD definitions and Python dependency sets. |
 | `docs/` | Architecture, analytical definitions, screenshots, and operational runbooks. |
+
+Development plans, cleanup journals, intermediate API responses, local tools, datasets, reference material, and generated output are kept outside the tracked source tree. Tests and reusable build/deployment/recovery utilities remain versioned.
 
 Further reading: [data dictionary](docs/architecture/data_dictionary.md) · [star schema](docs/architecture/star_schema.md) · [semantic model](docs/architecture/semantic_model.md) · [CI/CD](docs/deployment/test_cd.md) · [operations](docs/operations/operations_runbook.md).

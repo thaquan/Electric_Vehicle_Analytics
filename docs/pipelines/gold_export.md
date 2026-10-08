@@ -7,7 +7,7 @@ The export did not rerun the pipeline or transformation notebooks, refresh the m
 or modify source tables. Parts 3?4 cover packaging and the recovery procedure;
 see the [recovery runbook](../recovery/recovery_runbook.md) and
 `metadata/gold_recovery_package_status.json`. Isolated recovery had not run at the
-export date; subsequent results are in the [phase 7 closeout](../milestones/phase7_closeout.md).
+export date; subsequent results are in the [project acceptance summary](../project_summary.md).
 Remaining dashboard checks stay **skipped by user request**, not passed.
 
 ## Export details

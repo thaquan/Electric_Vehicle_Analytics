@@ -1,7 +1,7 @@
 # EV Analytics recovery runbook
 
 > Updated 2026-09-29: the recovery drill is complete; see the
-> [closeout results](../milestones/phase7_closeout.md). Historical statements about work not yet
+> [closeout results](../project_summary.md). Historical statements about work not yet
 > performed refer to the original ZIP release. Verify every step for each new
 > recovery attempt; historical results are not evidence for a new attempt.
 
