@@ -2,7 +2,7 @@
 
 ## Current state
 
-The model was authored/exported through Power BI Modeling MCP: 6 tables,
+The semantic model contains 6 tables,
 5 active Many-to-One single-direction relationships, 12 measures. All six
 partitions now reference Gold v2 run `20260925T152721965637Z`, confirmed by
 `metadata/e2e_star_verified_run.json`. Every model source column matches the
@@ -11,8 +11,7 @@ corresponding published table schema. There are no placeholder entities.
 The model is deployed as `8e7e37b7-7bab-4122-84fb-3ae7b2121cd7` in
 WS_EV_Analytics. Full refresh and live DAX validation passed: all 12 measures,
 35 segment groups, 24 combined-filter groups and empty-selection handling.
-Evidence is in `metadata/semantic_model_live_dax.json`,
-`metadata/semantic_model_profile_dax.json` and `metadata/semantic_model_validation.json`.
+See [validation scope](../validation.md); diagnostic query responses are stored outside Git.
 Separate SQL analytics endpoint execution is still pending; Fabric Spark SQL
 and independent SQLite counts are already reconciled with live DAX.
 

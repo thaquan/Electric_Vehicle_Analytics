@@ -42,7 +42,16 @@ docker build -t ev-phase10-airflow:2.10.5 -f docker/phase10_airflow/Dockerfile .
 
 Image pin Airflow 2.10.5/Python 3.11, Java 17 và PySpark 3.5.9. DAG `dags/ev_analytics_phase10.py` chạy theo yêu cầu (`schedule=None`), `catchup=False`, tối đa một run, retry hai lần cách nhau hai phút. Failure callback ghi log; chưa cấu hình gửi thông báo.
 
-Hướng dẫn mount dữ liệu, chạy sáu stage trong container và tiếp tục run bị ngắt nằm ở [diễn tập Airflow](../operations/phase12_operations.md#diễn-tập-airflow-với-image-đã-có-trên-máy). Công cụ `scripts/phase10_airflow_dag_test.sh` tạo run mới; `scripts/phase12_airflow_resume.sh` tiếp tục cùng application run ID qua integrity gate.
+Chạy từ gốc repo với dữ liệu đã chuẩn bị. Output nằm trong thư mục local được Git ignore:
+
+```powershell
+$projectRoot = (Get-Location).Path
+New-Item -ItemType Directory -Force -Path output/airflow | Out-Null
+$airflowOutput = (Resolve-Path output/airflow).Path
+docker run --rm --hostname ev-local --add-host ev-local:127.0.0.1 --network none --entrypoint bash --mount "type=bind,source=$projectRoot,target=/opt/ev,readonly" --mount "type=bind,source=$airflowOutput,target=/opt/ev/output" -e EV_PROJECT_ROOT=/opt/ev -e AIRFLOW__CORE__DAGS_FOLDER=/opt/ev/dags -e PYTHONDONTWRITEBYTECODE=1 -e SPARK_LOCAL_IP=127.0.0.1 -e SPARK_MASTER=local[2] -e SPARK_SHUFFLE_PARTITIONS=8 ev-phase10-airflow:2.10.5 /opt/ev/scripts/phase10_airflow_dag_test.sh
+```
+
+Để tiếp tục run bị ngắt, giữ nguyên output và thay lệnh cuối bằng `/opt/ev/scripts/phase12_airflow_resume.sh <run_id>`. Từng stage kiểm lại integrity trước khi bỏ qua công việc đã đạt; chọn run ID mới khi code/metadata/input đổi.
 
 ## Kiểm thử
 
@@ -54,6 +63,6 @@ $env:EV_RUN_SPARK_TESTS = '1'
 python -m unittest discover -s tests -p test_phase10_spark.py -v
 ```
 
-Test renderer Airflow cần Linux image có Airflow; test recovery cần snapshot theo [recovery runbook](../recovery/recovery_runbook.md). Fresh clone không chứa snapshot. Các test skip vì thiếu runtime không được tính là passed.
+Test renderer Airflow cần Linux image có Airflow. Bộ test trong repo dùng fixture tạm hoặc reference được version hóa; các diễn tập phụ thuộc snapshot riêng được giữ local. Các test skip vì thiếu runtime không được tính là passed.
 
 Spark ghi timestamp UTC; công cụ Parquet khác có thể hiển thị độ chính xác hoặc timezone khác. Đối chiếu cross-platform bằng [công cụ Databricks reconciliation](phase11_databricks.md), giữ schema và chỉ bỏ giá trị lineage được cho phép thay đổi theo run.
