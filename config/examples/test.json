@@ -1,0 +1,25 @@
+{
+  "config_version": 1,
+  "environment": "test",
+  "deployment_scope": "gold_model_report",
+  "workspace_name": "YOUR_FABRIC_WORKSPACE",
+  "workspace_id": "00000000-0000-0000-0000-000000000000",
+  "lakehouse_name": "LH_EV_Gold",
+  "lakehouse_id": "00000000-0000-0000-0000-000000000000",
+  "lakehouse_schema": "",
+  "semantic_model_name": "SM_EV_Analytics",
+  "semantic_model_id": "00000000-0000-0000-0000-000000000000",
+  "cloud_connection_id": "00000000-0000-0000-0000-000000000000",
+  "report_name": "RPT_EV_Analytics",
+  "report_id": "00000000-0000-0000-0000-000000000000",
+  "gold_run_id": "00000000-0000-0000-0000-000000000000",
+  "snapshot_manifest_sha256": "0da1b98e56c024261d247e3cfe94efaddb594cd52cce4eee89f6a8955cf1ad9f",
+  "snapshot_relative_path": "Files/recovery/snapshot",
+  "expected_kpi": {
+    "respondents": 668665,
+    "yes": 116779,
+    "no": 551886
+  },
+  "restore_notebook_id": "00000000-0000-0000-0000-000000000000",
+  "example_only": true
+}

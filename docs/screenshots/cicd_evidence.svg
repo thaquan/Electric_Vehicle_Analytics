@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="510" viewBox="0 0 1200 510" role="img" aria-labelledby="title desc">
+<title id="title">Archived CI/CD evidence summary</title><desc id="desc">Recorded on 2 October 2026: CI build 14 and Test CD build 15 succeeded. This is a rendering of an archived JSON record, not an Azure DevOps screenshot or a new run.</desc>
+<rect width="1200" height="510" rx="16" fill="#0b1220"/>
+<g font-family="Arial, sans-serif" fill="#edf2f7">
+<text x="44" y="57" font-size="28" font-weight="bold">CI/CD · archived verification</text>
+<text x="44" y="91" font-size="18" fill="#a9b8ca">Recorded 2026-10-02 · Author-maintained evidence extract</text>
+<rect x="44" y="122" width="540" height="106" rx="10" fill="#152335"/>
+<rect x="612" y="122" width="544" height="106" rx="10" fill="#152335"/>
+<text x="68" y="157" font-size="18">CI · Build 14</text><text x="68" y="199" font-size="30" fill="#2bd0a0">SUCCEEDED</text>
+<text x="636" y="157" font-size="18">Test deployment · Build 15</text><text x="636" y="199" font-size="30" fill="#2bd0a0">SUCCEEDED</text>
+<text x="44" y="272" font-size="20">Report binding: passed   ·   Refresh: completed   ·   DAX KPI: passed</text>
+<text x="44" y="315" font-size="22">668,665 respondents   /   116,779 yes   /   551,886 no</text>
+<text x="44" y="358" font-size="16" fill="#a9b8ca">Original deployed commit: 8e8e4f74a03efb91fbd2c6211fd2809ca532b851</text>
+<path d="M44 386 H1156" stroke="#334155"/>
+<text x="44" y="424" font-size="17">Rendered from docs/evidence/cicd_verification.json.</text>
+<text x="44" y="458" font-size="17" fill="#a9b8ca">Not an Azure DevOps UI screenshot. No new run or current cloud health is claimed.</text>
+</g></svg>

@@ -104,3 +104,11 @@ Each run writes to `output/local/runs/<run_id>/`. Inspect `run_report.json` and 
 | `docs/` | Data model, screenshots and technical runbooks. |
 
 Technical guides: [Fabric](docs/pipelines/pipeline_runbook.md) · [PySpark/Airflow](docs/pipelines/standalone_pipeline.md) · [Databricks](docs/pipelines/phase11_databricks.md) · [CI/CD](docs/deployment/test_cd.md) · [tests](tests/README.md) · [recovery](docs/recovery/recovery_runbook.md).
+
+## CI/CD evidence
+
+CI build 14 and Test deployment build 15 succeeded in the archived verification recorded on 2 October 2026. Inspect the [public evidence summary and sanitized results](docs/cicd_evidence.md), including refresh, model binding and KPI checks. Azure DevOps remains access-controlled; the public summary requires no cloud account and does not claim a new pipeline run.
+
+## Reproducing the project
+
+Follow [data acquisition and checksum verification](docs/data_access.md) before running locally. The four CSVs are obtained separately, and the source manifest's direct-Kaggle verification limitation remains explicit. For cloud adaptation, see [configuration templates and deployment constraints](config/README.md); the existing environment mappings identify the pinned demonstration deployment.

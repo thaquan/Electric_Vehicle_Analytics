@@ -1,4 +1,5 @@
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -6,9 +7,27 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 from bronze_silver import validate_frame, transform
+from profile_dataset import profile_csv
 
 
 class QualityTests(unittest.TestCase):
+    def test_profile_omits_identifiers_without_breaking_validation(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / "reference.csv"
+            path.write_text("Buyer_ID,Will_Buy_EV\nPRIVATE_ID_A,Yes\nPRIVATE_ID_B,No\n", encoding="utf-8")
+            profile = profile_csv(path)
+            categories = profile["column_profiles"]
+            identifier = categories[0]
+            self.assertEqual(identifier["distinct_count"], 2)
+            self.assertNotIn("value_counts", identifier)
+            self.assertNotIn("PRIVATE_ID_A", str(profile))
+            self.assertEqual(categories[1]["value_counts"], {"No": 1, "Yes": 1})
+            frame = pd.read_csv(path, dtype=str, keep_default_na=False)
+            entry = {"columns": list(frame), "data_rows": 2}
+            self.assertEqual(validate_frame(frame, entry, categories, profile, "Buyer_ID")[0], [])
+            frame.loc[1, "Buyer_ID"] = frame.loc[0, "Buyer_ID"]
+            self.assertIn("Buyer_ID: duplicate keys", validate_frame(frame, entry, categories, profile, "Buyer_ID")[0])
+
     def validate(self, rows):
         frame = pd.DataFrame(rows, columns=["id", "Age", "Will_Buy_EV"])
         entry = {"columns": list(frame), "data_rows": 2}

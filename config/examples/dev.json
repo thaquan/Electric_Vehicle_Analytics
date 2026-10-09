@@ -1,0 +1,14 @@
+{
+  "environment": "dev",
+  "workspace_name": "YOUR_FABRIC_WORKSPACE",
+  "workspace_id": "00000000-0000-0000-0000-000000000000",
+  "gold_lakehouse_id": "00000000-0000-0000-0000-000000000000",
+  "semantic_model_name": "SM_EV_Analytics",
+  "semantic_model_id": "00000000-0000-0000-0000-000000000000",
+  "report_name": "RPT_EV_Analytics",
+  "report_id": "00000000-0000-0000-0000-000000000000",
+  "gold_run_id": "00000000-0000-0000-0000-000000000000",
+  "scope": "source_reference_only",
+  "provenance": "Existing repository definitions and README; not freshly queried in phase 8",
+  "example_only": true
+}

@@ -13,3 +13,5 @@ Only inputs needed to reproduce processing, validate results or package the pinn
 | `gold_export_status.json`, `gold_export_manifest.json`, `gold_export_manifest.sha256` | Identity and provenance of the pinned recovery/export snapshot. |
 
 Local test results, API responses, service probes, acceptance journals and generated diagnostics are not source inputs and are excluded from Git. New run output belongs in `output/` or CI artifacts. Use the [validation overview](../docs/validation.md) for the project scope.
+
+Profiles retain aggregate counts and category domains needed for validation. `Buyer_ID` retains its distinct/null counts but omits individual identifier values. Both profiling scripts preserve this rule; key uniqueness is checked against the input data at runtime. See [data acquisition and verification](../docs/data_access.md).

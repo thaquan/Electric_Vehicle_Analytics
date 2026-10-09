@@ -34,6 +34,7 @@ steps:
 
       for test_file in \
         test_bronze_silver.py \
+        test_source_download.py \
         test_gold_rules.py \
         test_star_schema.py \
         test_pipeline.py \

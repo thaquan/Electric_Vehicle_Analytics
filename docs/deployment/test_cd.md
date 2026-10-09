@@ -57,6 +57,8 @@ Update the pipeline definition as well as repository references whenever a YAML 
 
 ## Verified deployment
 
+Public readers can inspect the [archived evidence summary](../cicd_evidence.md) and its sanitized JSON without Azure DevOps access.
+
 CI build 14 and CD build 15 succeeded on 2026-10-02. CD used source commit
 `8e8e4f74a03efb91fbd2c6211fd2809ca532b851` and service principal
 `sp-ev-analytics-test-deploy`. The user approved transfer of the Test model's
