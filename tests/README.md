@@ -8,10 +8,19 @@ These are reusable regression tests for the project, not local test logs or agen
 - Recovery: archive integrity and unsafe path rejection using temporary fixtures.
 - Integration: real Spark Parquet checks and Airflow template rendering, enabled only in their required runtimes.
 
-```bash
-python -m pip install -r requirements.txt -r requirements/requirements_cd.txt -r requirements/requirements_export.txt -r requirements/requirements_phase10.txt -r requirements/requirements_phase11.txt
-python -m unittest discover -s tests -v
+Create an isolated Python 3.13 environment from the repository root. The combined
+requirements include local Spark, Arrow (DAX/export), and DuckDB. Java is not needed
+for the default suite because real Spark tests are opt-in.
+
+```powershell
+python -m venv .venv
+.venv/Scripts/python.exe -m pip install -r requirements/requirements_dev.txt -c requirements/constraints-local-py313.txt
+.venv/Scripts/python.exe -m pip check
+.venv/Scripts/python.exe -m unittest discover -s tests -v
 ```
+
+On Linux use `.venv/bin/python` instead of `.venv/Scripts/python.exe`.
+See the [runtime matrix](../requirements/README.md) for separate cloud/runtime environments.
 
 Six Spark tests require `EV_RUN_SPARK_TESTS=1` and Java/Spark setup. One Airflow test requires Linux with Airflow installed. Skips are reported separately from passes; see the [runtime guide](../docs/pipelines/standalone_pipeline.md).
 

@@ -84,10 +84,16 @@ Source: Kaggle Playground Series S6E9, *Predicting Electric Vehicle Purchases*, 
 
 Place the four source CSVs in `data/raw/kaggle/`, matching the manifest. Prepare Python, Java 17 and the [PySpark runtime](docs/pipelines/standalone_pipeline.md#runtime-windows), then run:
 
-```bash
-python -m pip install -r requirements.txt -r requirements/requirements_phase10.txt
-python -m src.run_pipeline --raw data/raw/kaggle --output-root output/local
+```powershell
+python -m venv .venv
+.venv/Scripts/python.exe -m pip install -r requirements/requirements_dev.txt -c requirements/constraints-local-py313.txt
+.venv/Scripts/python.exe -m pip check
+.venv/Scripts/python.exe scripts/verify_source_download.py --directory data/raw/kaggle
+. ./scripts/phase10_env.ps1 -PythonExecutable .venv/Scripts/python.exe
+.venv/Scripts/python.exe -m src.run_pipeline --raw data/raw/kaggle --output-root output/local
 ```
+
+Use Python 3.13 for this Windows recipe. See the [runtime matrix and troubleshooting](requirements/README.md) for dependency scopes and other runtimes. The helper accepts custom Java/Hadoop paths; Java and Windows native helpers are installed separately. If PowerShell blocks the helper script, the runtime guide documents a process-only execution-policy setting.
 
 Each run writes to `output/local/runs/<run_id>/`. Inspect `run_report.json` and `published.json`; publication requires passing quality and integrity checks. Opening the live Power BI report requires access to the configured Fabric model. Cloning the repo does not provision cloud resources.
 
