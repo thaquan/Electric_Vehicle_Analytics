@@ -22,6 +22,10 @@ python -m venv .venv
 On Linux use `.venv/bin/python` instead of `.venv/Scripts/python.exe`.
 See the [runtime matrix](../requirements/README.md) for separate cloud/runtime environments.
 
-Six Spark tests require `EV_RUN_SPARK_TESTS=1` and Java/Spark setup. One Airflow test requires Linux with Airflow installed. Skips are reported separately from passes; see the [runtime guide](../docs/pipelines/standalone_pipeline.md).
+Seven Spark tests require `EV_RUN_SPARK_TESTS=1` and Java/Spark setup, including comparison of cached and uncached shared transformations. One Airflow test requires Linux with Airflow installed. Skips are reported separately from passes; see the [runtime guide](../docs/pipelines/standalone_pipeline.md).
+
+`test_pipeline_entrypoints.py` checks invalid input rejection before Spark across
+CLI/staged/serverless entry points, startup failure reports, preservation of the
+original exception during cleanup, platform session ownership, and cache lifecycle.
 
 Machine-specific snapshot rehearsals are kept locally, outside this suite. Test reports, coverage, browser traces, downloaded data and temporary fixtures must not be committed. The `Test` name in deployment helpers refers to the cloud deployment environment, not disposable local experiments.

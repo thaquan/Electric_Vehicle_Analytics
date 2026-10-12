@@ -38,6 +38,6 @@ def build_bronze(spark: SparkSession, raw_dir: Path, metadata_dir: Path, output_
         if frame.count() != entry['data_rows'] or frame.columns != entry['columns']:
             raise ValueError(f'Bronze structure mismatch: {source.name}')
         target = parquet_dir / f"{source.stem}.parquet"
-        frame.write.mode('errorifexists').parquet(str(target))
+        frame.write.mode('error').parquet(str(target))
         tables.append({'name': source.stem, 'rows': entry['data_rows'], 'sha256': entry['sha256'], 'path': str(target)})
     return {'status': 'passed', 'tables': tables}

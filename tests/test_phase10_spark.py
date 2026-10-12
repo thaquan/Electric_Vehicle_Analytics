@@ -66,6 +66,19 @@ class Phase10SparkTests(unittest.TestCase):
         self.assertEqual(result['tables'], 8)
         self.assertEqual(result['silver_reconstruction'], 'exact')
 
+    def test_uncached_shared_runtime_matches_cached_tables(self):
+        uncached = self.run / 'uncached'
+        build_gold(self.spark, self.run / 'silver', self.meta, uncached,
+                   'fixture_run', 'fixture_run', cache_enabled=False)
+        for target in uncached.glob('*.parquet'):
+            actual = self.spark.read.parquet(str(target))
+            expected = self.spark.read.parquet(str(self.run / 'gold' / target.name))
+            self.assertEqual(actual.schema, expected.schema)
+            self.assertEqual(actual.exceptAll(expected).count(), 0)
+            self.assertEqual(expected.exceptAll(actual).count(), 0)
+        result = verify_gold(self.spark, self.run / 'gold', self.meta, cache_enabled=False)
+        self.assertEqual(result['silver_reconstruction'], 'exact')
+
     def test_corrupt_kpi_rejected(self):
         self.rewrite('agg_ev_kpi', lambda df: df.withColumn('yes_count', F.lit(2).cast('long')))
         with self.assertRaisesRegex(ValueError, 'aggregate'):

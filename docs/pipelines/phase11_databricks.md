@@ -10,7 +10,11 @@ python scripts/phase11_package.py --output output/phase11_release_20261006/proje
 
 Thư mục đích phải chưa tồn tại; mỗi release dùng một tên mới. Có thể truyền `--raw <thu-muc-csv>` nếu nguồn không nằm tại `data/raw/kaggle`. Công cụ kiểm tra kích thước/SHA-256 nguồn theo manifest trước khi tạo package.
 
-Package chỉ chứa 16 file cần chạy: bốn CSV nguồn, bốn JSON metadata, hai module dùng chung trong `scripts`, `src/__init__.py`, `src/run_contract.py` và bốn module serverless. Các file `databricks/runtime_src/{bronze,silver,gold,quality_checks}.py` được đặt vào `project/src/` để các import `src.*` trong notebook và giữa các module chọn đúng bản serverless. Không thay đổi `src/` Phase 10 trong repo. `package_manifest.json` lưu checksum từng file và mapping overlay.
+Package v2 chứa 22 file cần chạy: bốn CSV nguồn, sáu JSON metadata, ba module trong `scripts` và chín module `src`. Local, Airflow và Databricks dùng chung transformation, input validation, stage gates và publication. Không còn bản sao transformation ở `databricks/runtime_src/`. `package_manifest.json` ghi `runtime_source: shared-src`, phiên bản package và checksum từng file.
+
+Notebook gọi `execute_pipeline(..., runtime='databricks-serverless')`, cung cấp Spark session của nền tảng. Runtime này không gọi cache/unpersist, không cấu hình `local[*]` và không dừng session do Databricks sở hữu. Input check dùng cùng `prepare()` với local/Airflow và cần pandas/numpy có sẵn trong Python runtime; validation hiện dùng driver memory cho snapshot khoảng 73 MB CSV.
+
+Tạo package và import notebook mới cùng nhau. Notebook mới từ chối package overlay v1; giữ nguyên release cũ để đối chiếu. Code có kiểm thử offline và Spark local cho hai chế độ cache; chỉ một run serverless mới thành công mới chứng minh phiên bản này hoạt động trên Databricks.
 
 Notebook kiểm tra package manifest và checksum trước khi xử lý. Không upload nguyên repo thay cho package. Không sửa file trong release đã đóng gói; tạo release mới khi thay đổi code hoặc metadata.
 

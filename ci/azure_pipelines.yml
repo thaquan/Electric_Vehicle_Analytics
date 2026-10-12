@@ -38,6 +38,7 @@ steps:
         test_pipeline.py \
         test_phase9_backup.py \
         test_phase10_orchestration.py \
+        test_pipeline_entrypoints.py \
         test_phase11.py \
         test_phase12.py \
         test_gold_export.py \

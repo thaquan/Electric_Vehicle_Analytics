@@ -2,6 +2,10 @@
 
 Luồng xử lý: `input_check -> bronze -> silver -> gold -> quality -> publish`. Chuẩn bị bốn CSV tại `data/raw/kaggle/` theo `metadata/source_manifest.json`; dữ liệu và runtime local không nằm trong Git.
 
+CLI `src.run_pipeline` và Airflow dùng chung `src.stage_runner`: mọi đường chạy đều kiểm tra input trước khi tạo Spark. CLI chạy lần lượt các stage, tạo session local cho các stage Spark và ghi `run_report.json` ngay cả khi khởi tạo JVM thất bại. Báo cáo lỗi có `failed_stage`, `error_type`, `error` và ghi chú nếu cleanup cũng lỗi; lỗi cleanup không thay thế lỗi xử lý gốc. Run ID đã tồn tại không bị CLI ghi đè.
+
+`published.json` chứa inventory các artifact đã qua quality gate. Context v2 ghi runtime (`local` hoặc `databricks-serverless`); không đổi runtime khi retry. Các run cũ và output từ trước khi sửa code cần giữ nguyên, dùng run ID mới cho phiên bản này.
+
 ## Runtime Windows
 
 Runtime local: Python 3.13, Java 17, PySpark/Spark 3.5.9. Bản Windows trước đây đã chạy với Microsoft OpenJDK 17.0.20.1, Hadoop runtime 3.3.4 và compatibility helper 3.3.5. Xem [ma trận môi trường và dependency](../../requirements/README.md).

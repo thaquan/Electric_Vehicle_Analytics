@@ -59,7 +59,7 @@ class Phase11Tests(unittest.TestCase):
         # Small source fixture; all actual production modules and metadata are copied.
         project, raw = self.base / 'source', self.base / 'raw'
         import shutil
-        for folder in ('src', 'scripts', 'metadata', 'databricks/runtime_src'):
+        for folder in ('src', 'scripts', 'metadata'):
             target = project / folder
             target.mkdir(parents=True, exist_ok=True)
             for p in (ROOT / folder).glob('*'):
@@ -73,14 +73,19 @@ class Phase11Tests(unittest.TestCase):
         output = self.base / 'package'
         result = build_package(output, raw, project)
         for name in RUNTIME:
-            self.assertEqual(sha256(output / 'src' / name), sha256(ROOT / 'databricks/runtime_src' / name))
+            self.assertEqual(sha256(output / 'src' / name), sha256(ROOT / 'src' / name))
+        self.assertEqual(result['runtime_source'], 'shared-src')
+        self.assertEqual(result['version'], 2)
+        self.assertIn('scripts/bronze_silver.py', result['files'])
+        self.assertIn('metadata/categorical_profile.json', result['files'])
+        self.assertIn('metadata/profiling_summary.json', result['files'])
         for name, details in result['files'].items():
             self.assertEqual(sha256(output / name), details['sha256'])
-        check = """import pathlib, src.bronze, src.silver, src.gold, src.quality_checks
+        check = """import pathlib, src.bronze, src.silver, src.gold, src.quality_checks, src.run_pipeline
 for m in (src.bronze, src.silver, src.gold, src.quality_checks):
  assert pathlib.Path(m.__file__).parent == pathlib.Path.cwd() / 'src'
- assert '.cache()' not in pathlib.Path(m.__file__).read_text()
 assert src.quality_checks.enrich_train is src.gold.enrich_train
+assert callable(src.run_pipeline.execute_pipeline)
 """
         subprocess.run([sys.executable, '-c', check], cwd=output, check=True, capture_output=True)
         with self.assertRaises(ValueError):
