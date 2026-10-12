@@ -12,6 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts'))
 from star_schema import DIMENSIONS, build_star_spark
 from src.gold import enrich_train, _summarize
+from src.runtime import cached_frames
 
 
 def _read_json(path: Path):
@@ -35,7 +36,7 @@ def check_aggregate_rows(rows: list[dict], wanted: dict, keys: tuple[str, ...]) 
         raise ValueError('Aggregate reconciliation mismatch')
 
 
-def verify_gold(spark: SparkSession, gold_dir: Path, metadata_dir: Path) -> dict:
+def verify_gold(spark: SparkSession, gold_dir: Path, metadata_dir: Path, *, cache_enabled=True) -> dict:
     expected = _read_json(metadata_dir / 'gold_expected_metrics.json')
     star_expected = _read_json(metadata_dir / 'star_expected_metrics.json')
     spec = _read_json(metadata_dir / 'gold_spec.json')
@@ -44,11 +45,9 @@ def verify_gold(spark: SparkSession, gold_dir: Path, metadata_dir: Path) -> dict
     if {p.name for p in gold_dir.glob('*.parquet')} != {p.name for p in paths.values()}:
         raise ValueError('Gold must contain exactly the eight contracted tables')
     tables = {}
-    cached = []
-    try:
+    with cached_frames(cache_enabled) as keep:
         for role, path in paths.items():
-            tables[role] = spark.read.parquet(str(path)).cache()
-            cached.append(tables[role])
+            tables[role] = keep(spark.read.parquet(str(path)))
         fact = tables['fact_ev_purchase_intent']
         stats = fact.agg(F.count('*').alias('n'), F.countDistinct('id').alias('ids'),
                          F.countDistinct('record_key').alias('keys'), F.sum('will_buy_ev_flag').alias('yes')).first()
@@ -86,8 +85,7 @@ def verify_gold(spark: SparkSession, gold_dir: Path, metadata_dir: Path) -> dict
         # including dimension attributes, lineage and business keys. Parquet readers
         # relax nullability; compare Spark data types and values, not nullable flags.
         silver = spark.read.parquet(str(gold_dir.parent / 'silver/train.parquet'))
-        enriched = enrich_train(silver, spec, gold_dir.parent.name, gold_dir.parent.name).cache()
-        cached.append(enriched)
+        enriched = keep(enrich_train(silver, spec, gold_dir.parent.name, gold_dir.parent.name))
         reference = build_star_spark(enriched, spec['bands'])
         frames = [_summarize(enriched, [dimension]).withColumnRenamed(dimension, 'segment_value')
                   .withColumn('segment_value', F.col('segment_value').cast('string'))
@@ -108,6 +106,3 @@ def verify_gold(spark: SparkSession, gold_dir: Path, metadata_dir: Path) -> dict
         return {'status': 'passed', 'respondents': n, 'yes': yes, 'no': no, 'orphan_keys': orphan,
                 'segment_groups': len(segments), 'dimension_rows': dimension_rows, 'tables': len(tables),
                 'schema_checks': 'passed', 'silver_reconstruction': 'exact', 'aggregate_checks': 'passed'}
-    finally:
-        for frame in cached:
-            frame.unpersist()

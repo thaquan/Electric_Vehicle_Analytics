@@ -19,6 +19,7 @@ from src.silver import build_silver
 from src.gold import build_gold
 from src.quality_checks import verify_gold
 from src.run_contract import run_directory, bind_context, inventory, write_json
+from src.runtime import managed_session, cleanup
 
 STAGES = ('input_check', 'bronze', 'silver', 'gold', 'quality', 'publish')
 ARTIFACTS = ('input_check_report.json', 'bronze', 'silver', 'gold', 'quality_report.json', 'published.json')
@@ -72,7 +73,11 @@ def spark_session(stage: str) -> SparkSession:
              .config('spark.sql.session.timeZone', 'UTC')
              .config('spark.sql.shuffle.partitions', os.environ.get('SPARK_SHUFFLE_PARTITIONS', '32'))
              .getOrCreate())
-    spark.sparkContext.setLogLevel('WARN')
+    try:
+        spark.sparkContext.setLogLevel('WARN')
+    except Exception:
+        cleanup([spark.stop])
+        raise
     return spark
 
 
@@ -87,12 +92,19 @@ def reset_dir(path: Path, run_dir: Path) -> None:
         shutil.rmtree(path)
 
 
-def run_stage(stage: str, run_id: str, raw: Path, metadata: Path, output_root: Path) -> dict:
+def run_stage(stage: str, run_id: str, raw: Path, metadata: Path, output_root: Path,
+              *, runtime='local', session_factory=None) -> dict:
     if stage not in STAGES:
         raise ValueError(f'Unknown stage: {stage}')
+    if runtime not in ('local', 'databricks-serverless'):
+        raise ValueError(f'Unknown runtime: {runtime}')
+    if runtime == 'databricks-serverless' and session_factory is None:
+        raise ValueError('Databricks requires a platform session factory')
+    factory = session_factory or spark_session
+    local = runtime == 'local'
     run_dir = run_directory(output_root, run_id)
     run_dir.mkdir(parents=True, exist_ok=True)
-    bind_context(run_dir, raw, metadata)
+    bind_context(run_dir, raw, metadata, runtime=runtime)
 
     if completed(run_dir, stage):
         marker = read_marker(run_dir, stage)
@@ -111,43 +123,32 @@ def run_stage(stage: str, run_id: str, raw: Path, metadata: Path, output_root: P
             require_stage(run_dir, 'input_check')
             target = run_dir / 'bronze'
             reset_dir(target, run_dir)
-            spark = spark_session(stage)
-            try:
+            with managed_session(factory, stage, owned=local) as spark:
                 result = build_bronze(spark, raw.resolve(), metadata.resolve(), target)
-            finally:
-                spark.stop()
 
         elif stage == 'silver':
             require_stage(run_dir, 'bronze')
             target = run_dir / 'silver'
             reset_dir(target, run_dir)
-            spark = spark_session(stage)
-            try:
+            with managed_session(factory, stage, owned=local) as spark:
                 result = build_silver(spark, run_dir / 'bronze', metadata.resolve(), target, run_id, utc_now())
-            finally:
-                spark.stop()
 
         elif stage == 'gold':
             require_stage(run_dir, 'silver')
             target = run_dir / 'gold'
             reset_dir(target, run_dir)
-            spark = spark_session(stage)
-            try:
-                result = build_gold(spark, run_dir / 'silver', metadata.resolve(), target, run_id, run_id)
-            finally:
-                spark.stop()
+            with managed_session(factory, stage, owned=local) as spark:
+                result = build_gold(spark, run_dir / 'silver', metadata.resolve(), target, run_id, run_id,
+                                    cache_enabled=local)
 
         elif stage == 'quality':
             require_stage(run_dir, 'gold')
             before = stage_inventory(run_dir, 'gold')
-            spark = spark_session(stage)
-            try:
-                result = verify_gold(spark, run_dir / 'gold', metadata.resolve())
-            finally:
-                spark.stop()
+            with managed_session(factory, stage, owned=local) as spark:
+                result = verify_gold(spark, run_dir / 'gold', metadata.resolve(), cache_enabled=local)
             if before != stage_inventory(run_dir, 'gold'):
                 raise RuntimeError('Artifacts changed during quality checks')
-            (run_dir / 'quality_report.json').write_text(json.dumps(result, indent=2), encoding='utf-8')
+            write_json(run_dir / 'quality_report.json', result)
 
         else:
             require_stage(run_dir, 'quality')
@@ -155,7 +156,8 @@ def run_stage(stage: str, run_id: str, raw: Path, metadata: Path, output_root: P
             if quality.get('status') != 'passed':
                 raise RuntimeError('Quality report is not passed; refusing publish')
             result = {'status': 'published', 'run_id': run_id, 'published_at_utc': utc_now(), 'quality': quality}
-            (run_dir / 'published.json').write_text(json.dumps(result, indent=2), encoding='utf-8')
+            result['artifacts'] = stage_inventory(run_dir, 'quality')
+            write_json(run_dir / 'published.json', result)
 
         payload = {'status': 'passed', 'stage': stage, 'run_id': run_id, 'started_at_utc': started, 'finished_at_utc': utc_now(), 'result': result}
         payload['artifacts'] = stage_inventory(run_dir, stage)
@@ -164,7 +166,9 @@ def run_stage(stage: str, run_id: str, raw: Path, metadata: Path, output_root: P
         return payload
     except Exception as exc:
         payload = {'status': 'failed', 'stage': stage, 'run_id': run_id, 'started_at_utc': started, 'finished_at_utc': utc_now(), 'error': str(exc)}
-        write_marker(run_dir, stage, payload)
+        payload['error_type'] = type(exc).__name__
+        payload['notes'] = getattr(exc, '__notes__', [])
+        cleanup([lambda: write_marker(run_dir, stage, payload)])
         raise
 
 

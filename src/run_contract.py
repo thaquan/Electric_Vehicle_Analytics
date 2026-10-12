@@ -55,10 +55,11 @@ def write_json(path: Path, payload: dict) -> None:
     temporary.replace(path)
 
 
-def bind_context(run_dir: Path, raw: Path, metadata: Path) -> None:
+def bind_context(run_dir: Path, raw: Path, metadata: Path, *, runtime='local') -> None:
     project = Path(__file__).resolve().parents[1]
     context = {
-        'version': 1,
+        'version': 2,
+        'runtime': runtime,
         'raw_path': str(raw.resolve()), 'metadata_path': str(metadata.resolve()),
         'raw': inventory(raw, [p.name for p in sorted(raw.glob('*.csv'))]),
         'metadata': inventory(metadata, [p.name for p in sorted(metadata.glob('*.json'))]),

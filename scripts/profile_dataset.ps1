@@ -80,9 +80,13 @@ function Get-CsvProfile([System.IO.FileInfo]$file) {
         } else {
             $profile.type = 'categorical'
             $profile.distinct_count = $columnStats.distinct_values.Count
-            $profile.value_counts = [ordered]@{}
-            foreach ($item in ($columnStats.distinct_values.GetEnumerator() | Sort-Object -Property @{ Expression = 'Value'; Descending = $true }, @{ Expression = 'Key'; Descending = $false })) {
-                $profile.value_counts[$item.Key] = $item.Value
+            if ($column -eq 'Buyer_ID') {
+                $profile.value_counts_omitted = 'Record identifiers are not published.'
+            } else {
+                $profile.value_counts = [ordered]@{}
+                foreach ($item in ($columnStats.distinct_values.GetEnumerator() | Sort-Object -Property @{ Expression = 'Value'; Descending = $true }, @{ Expression = 'Key'; Descending = $false })) {
+                    $profile.value_counts[$item.Key] = $item.Value
+                }
             }
         }
         [PSCustomObject]$profile

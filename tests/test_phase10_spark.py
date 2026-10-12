@@ -10,6 +10,9 @@ from pyspark.sql import SparkSession, functions as F
 from src.gold import build_gold
 from src.quality_checks import verify_gold
 from scripts.star_schema import DIMENSIONS
+from pipeline_fixture import create_fixture
+from src.run_pipeline import execute_pipeline
+from src.stage_runner import STAGES, run_stage
 
 
 @unittest.skipUnless(os.environ.get('EV_RUN_SPARK_TESTS') == '1', 'Set EV_RUN_SPARK_TESTS=1 for real Spark tests')
@@ -66,6 +69,19 @@ class Phase10SparkTests(unittest.TestCase):
         self.assertEqual(result['tables'], 8)
         self.assertEqual(result['silver_reconstruction'], 'exact')
 
+    def test_uncached_shared_runtime_matches_cached_tables(self):
+        uncached = self.run / 'uncached'
+        build_gold(self.spark, self.run / 'silver', self.meta, uncached,
+                   'fixture_run', 'fixture_run', cache_enabled=False)
+        for target in uncached.glob('*.parquet'):
+            actual = self.spark.read.parquet(str(target))
+            expected = self.spark.read.parquet(str(self.run / 'gold' / target.name))
+            self.assertEqual(actual.schema, expected.schema)
+            self.assertEqual(actual.exceptAll(expected).count(), 0)
+            self.assertEqual(expected.exceptAll(actual).count(), 0)
+        result = verify_gold(self.spark, self.run / 'gold', self.meta, cache_enabled=False)
+        self.assertEqual(result['silver_reconstruction'], 'exact')
+
     def test_corrupt_kpi_rejected(self):
         self.rewrite('agg_ev_kpi', lambda df: df.withColumn('yes_count', F.lit(2).cast('long')))
         with self.assertRaisesRegex(ValueError, 'aggregate'):
@@ -90,3 +106,39 @@ class Phase10SparkTests(unittest.TestCase):
         self.rewrite('fact_ev_purchase_intent', lambda df: df.withColumn('id', F.col('id').cast('string')))
         with self.assertRaisesRegex(ValueError, 'schema'):
             verify_gold(self.spark, self.run / 'gold', self.meta)
+
+
+@unittest.skipUnless(os.environ.get('EV_RUN_SPARK_TESTS') == '1', 'Set EV_RUN_SPARK_TESTS=1 for real Spark tests')
+class PipelineSparkTests(unittest.TestCase):
+    def test_csv_to_publish_and_tamper_rejection(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder).resolve()
+            raw, meta = create_fixture(root)
+            output = root / 'output'
+            report = execute_pipeline(raw, meta, output, 'synthetic_e2e')
+            self.assertEqual(report['status'], 'passed')
+            run = output / 'runs/synthetic_e2e'
+            for stage in STAGES:
+                marker = json.loads((run / f'stage_status/{stage}.json').read_text())
+                self.assertEqual(marker['status'], 'passed')
+            self.assertEqual(report['quality']['silver_reconstruction'], 'exact')
+            spark = SparkSession.builder.master('local[2]').appName('EV-e2e-assertions').getOrCreate()
+            try:
+                train = spark.read.parquet(str(run / 'silver/train.parquet'))
+                self.assertEqual(str(train.schema['Annual_Income_USD'].dataType), 'DecimalType(18,4)')
+                self.assertEqual(str(train.first().Annual_Income_USD), '60000.1234')
+                test = spark.read.parquet(str(run / 'silver/test.parquet'))
+                self.assertNotIn('Will_Buy_EV', test.columns)
+                self.assertNotIn('will_buy_ev_flag', test.columns)
+                reference = spark.read.parquet(str(run / 'silver/original_reference.parquet'))
+                self.assertIsNone(reference.first().Annual_Income_USD)
+            finally:
+                spark.stop()
+            published = json.loads((run / 'published.json').read_text())
+            self.assertEqual(published['status'], 'published')
+            self.assertEqual(run_stage('publish', 'synthetic_e2e', raw, meta, output)['status'], 'passed')
+            part = next((run / 'gold/fact_ev_purchase_intent.parquet').glob('part-*.parquet'))
+            with part.open('ab') as stream:
+                stream.write(b'tampered')
+            with self.assertRaisesRegex(RuntimeError, 'changed'):
+                run_stage('publish', 'synthetic_e2e', raw, meta, output)
