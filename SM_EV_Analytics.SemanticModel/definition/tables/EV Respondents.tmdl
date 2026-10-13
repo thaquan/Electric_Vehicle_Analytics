@@ -74,6 +74,120 @@ table 'EV Respondents'
 		displayFolder: Charging and incentives
 		lineageTag: 9f25f38b-b36c-4a45-b31c-afe22c9057b6
 
+	/// BEGIN narrative redesign measures
+	measure 'Home Charging Baseline Intent' =
+			CALCULATE([Purchase Intent Rate], REMOVEFILTERS('Charging'[Home_Charging_Possible]), 'Charging'[Home_Charging_Possible] = "No")
+		formatString: 0.00%
+		displayFolder: Narrative analysis
+
+	measure 'Home Charging Comparison Intent' =
+			CALCULATE([Purchase Intent Rate], REMOVEFILTERS('Charging'[Home_Charging_Possible]), 'Charging'[Home_Charging_Possible] = "Yes")
+		formatString: 0.00%
+		displayFolder: Narrative analysis
+
+	measure 'Home Charging Gap pp' =
+			VAR A = [Home Charging Baseline Intent]
+			VAR B = [Home Charging Comparison Intent]
+			RETURN IF(NOT ISBLANK(A) && NOT ISBLANK(B), (B - A) * 100)
+		formatString: +0.00" pp";-0.00" pp";0.00" pp"
+		displayFolder: Narrative analysis
+
+	measure 'Subsidy Baseline Intent' =
+			CALCULATE([Purchase Intent Rate], REMOVEFILTERS('Attitude and Incentive'[Subsidy_Available]), 'Attitude and Incentive'[Subsidy_Available] = "No")
+		formatString: 0.00%
+		displayFolder: Narrative analysis
+
+	measure 'Subsidy Comparison Intent' =
+			CALCULATE([Purchase Intent Rate], REMOVEFILTERS('Attitude and Incentive'[Subsidy_Available]), 'Attitude and Incentive'[Subsidy_Available] = "Yes")
+		formatString: 0.00%
+		displayFolder: Narrative analysis
+
+	measure 'Subsidy Gap pp' =
+			VAR A = [Subsidy Baseline Intent]
+			VAR B = [Subsidy Comparison Intent]
+			RETURN IF(NOT ISBLANK(A) && NOT ISBLANK(B), (B - A) * 100)
+		formatString: +0.00" pp";-0.00" pp";0.00" pp"
+		displayFolder: Narrative analysis
+
+	measure 'Income Baseline Intent' =
+			CALCULATE([Purchase Intent Rate], REMOVEFILTERS('Income'[income_band]), 'Income'[income_band] = "Under 50k")
+		formatString: 0.00%
+		displayFolder: Narrative analysis
+
+	measure 'Income Comparison Intent' =
+			CALCULATE([Purchase Intent Rate], REMOVEFILTERS('Income'[income_band]), 'Income'[income_band] = "100k+")
+		formatString: 0.00%
+		displayFolder: Narrative analysis
+
+	measure 'Income Gap pp' =
+			VAR A = [Income Baseline Intent]
+			VAR B = [Income Comparison Intent]
+			RETURN IF(NOT ISBLANK(A) && NOT ISBLANK(B), (B - A) * 100)
+		formatString: +0.00" pp";-0.00" pp";0.00" pp"
+		displayFolder: Narrative analysis
+
+	measure 'Share of Population' =
+			DIVIDE([Respondents], CALCULATE([Respondents], REMOVEFILTERS()))
+		formatString: 0.00%
+		displayFolder: Narrative analysis
+
+	measure 'Range Anxiety Order' =
+			IF(NOT ISBLANK([Respondents]), SWITCH(SELECTEDVALUE('Attitude and Incentive'[Range_Anxiety_Level]), "Low", 1, "Medium", 2, "High", 3))
+		formatString: 0
+		displayFolder: Narrative analysis
+
+	measure 'Segment Selection' =
+			SELECTEDVALUE('Demographics'[age_band], "All / multiple ages") & " | " & SELECTEDVALUE('Income'[income_band], "All / multiple incomes")
+		displayFolder: Narrative analysis
+
+	measure 'Executive Insight' =
+			VAR T = FILTER(UNION(ROW("Factor", "Subsidy", "Gap", [Subsidy Gap pp]), ROW("Factor", "Income", "Gap", [Income Gap pp]), ROW("Factor", "Home charging", "Gap", [Home Charging Gap pp])), NOT ISBLANK([Gap]))
+			VAR TopFactor = TOPN(1, T, ABS([Gap]), DESC, [Factor], ASC)
+			RETURN IF(COUNTROWS(T) = 0, "No comparable groups in this selection", CONCATENATEX(TopFactor, [Factor] & ": " & FORMAT([Gap], "+0.00;-0.00;0.00") & " pp observed gap"))
+		displayFolder: Narrative analysis
+
+	measure 'Home Charging Dumbbell SVG' =
+			VAR A = [Home Charging Baseline Intent]
+			VAR B = [Home Charging Comparison Intent]
+			VAR XA = FORMAT(44 + A * 610, "0.0", "en-US")
+			VAR XB = FORMAT(44 + B * 610, "0.0", "en-US")
+			VAR Body = "<svg xmlns='http://www.w3.org/2000/svg' width='700' height='140' viewBox='0 0 700 140'><rect width='100%' height='100%' fill='#131E2F'/><text x='24' y='28' font-family='Segoe UI,Arial' font-size='17' fill='#94A3B8'>No home charging</text><text x='380' y='28' font-family='Segoe UI,Arial' font-size='17' fill='#34D399'>Home charging available</text>" & "<text x='24' y='55' font-family='Segoe UI,Arial' font-size='18' fill='#F8FAFC'></text>"
+			VAR Chart = "<line x1='44' x2='654' y1='85' y2='85' stroke='#26354B' stroke-width='2'/><line x1='" & XA & "' x2='" & XB & "' y1='85' y2='85' stroke='#34D399' stroke-width='5'/><circle cx='" & XA & "' cy='85' r='8' fill='#94A3B8'/><circle cx='" & XB & "' cy='85' r='8' fill='#34D399'/>"
+			VAR Labels = "<text x='24' y='55' font-family='Segoe UI,Arial' font-size='22' fill='#94A3B8'>" & FORMAT(A, "0.00%") & "</text><text x='380' y='55' font-family='Segoe UI,Arial' font-size='22' fill='#34D399'>" & FORMAT(B, "0.00%") & "</text><text x='24' y='125' font-family='Segoe UI,Arial' font-size='13' fill='#94A3B8'>0%</text><text x='620' y='125' font-family='Segoe UI,Arial' font-size='13' fill='#94A3B8'>100%</text><text x='220' y='125' font-family='Segoe UI,Arial' font-size='20' fill='#34D399'>" & FORMAT((B-A)*100, "+0.00;-0.00;0.00") & " pp</text>"
+			RETURN "data:image/svg+xml;utf8," & SUBSTITUTE(IF(ISBLANK(A) || ISBLANK(B), "<svg xmlns='http://www.w3.org/2000/svg' width='700' height='140' viewBox='0 0 700 140'><rect width='100%' height='100%' fill='#131E2F'/><text x='24' y='70' font-family='Segoe UI,Arial' font-size='18' fill='#F8FAFC'>No comparable groups in this selection</text></svg>", Body & Chart & Labels & "</svg>"), "#", "#")
+		dataCategory: ImageUrl
+		displayFolder: Narrative analysis
+
+	measure 'Subsidy Dumbbell SVG' =
+			VAR A = [Subsidy Baseline Intent]
+			VAR B = [Subsidy Comparison Intent]
+			VAR XA = FORMAT(44 + A * 610, "0.0", "en-US")
+			VAR XB = FORMAT(44 + B * 610, "0.0", "en-US")
+			VAR Body = "<svg xmlns='http://www.w3.org/2000/svg' width='700' height='140' viewBox='0 0 700 140'><rect width='100%' height='100%' fill='#131E2F'/><text x='24' y='28' font-family='Segoe UI,Arial' font-size='17' fill='#94A3B8'>No subsidy</text><text x='380' y='28' font-family='Segoe UI,Arial' font-size='17' fill='#FBBF24'>Subsidy available</text>" & "<text x='24' y='55' font-family='Segoe UI,Arial' font-size='18' fill='#F8FAFC'></text>"
+			VAR Chart = "<line x1='44' x2='654' y1='85' y2='85' stroke='#26354B' stroke-width='2'/><line x1='" & XA & "' x2='" & XB & "' y1='85' y2='85' stroke='#FBBF24' stroke-width='5'/><circle cx='" & XA & "' cy='85' r='8' fill='#94A3B8'/><circle cx='" & XB & "' cy='85' r='8' fill='#FBBF24'/>"
+			VAR Labels = "<text x='24' y='55' font-family='Segoe UI,Arial' font-size='22' fill='#94A3B8'>" & FORMAT(A, "0.00%") & "</text><text x='380' y='55' font-family='Segoe UI,Arial' font-size='22' fill='#FBBF24'>" & FORMAT(B, "0.00%") & "</text><text x='24' y='125' font-family='Segoe UI,Arial' font-size='13' fill='#94A3B8'>0%</text><text x='620' y='125' font-family='Segoe UI,Arial' font-size='13' fill='#94A3B8'>100%</text><text x='220' y='125' font-family='Segoe UI,Arial' font-size='20' fill='#FBBF24'>" & FORMAT((B-A)*100, "+0.00;-0.00;0.00") & " pp</text>"
+			RETURN "data:image/svg+xml;utf8," & SUBSTITUTE(IF(ISBLANK(A) || ISBLANK(B), "<svg xmlns='http://www.w3.org/2000/svg' width='700' height='140' viewBox='0 0 700 140'><rect width='100%' height='100%' fill='#131E2F'/><text x='24' y='70' font-family='Segoe UI,Arial' font-size='18' fill='#F8FAFC'>No comparable groups in this selection</text></svg>", Body & Chart & Labels & "</svg>"), "#", "#")
+		dataCategory: ImageUrl
+		displayFolder: Narrative analysis
+
+	measure 'Observed Gaps SVG' =
+			VAR T = FILTER(UNION(ROW("Factor", "Subsidy", "Gap", [Subsidy Gap pp]), ROW("Factor", "Income: 100k+ vs under 50k", "Gap", [Income Gap pp]), ROW("Factor", "Home charging", "Gap", [Home Charging Gap pp])), NOT ISBLANK([Gap]))
+			VAR Ranked = ADDCOLUMNS(T, "Position", VAR G = ABS([Gap]) VAR F = [Factor] RETURN 1 + COUNTROWS(FILTER(T, ABS([Gap]) > G || (ABS([Gap]) = G && [Factor] < F))))
+			VAR RowsSVG = CONCATENATEX(Ranked, VAR Y = 50 + ([Position]-1)*92 VAR X = 250 + ABS([Gap])*3 RETURN "<text x='20' y='" & Y & "' font-family='Segoe UI' font-size='18' fill='#F8FAFC'>" & [Factor] & "</text><line x1='250' x2='" & FORMAT(X,"0.0","en-US") & "' y1='" & (Y+24) & "' y2='" & (Y+24) & "' stroke='#FBBF24' stroke-width='4'/><circle cx='" & FORMAT(X,"0.0","en-US") & "' cy='" & (Y+24) & "' r='7' fill='#FBBF24'/><text x='20' y='" & (Y+28) & "' font-family='Segoe UI' font-size='20' fill='#FBBF24'>" & FORMAT([Gap],"+0.00;-0.00;0.00") & " pp</text>", "", [Position], ASC)
+			RETURN "data:image/svg+xml;utf8," & SUBSTITUTE("<svg xmlns='http://www.w3.org/2000/svg' width='620' height='335' viewBox='0 0 620 335'><rect width='100%' height='100%' fill='#131E2F'/>" & IF(COUNTROWS(T)=0, "<text x='20' y='60' font-family='Segoe UI,Arial' font-size='18' fill='#F8FAFC'>No comparable groups</text>", RowsSVG) & "<text x='20' y='322' font-family='Segoe UI,Arial' font-size='14' fill='#94A3B8'>Ranked by absolute gap; compared attributes held open</text>" & "</svg>", "#", "#")
+		dataCategory: ImageUrl
+		displayFolder: Narrative analysis
+
+	measure 'Infrastructure SVG' =
+			VAR H = [Average Chargers Near Home]
+			VAR W = [Average Chargers Near Work]
+			VAR MaxV = MAX(H,W)
+			VAR HX = FORMAT(170 + DIVIDE(H,MaxV,0)*370,"0.0","en-US")
+			VAR WX = FORMAT(170 + DIVIDE(W,MaxV,0)*370,"0.0","en-US")
+			RETURN "data:image/svg+xml;utf8," & SUBSTITUTE("<svg xmlns='http://www.w3.org/2000/svg' width='650' height='150' viewBox='0 0 650 150'><rect width='100%' height='100%' fill='#131E2F'/>" & IF(ISBLANK(H), "<text x='20' y='60' font-family='Segoe UI,Arial' font-size='18' fill='#F8FAFC'>No respondents in this selection</text>", "<text x='20' y='48' font-family='Segoe UI,Arial' font-size='20' fill='#94A3B8'>Home</text><text x='20' y='108' font-family='Segoe UI,Arial' font-size='20' fill='#94A3B8'>Work</text><line x1='170' x2='" & HX & "' y1='40' y2='40' stroke='#38BDF8' stroke-width='4'/><circle cx='" & HX & "' cy='40' r='7' fill='#38BDF8'/><line x1='170' x2='" & WX & "' y1='100' y2='100' stroke='#38BDF8' stroke-width='4'/><circle cx='" & WX & "' cy='100' r='7' fill='#38BDF8'/><text x='570' y='48' font-family='Segoe UI,Arial' font-size='22' fill='#38BDF8'>" & FORMAT(H,"0.00") & "</text><text x='570' y='108' font-family='Segoe UI,Arial' font-size='22' fill='#38BDF8'>" & FORMAT(W,"0.00") & "</text>") & "</svg>", "#", "#")
+		dataCategory: ImageUrl
+		displayFolder: Narrative analysis
+	/// END narrative redesign measures
 	column id
 		dataType: int64
 		isHidden

@@ -1,92 +1,79 @@
 # Power BI report
 
-Three pages connect to the Fabric semantic model and describe EV purchase intent.
-The saved Desktop screenshots are in `docs/screenshots/`; see the [README](../../README.md#dashboard).
-Structural validation and KPI comparisons have passed for the recorded report version.
-Full navigation/reset, chart cross-filter and Service rendering acceptance remain unverified.
+The report now has three distinct analytical pages, plus a hidden context tooltip.
+The dark 1600 ? 900 canvas remains; navigation and dropdown slicers run across the top.
 
-## Contents
-
-| Page | KPI | Charts and slicers |
+| Page | Business question | Main visuals |
 | --- | --- | --- |
-| Executive Overview | Respondents; intending/not intending to buy EV; purchase intent rate | City type distribution; rates by age and income. Slicers: city type, gender, age, income. |
-| Charging & Incentives | Home charging access; subsidy availability; average chargers near home/work | Purchase intent by home charging, subsidy, range anxiety. Slicers: home charging, subsidy, range anxiety, city type. |
-| Customer Profile | Average annual income USD, age, commute km, cars owned | Income and age distributions; purchase intent by commute. Slicers: income, age, city type, commute. |
+| Executive Overview | Where do interest and scale meet? | Hero intent KPI, respondent/interested counts, city opportunity bubbles, ranked observed-gap lollipops, city comparison, dynamic insight |
+| Charging & Incentives | Which conditions are associated with higher intent? | Charging/subsidy dumbbells, charging ? subsidy heatmap, ordered anxiety trend, infrastructure comparison |
+| Customer Segments | Which groups combine scale and intent? | Age ? income heatmap, dynamic segment profile, age/income bubbles, age volume/rate combo, ownership trend |
 
-Each page has one card with four KPI, three charts, four slicers, seven text boxes,
-and four buttons: 57 visuals in total. Slicers operate independently on each page
-and allow multiple selections.
+Heatmap tooltips show respondents, interested respondents, intent rate, share of
+population, average commute and cars owned. Selecting a matrix cell or chart point
+filters the other analytical visuals and cards. Slicers are independent per page.
+Reset slicers clears page slicers; clear chart selections separately. Desktop button
+actions use Ctrl+click in edit mode.
 
-The automotive dark design uses a 1600 x 900 canvas (16:9), navy `#0B1220`,
-card surfaces `#131E2F`, mint `#34D399` for rates, and blue `#38BDF8` for counts.
-The sidebar contains three navigation buttons and **Reset slicers**, which clears
-slicers on the current page, not every filter or chart selection. In Desktop edit
-mode, use Ctrl+click to run button actions. Live button and chart cross-filter
-behavior has not been accepted as passed.
+## Measures and interpretation
 
-**Survey snapshot** shows the verified Gold snapshot date, not the live refresh time.
-Slicer/chart interactions with KPI and other charts use `DataFilter`.
-Age, income, and commute bands follow semantic model sort order. All KPI use
-explicit measures; the two Gold aggregate tables are not summed in the report.
+The model contains the original 12 measures plus 17 narrative measures in the
+`Narrative analysis` display folder. All report values are data-bound.
 
-The dashboard describes **EV purchase intent** in synthetic data. It does not
-represent actual sales, conversion rates, or causal effects.
+- Opportunity map: X = interested respondents, Y = intent rate, bubble area = respondents.
+- Segment bubbles: age and income jointly identify groups; X = respondents, Y = intent rate.
+- Gaps: Yes minus No for charging/subsidy; 100k+ minus Under 50k for income.
+  Each pair clears only its comparison attribute, retaining other filters.
+  Gaps use percentage points, return blank when either endpoint lacks data,
+  and are ranked by absolute magnitude with deterministic tie breaking.
+- Dumbbells share a 0?100% scale. Their SVGs and the ranked lollipops are DAX
+  ImageUrl measures rendered by native image visuals. They respond to filters,
+  but do not themselves emit chart selections.
+- Share of Population uses the full respondent population as denominator, subject
+  to model security. It is not the share of the currently selected population.
+- Heatmaps use one fixed 0?40% color scale; values above 40% saturate the color,
+  while their numeric values remain visible. Blank cells remain blank.
+- Anxiety uses the explicit Low ? Medium ? High order, never alphabetical order.
+- The age/income bands come from the model; illustrative bands in the design
+  proposal were not substituted for the actual data.
 
-## Open and publish
+This is synthetic survey purchase intent, not sales or causal uplift.
 
-1. Open `RPT_EV_Analytics.pbip` in Power BI Desktop with PBIP/PBIR support.
-2. Sign in with access to `SM_EV_Analytics` in `WS_EV_Analytics`.
-3. Check all three pages with live data using the checklist below as applicable.
-4. Publish to `WS_EV_Analytics` as `RPT_EV_Analytics`.
-5. Save the report URL/ID and screenshots with the acceptance evidence.
-
-`metadata/report_create_payload.json` (local output; excluded from Git) was generated locally with CLI `pack --mode create`.
-Its Fabric API request body is `data.body`, not the whole envelope. This generated
-file is excluded from Git and is not evidence of publication to the Service.
-
-## Checks in Power BI
-
-The following values come from saved DAX evidence and were compared with all
-12 KPI in Desktop screenshots after rounding.
-
-| KPI with all filters cleared | Expected value |
-| --- | ---: |
-| Respondents | 668,665 |
-| Intending to buy EV | 116,779 |
-| Not intending to buy EV | 551,886 |
-| Purchase intent rate | 17.46% |
-| Home charging access | 69.19% |
-| Subsidy availability | 62.80% |
-| Average age | 47.0 |
-| Average annual income USD | 84,769.27 |
-| Average daily commute km | 32.2 |
-| Average cars owned | 1.71 |
-| Average chargers near home | 4.96 |
-| Average chargers near work | 7.18 |
-
-The following checklist describes expected behavior; it does not override skipped tests:
-
-- Compare KPI and groups with `metadata/star_expected_metrics.json` and `metadata/gold_expected_metrics.json`.
-- Select an age/income band: KPI and charts should update together; the rate should
-  equal intending respondents divided by respondents in the current filter context.
-- Combine city type, home charging, and subsidy in the Filter pane and compare
-  with the groups in the DAX evidence.
-- Select a chart bar: target visuals should filter. Clearing selections and filters
-  should restore the original totals.
-- Check multiple selections, clearing filters, and empty results (blank rate).
-- Check titles, KPI labels, percentages, group order, and visual/text clipping errors.
-- Capture all three unfiltered pages and at least one filtered state.
-
-## Rebuild and validate structure
+## Rebuild
 
 ```powershell
-node scripts/build_report.cjs
-node scripts/style_report.cjs
-.tools/node_modules/.bin/powerbi-report-author.cmd validate RPT_EV_Analytics.Report --out metadata/report_validation.json
-.tools/node_modules/.bin/powerbi-report-author.cmd pack RPT_EV_Analytics.Report --mode create --display-name RPT_EV_Analytics --out metadata/report_create_payload.json
+node scripts/redesign_report.cjs
+.tools/node_modules/.bin/powerbi-report-author.cmd validate RPT_EV_Analytics.Report --out output/redesign/validation-online.json
 ```
 
-The scripts use the existing report structure and generate deterministic content
-with stable IDs. Rerunning them overwrites script-managed visuals; preserve manual
-edits first. Recheck structure and rendering after changes. PBIR validation does
-not replace opening the report, querying live data, or testing interactions.
+`build_report.cjs` and `style_report.cjs` are compatibility entry points for the same
+generator, so the previous build commands cannot restore the old dashboard.
+The generator preserves `definition.pbir`, report theme registration, page IDs and
+model source bindings. It replaces visuals on the three managed pages, adds one
+hidden tooltip page, and replaces only its marked measure block in the fact TMDL.
+Preserve manual edits to those managed objects before rebuilding.
+
+## Desktop verification copy
+
+The committed semantic model remains Direct Lake. For local rendering from the
+existing exported Gold parquet snapshot:
+
+```powershell
+node scripts/prepare_redesign_preview.cjs
+# Open output/redesign/desktop/RPT_EV_Analytics.pbip, then refresh its local model.
+```
+
+This creates a disposable Import model under `output/redesign/desktop`; it does
+not convert the committed model or update Fabric. The Gold export must already
+exist under `output/gold_export_staging/source_parquet`.
+
+See [redesign verification](../report_redesign_verification.md) for checks and
+limitations. Older images in `docs/screenshots` predate this redesign; the new
+Desktop captures are saved separately under `output/redesign/screenshots`.
+
+## Publish
+
+Deploy the updated semantic model measures together with the report. Publishing
+only PBIR against a model that still has the original 12 measures will leave the
+new narrative visuals without their required fields. This local redesign does
+not itself publish or change the shared Fabric model.

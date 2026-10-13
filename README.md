@@ -14,21 +14,21 @@ The outcome is a descriptive analytics tool: **purchase intent, not actual sales
 
 ### Executive Overview
 
-Compare overall intent, age, income and city segments.
+Summarize overall EV purchase intent, segment opportunity, and the largest observed intent gaps.
 
 ![Executive Overview](docs/screenshots/executive_overview.png)
 
 ### Charging & Incentives
 
-Explore home charging, subsidies and range anxiety alongside purchase intent.
+Compare charging access, subsidies, range anxiety and nearby infrastructure as descriptive associations with EV purchase intent.
 
 ![Charging and Incentives](docs/screenshots/charging_incentives.png)
 
-### Customer Profile
+### Customer Segments
 
-Compare segment size with intent rate across income, age, vehicle ownership and commuting patterns.
+Explore which age and income segments combine scale with higher EV purchase intent, with supporting mobility context.
 
-![Customer Profile](docs/screenshots/customer_profile.png)
+![Customer Segments](docs/screenshots/customer_segments.png)
 
 [Open the published report](https://app.powerbi.com/groups/5fe78794-25c3-41ee-b35e-bc56542d2cea/reports/ae4d7c59-759e-4462-afed-1717475ae012) with workspace access, or inspect the [Power BI project](RPT_EV_Analytics.pbip). Screenshots can be viewed without a cloud account.
 
