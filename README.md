@@ -1,6 +1,6 @@
 # Electric Vehicle Purchase Intent Analytics
 
-An end-to-end data project that turns **668,665 customer records** into three Power BI dashboards explaining how EV purchase intent varies with income, charging access and incentives.
+An end-to-end data project that turns **668,665 customer records** into a three-page Power BI report explaining how EV purchase intent varies with income, charging access and incentives.
 
 **Microsoft Fabric · Power BI · SQL · Python · PySpark · Airflow · Databricks · Azure DevOps**
 
@@ -30,7 +30,7 @@ Explore which age and income segments combine scale with higher EV purchase inte
 
 ![Customer Segments](docs/screenshots/customer_segments.png)
 
-[Open the published report](https://app.powerbi.com/groups/5fe78794-25c3-41ee-b35e-bc56542d2cea/reports/ae4d7c59-759e-4462-afed-1717475ae012) with workspace access, or inspect the [Power BI project](RPT_EV_Analytics.pbip). Screenshots can be viewed without a cloud account.
+[Open the published report](https://app.powerbi.com/groups/5fe78794-25c3-41ee-b35e-bc56542d2cea/reports/ae4d7c59-759e-4462-afed-1717475ae012) with workspace access, or inspect the [Power BI project](RPT_EV_Analytics.pbip). Screenshots can be viewed without a cloud account. They show the redesigned Desktop report; the Service link depends on the version deployed to that workspace. See the [report guide](docs/architecture/powerbi_report.md) for interactions, rebuild steps and model requirements.
 
 ## Key findings
 
@@ -53,13 +53,13 @@ flowchart LR
     B --> C[Silver: typed and validated data]
     C --> D[Gold: star schema]
     D --> E[Power BI semantic model]
-    E --> F[Three dashboards]
+    E --> F[Three report pages]
 ```
 
 | Area | Implementation |
 | --- | --- |
 | Data engineering | Fabric/OneLake Bronze–Silver–Gold pipeline, schema and checksum validation, lineage and quality gates. |
-| Data modeling | One respondent-level fact, five dimensions, two audit aggregates; 12 DAX measures. |
+| Data modeling | One respondent-level fact and five dimensions; 29 DAX measures (12 core + 17 narrative). Two Gold audit aggregates remain outside the model. |
 | Analytics | Segment comparisons for income, demographics, mobility, charging and incentives. |
 | Orchestration | Standalone PySpark with an Airflow DAG, controlled retries and integrity checks before publication. |
 | Cross-platform execution | Databricks serverless runtime with eight-table Gold reconciliation against the standalone output. |
@@ -104,16 +104,16 @@ Each run writes to `output/local/runs/<run_id>/`. Inspect `run_report.json` and 
 | `src/`, `dags/`, `docker/` | Transformations, quality rules and Airflow orchestration. |
 | `databricks/` | Serverless runtime, notebook and job configurations. |
 | Fabric item folders, `notebooks/` | Lakehouse, notebook and pipeline definitions. |
-| Power BI item folders, `models/` | Report visuals, semantic model and model snapshot. |
+| Power BI item folders, `models/` | Current report/model definitions and a historical model export; see the [model guide](docs/architecture/semantic_model.md). |
 | `sql/`, `metadata/`, `config/` | Reconciliation queries, runtime contracts and environment mappings. |
 | `scripts/`, `tests/`, `ci/` | Reusable utilities, automated regression tests and CI/CD. |
 | `docs/` | Data model, screenshots and technical runbooks. |
 
-Technical guides: [Fabric](docs/pipelines/pipeline_runbook.md) · [PySpark/Airflow](docs/pipelines/standalone_pipeline.md) · [Databricks](docs/pipelines/phase11_databricks.md) · [CI/CD](docs/deployment/test_cd.md) · [integration CI](docs/testing_ci.md) ? [tests](tests/README.md) · [recovery](docs/recovery/recovery_runbook.md).
+Technical guides: [Fabric](docs/pipelines/pipeline_runbook.md) · [PySpark/Airflow](docs/pipelines/standalone_pipeline.md) · [Databricks](docs/pipelines/phase11_databricks.md) · [CI/CD](docs/deployment/test_cd.md) · [integration CI](docs/testing_ci.md) · [tests](tests/README.md) · [recovery](docs/recovery/recovery_runbook.md).
 
 ## CI/CD evidence
 
-CI build 14 and Test deployment build 15 succeeded in the archived verification recorded on 2 October 2026. Inspect the [public evidence summary and sanitized results](docs/cicd_evidence.md), including refresh, model binding and KPI checks. Azure DevOps remains access-controlled; the public summary requires no cloud account and does not claim a new pipeline run.
+Dashboard redesign CI builds **54 and 55 succeeded on 13 October 2026**, and Azure DevOps PR #13 was merged. The release guard requires the 12 core measures by name while allowing additional measures. See the [CI/CD evidence](docs/cicd_evidence.md) for these runs and the separate archived Test deployment checks from 2 October. CI success does not establish that the redesigned report has been deployed or accepted in Power BI Service.
 
 ## Reproducing the project
 

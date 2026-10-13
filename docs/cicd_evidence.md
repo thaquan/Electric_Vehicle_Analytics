@@ -1,5 +1,18 @@
 # CI/CD evidence
 
+## Dashboard redesign CI - 13 October 2026
+
+- Fix commit: `45552d7509b78428dee64702ef64231ab8998f57`.
+- Local unit suite: 110 passed, zero failures/errors/skips.
+- [Branch CI #54](https://dev.azure.com/thaquan081006/Electric_Vehicle_Analytics/_build/results?buildId=54) and [PR validation #55](https://dev.azure.com/thaquan081006/Electric_Vehicle_Analytics/_build/results?buildId=55): succeeded, including Unit, Spark, Airflow and Package.
+- [PR #13](https://dev.azure.com/thaquan081006/Electric_Vehicle_Analytics/_git/Electric_Vehicle_Analytics/pullrequest/13): completed after the Build policy approved #55. Merge commit: `5e0952ffd94d0617cea08c778a4eb2c940b5ad4b`, verified on `origin/main`.
+
+The guard checks the 12 required measure names and permits additional measures.
+These runs verify CI and packaging, not deployment or Service rendering of the
+redesigned report. The older Test deployment evidence below remains separate.
+
+## Archived Test deployment - 2 October 2026
+
 ![Archived CI/CD verification summary](screenshots/cicd_evidence.svg)
 
 This image renders an **archived verification record**, not the Azure DevOps UI. It documents the run recorded on **2 October 2026**; it does not claim that the pipeline was rerun or that cloud resources are healthy today.

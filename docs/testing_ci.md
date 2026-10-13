@@ -42,6 +42,15 @@ JUnit is published to the Azure Tests tab and XML/JSON are retained as separate
 including failed runs. Source/release artifacts are withheld if any required job
 fails, is cancelled or is skipped.
 
+## Semantic model release guard
+
+`build_test_release.py` requires all 12 core measure names in `EV Respondents`,
+while allowing additional measures. The current dashboard has 29 measures
+(12 core plus 17 narrative); total count is not an acceptance gate.
+`test_test_release.py` covers extra measures, replacement of every core measure
+without changing the count, a name appearing only in a comment, and quoted names.
+The six-table, five-relationship, Gold-run and report-binding guards remain.
+
 ## Run Airflow locally on Linux
 
 Docker must be running. Use a fresh container for each run so the metadata DB is

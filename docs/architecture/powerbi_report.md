@@ -1,13 +1,13 @@
 # Power BI report
 
 The report now has three distinct analytical pages, plus a hidden context tooltip.
-The dark 1600 ? 900 canvas remains; navigation and dropdown slicers run across the top.
+The dark 1600 x 900 canvas remains; navigation and dropdown slicers run across the top.
 
 | Page | Business question | Main visuals |
 | --- | --- | --- |
 | Executive Overview | Where do interest and scale meet? | Hero intent KPI, respondent/interested counts, city opportunity bubbles, ranked observed-gap lollipops, city comparison, dynamic insight |
-| Charging & Incentives | Which conditions are associated with higher intent? | Charging/subsidy dumbbells, charging ? subsidy heatmap, ordered anxiety trend, infrastructure comparison |
-| Customer Segments | Which groups combine scale and intent? | Age ? income heatmap, dynamic segment profile, age/income bubbles, age volume/rate combo, ownership trend |
+| Charging & Incentives | Which conditions are associated with higher intent? | Charging/subsidy dumbbells, charging x subsidy heatmap, ordered anxiety trend, infrastructure comparison |
+| Customer Segments | Which groups combine scale and intent? | Age x income heatmap, dynamic segment profile, age/income bubbles, age volume/rate combo, ownership trend |
 
 Heatmap tooltips show respondents, interested respondents, intent rate, share of
 population, average commute and cars owned. Selecting a matrix cell or chart point
@@ -17,7 +17,7 @@ actions use Ctrl+click in edit mode.
 
 ## Measures and interpretation
 
-The model contains the original 12 measures plus 17 narrative measures in the
+The model contains 29 measures: 12 core measures plus 17 narrative measures in the
 `Narrative analysis` display folder. All report values are data-bound.
 
 - Opportunity map: X = interested respondents, Y = intent rate, bubble area = respondents.
@@ -26,14 +26,14 @@ The model contains the original 12 measures plus 17 narrative measures in the
   Each pair clears only its comparison attribute, retaining other filters.
   Gaps use percentage points, return blank when either endpoint lacks data,
   and are ranked by absolute magnitude with deterministic tie breaking.
-- Dumbbells share a 0?100% scale. Their SVGs and the ranked lollipops are DAX
+- Dumbbells share a 0-100% scale. Their SVGs and the ranked lollipops are DAX
   ImageUrl measures rendered by native image visuals. They respond to filters,
   but do not themselves emit chart selections.
 - Share of Population uses the full respondent population as denominator, subject
   to model security. It is not the share of the currently selected population.
-- Heatmaps use one fixed 0?40% color scale; values above 40% saturate the color,
+- Heatmaps use one fixed 0-40% color scale; values above 40% saturate the color,
   while their numeric values remain visible. Blank cells remain blank.
-- Anxiety uses the explicit Low ? Medium ? High order, never alphabetical order.
+- Anxiety uses the explicit Low -> Medium -> High order, never alphabetical order.
 - The age/income bands come from the model; illustrative bands in the design
   proposal were not substituted for the actual data.
 
@@ -68,12 +68,16 @@ not convert the committed model or update Fabric. The Gold export must already
 exist under `output/gold_export_staging/source_parquet`.
 
 See [redesign verification](../report_redesign_verification.md) for checks and
-limitations. Older images in `docs/screenshots` predate this redesign; the new
-Desktop captures are saved separately under `output/redesign/screenshots`.
+limitations. The three current Desktop captures are committed in
+`docs/screenshots` as `executive_overview.png`, `charging_incentives.png` and
+`customer_segments.png`. See the [screenshot inventory](../screenshots/README.md).
+Additional local captures remain under `output/redesign/screenshots`.
 
 ## Publish
 
 Deploy the updated semantic model measures together with the report. Publishing
 only PBIR against a model that still has the original 12 measures will leave the
-new narrative visuals without their required fields. This local redesign does
-not itself publish or change the shared Fabric model.
+new narrative visuals without their required fields. CI validates the 12 core
+measure names while permitting the 17 additions and
+future measures. CI packaging and a merged PR do not prove that the redesign
+has been deployed to the shared Fabric model or accepted in Service.
