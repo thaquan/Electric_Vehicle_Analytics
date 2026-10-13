@@ -8,6 +8,12 @@ commit/build identity, and a SHA-256 inventory. The release is restricted to the
 already verified Gold run `20260925T152721965637Z` and existing Test item IDs.
 This does not provision data or run the Bronze/Silver pipeline.
 
+The redesigned report requires its matching 29-measure model (12 core plus 17
+narrative measures). Package both current PBIP item folders together. The
+release guard requires all 12 core names in `EV Respondents` and allows extra
+measures; it no longer requires an exact total of 12. The historical export
+under `models/SM_EV_Analytics` is not the source for this release.
+
 `ci/azure_pipelines_test_cd.yml` consumes artifacts from `EV-Analytics-CI`. Successful
 main builds trigger CD; a manual run can select another successful CI run for a
 controlled test. The pipeline does not check out or rebuild from a newer branch.
@@ -126,7 +132,7 @@ scoped API helper for supervised restoration rather than bypassing checks in CI.
 
 ## Limitations
 
-- Does not verify rendering or alter report visuals.
+- Deploys packaged report definitions, including visual changes, but does not verify rendering or interactions.
 - Does not send notifications; subscribe to failed Azure DevOps builds separately.
 - Does not change the selected Gold run or support Prod.
 - SHA-256 detects corruption; trust in the release origin comes from Azure DevOps

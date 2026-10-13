@@ -5,7 +5,7 @@
 E2E `78f9cdfe-1e19-4624-bede-042310ec9bb9` completed with schema v2.
 Gold `20260925T152721965637Z` passed star reconstruction, PK/FK and Spark SQL
 checks. The full audit is `metadata/e2e_star_verified_run.json`. All six model
-partitions are bound to it. Live DAX passed all 12 measures, 35 segment groups and 24 combined-filter groups.
+partitions are bound to it. Baseline live DAX passed all 12 core measures, 35 segment groups and 24 combined-filter groups.
 Separate SQL analytics endpoint execution remains pending.
 The rollout below describes the procedure for future snapshots.
 

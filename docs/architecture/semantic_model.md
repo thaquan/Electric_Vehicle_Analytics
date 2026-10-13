@@ -3,21 +3,26 @@
 ## Current state
 
 The semantic model contains 6 tables,
-5 active Many-to-One single-direction relationships, 12 measures. All six
+5 active Many-to-One single-direction relationships and 29 measures (12 core plus
+17 narrative measures for the redesigned report). All six
 partitions now reference Gold v2 run `20260925T152721965637Z`, confirmed by
 `metadata/e2e_star_verified_run.json`. Every model source column matches the
 corresponding published table schema. There are no placeholder entities.
 
-The model is deployed as `8e7e37b7-7bab-4122-84fb-3ae7b2121cd7` in
-WS_EV_Analytics. Full refresh and live DAX validation passed: all 12 measures,
+The recorded baseline deployment uses model ID `8e7e37b7-7bab-4122-84fb-3ae7b2121cd7` in
+WS_EV_Analytics. Baseline full refresh and live DAX validation passed: all 12 core measures,
 35 segment groups, 24 combined-filter groups and empty-selection handling.
 See [validation scope](../validation.md); diagnostic query responses are stored outside Git.
 Separate SQL analytics endpoint execution is still pending; Fabric Spark SQL
 and independent SQLite counts are already reconciled with live DAX.
 
-The live model's exported TMDL is versioned under `models/SM_EV_Analytics/`.
-This is a model snapshot, not a second Fabric item. To start native Fabric Git
-tracking, commit the existing model from Fabric Source control first, preserving
+The current report model is `SM_EV_Analytics.SemanticModel/definition/`.
+`models/SM_EV_Analytics/` retains the historical 12-measure service export, not
+the redesigned 29-measure model or a second Fabric item. Do not use that export
+as the model source for the redesigned report. Deploy the current model and
+report together; see [report verification](../report_redesign_verification.md).
+
+To start native Fabric Git tracking, commit the existing model from Fabric Source control first, preserving
 its service-generated item identity; do not create another model with the same name.
 
 Direct Lake on OneLake must omit schemaName for this non-schema Lakehouse.
@@ -39,7 +44,7 @@ attributes for slicers, and explicit measures for numeric summaries. Keys,
 lineage, raw target flag and band sort columns are hidden. Age/income/commute
 band labels are sorted by their numeric order columns.
 
-There are 12 explicit measures in three folders:
+The 12 core measures are organized in three folders:
 
 - Purchase intent: Respondents, Intending to Buy EV, Not Intending to Buy EV,
   Purchase Intent Rate.
@@ -47,6 +52,12 @@ There are 12 explicit measures in three folders:
   Average Daily Commute km, Average Cars Owned.
 - Charging and incentives: Home Charging Access Rate, Subsidy Availability Rate,
   Average Chargers Near Home, Average Chargers Near Work.
+
+The `Narrative analysis` folder adds 17 measures: nine baseline/comparison/gap
+measures for charging, subsidy and income; population share; anxiety order;
+segment selection; executive insight; and four SVG visuals. The [report guide](powerbi_report.md)
+describes their filter behavior and interpretation. Release validation requires
+the 12 core names in `EV Respondents`; it does not cap the total measure count.
 
 Purchase Intent Rate divides the filtered Yes count by the filtered respondent
 count; an empty denominator returns blank. Home charging/subsidy measures filter

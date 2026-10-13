@@ -15,8 +15,14 @@ A new restore must pass its own checks; prior results do not validate a new depl
 | Audit aggregates | 1 / 35 rows |
 | KPI | 668665 / 116779 / 551886 |
 | Purchase intent rate | 0.17464500160768098 |
-| Semantic model | 6 tables, 5 relationships, 12 measures |
-| Report | 3 pages, 57 visuals |
+| Semantic model (archived snapshot) | 6 tables, 5 relationships, 12 core measures |
+| Report (archived snapshot) | 3 pages, 57 visuals |
+
+These structure counts describe the archived recovery package, not the current
+redesign (29 measures, three visible pages and one hidden tooltip page). Restore
+a sealed package as a consistent model/report pair. To deploy the redesign, use
+the current PBIP definitions together; do not pair its report with the old
+12-measure export. See [current model](../architecture/semantic_model.md).
 
 The KPI describe EV purchase intent in synthetic data. The two aggregate tables
 are for audit only. Remaining navigation/reset, chart cross-filter, and dashboard
@@ -204,7 +210,9 @@ In the recovery workspace:
    identity has read access.
 4. Run **Refresh now**, wait for success, and save refresh evidence.
 5. Verify six tables, five active many-to-one relationships filtering from dimensions
-   to fact, and 12 measures. Keep the two audit aggregates outside the model.
+   to fact, and the 12 core measures from the archived snapshot. For a redesigned
+   package, also retain its narrative measures and matching report definitions.
+   Keep the two audit aggregates outside the model.
 
 Direct Lake uses Delta tables and a model hosted on Fabric. Opening the source
 PBIP report does not create an independent model. You can live-edit the recovery

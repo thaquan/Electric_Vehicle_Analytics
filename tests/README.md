@@ -4,7 +4,7 @@ These are reusable regression tests for the project, not local test logs or agen
 
 - Data rules: Bronze/Silver typing, categories, target leakage, Gold metrics and star-schema keys.
 - Orchestration: stage dependencies, input integrity, retry behavior and publication gates.
-- Delivery: API/DAX errors, release manifests, target binding and rollback packaging.
+- Delivery: API/DAX errors, release manifests, target binding and rollback packaging. The measure guard requires all 12 core names while allowing additional dashboard measures; tests reject missing/replaced core names even when the total count is unchanged.
 - Recovery: archive integrity and unsafe path rejection using temporary fixtures.
 - Integration: real Spark Parquet checks and Airflow template rendering, enabled only in their required runtimes.
 
