@@ -10,7 +10,7 @@ import unittest
 from unittest.mock import Mock, patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-from build_test_release import build, verify_release, validate_definitions, ROOT
+from build_test_release import build, verify_release, validate_definitions, CORE_MEASURES, ROOT
 from deploy_test_release import Deployment, deploy
 from recovery_common import read_json, write_json
 
@@ -38,6 +38,38 @@ class ReleaseTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "checksum"):
             deploy(self.release, Path(self.temp.name) / 'evidence', client=client)
         client.request.assert_not_called()
+
+    def validate_with_fact_transform(self, transform):
+        model = read_json(self.release / 'model-update.json')
+        part = next(p for p in model['definition']['parts']
+                    if p['path'] == 'definition/tables/EV Respondents.tmdl')
+        text = base64.b64decode(part['payload']).decode('utf-8')
+        part['payload'] = base64.b64encode(transform(text).encode('utf-8')).decode('ascii')
+        validate_definitions(model, read_json(self.release / 'report-update.json'),
+                             read_json(self.release / 'config/environments/test.json'))
+
+    def test_additional_measures_are_allowed(self):
+        self.validate_with_fact_transform(
+            lambda text: text + "\n\tmeasure 'Additional dashboard metric' = 1\n")
+
+    def test_each_core_measure_is_required_even_when_count_is_unchanged(self):
+        for name in sorted(CORE_MEASURES):
+            with self.subTest(measure=name):
+                declaration = 'measure Respondents =' if name == 'Respondents' else f"measure '{name}' ="
+                with self.assertRaisesRegex(ValueError, 'Missing core measures in EV Respondents') as error:
+                    self.validate_with_fact_transform(
+                        lambda text: text.replace(declaration, "measure 'Replacement metric' =", 1))
+                self.assertIn(name, str(error.exception))
+
+    def test_core_measure_name_inside_comment_does_not_satisfy_guard(self):
+        with self.assertRaisesRegex(ValueError, 'Missing core measures in EV Respondents: Respondents'):
+            self.validate_with_fact_transform(
+                lambda text: text.replace('measure Respondents =', 'measure Replacement =', 1)
+                + '\n\t/// measure Respondents = 1\n')
+
+    def test_quoted_core_name_is_accepted(self):
+        self.validate_with_fact_transform(
+            lambda text: text.replace('measure Respondents =', "measure 'Respondents' =", 1))
 
     def test_wrong_ci_run_and_extra_files_rejected(self):
         with self.assertRaisesRegex(ValueError, "commit"):

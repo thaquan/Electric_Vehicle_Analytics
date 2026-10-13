@@ -22,6 +22,12 @@ TARGET_REPORT = "b7d65039-0413-4ecc-9f7f-33f0098c9cc0"
 TARGET_LAKEHOUSE = "970801bb-ffc3-4c5a-b25d-a940a5fd697e"
 ROLES = {"fact_ev_purchase_intent", "dim_demographics", "dim_income", "dim_mobility",
          "dim_charging", "dim_attitude_incentive"}
+CORE_MEASURES = frozenset({
+    "Respondents", "Intending to Buy EV", "Not Intending to Buy EV",
+    "Purchase Intent Rate", "Average Age", "Average Annual Income USD",
+    "Average Daily Commute km", "Average Cars Owned", "Home Charging Access Rate",
+    "Subsidy Availability Rate", "Average Chargers Near Home", "Average Chargers Near Work",
+})
 RUNTIME = ["build_test_release.py", "deploy_test_release.py", "fabric_test_api.py",
            "recovery_common.py", "check_test_health.py", "dax_query.py"]
 
@@ -75,7 +81,15 @@ def validate_definitions(model, report, config):
                 "Wrong partition schema")
     require(set(entities) == {role + "_" + GOLD_RUN.lower() for role in ROLES}, "Mixed or wrong Gold run")
     require(len(re.findall(r"(?m)^relationship ", text)) == 5, "Expected five relationships")
-    require(len(re.findall(r"(?m)^\s+measure ", text)) == 12, "Expected 12 measures")
+    # Report bindings depend on these names in the fact table, not on a fixed
+    # model-wide count. Narrative measures may be added without weakening this guard.
+    fact = texts.get("definition/tables/EV Respondents.tmdl", "")
+    declarations = re.findall(
+        r"(?m)^[ \t]+measure[ \t]+(?:'((?:[^']|'')+)'|([^'=\r\n]+?))[ \t]*=", fact)
+    measure_names = {quoted.replace("''", "'") if quoted else bare.strip()
+                     for quoted, bare in declarations}
+    missing = CORE_MEASURES - measure_names
+    require(not missing, "Missing core measures in EV Respondents: " + ", ".join(sorted(missing)))
     binding = json.loads(decode_parts(report)["definition.pbir"])["datasetReference"]
     require(set(binding) == {"byConnection"}, "Report must bind by connection")
     connection = binding["byConnection"]["connectionString"]
