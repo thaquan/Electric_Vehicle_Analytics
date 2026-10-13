@@ -1,4 +1,4 @@
-"""Build a clean Databricks project with the serverless modules installed as src."""
+"""Package the shared pipeline for a platform-owned Databricks Spark session."""
 from __future__ import annotations
 
 import argparse
@@ -8,9 +8,10 @@ import shutil
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-RUNTIME = ('bronze.py', 'silver.py', 'gold.py', 'quality_checks.py')
+RUNTIME = ('__init__.py', 'bronze.py', 'silver.py', 'gold.py', 'quality_checks.py',
+           'run_contract.py', 'runtime.py', 'stage_runner.py', 'run_pipeline.py')
 METADATA = ('source_manifest.json', 'gold_spec.json', 'gold_expected_metrics.json',
-            'star_expected_metrics.json')
+            'star_expected_metrics.json', 'categorical_profile.json', 'profiling_summary.json')
 
 
 def sha256(path: Path) -> str:
@@ -23,11 +24,9 @@ def build_package(destination: Path, raw: Path, project: Path = ROOT) -> dict:
     if destination.exists():
         raise ValueError('Destination already exists; choose a new empty release path')
     # Explicit allowlist: never copy credentials, caches or arbitrary workspace files.
-    sources = {f'src/{name}': project / 'databricks/runtime_src' / name for name in RUNTIME}
-    sources.update({f'src/{name}': project / 'src' / name
-                    for name in ('__init__.py', 'run_contract.py')})
+    sources = {f'src/{name}': project / 'src' / name for name in RUNTIME}
     sources.update({f'scripts/{name}': project / 'scripts' / name
-                    for name in ('gold_rules.py', 'star_schema.py')})
+                    for name in ('gold_rules.py', 'star_schema.py', 'bronze_silver.py')})
     sources.update({f'metadata/{name}': project / 'metadata' / name for name in METADATA})
     manifest = json.loads((project / 'metadata/source_manifest.json').read_text(encoding='utf-8-sig'))
     for entry in manifest['files']:
@@ -51,8 +50,8 @@ def build_package(destination: Path, raw: Path, project: Path = ROOT) -> dict:
         if checksum != sha256(source):
             raise RuntimeError(f'Package copy mismatch: {relative}')
         files[relative] = {'bytes': target.stat().st_size, 'sha256': checksum}
-    result = {'version': 1, 'platform': 'databricks-serverless',
-              'runtime_overlay': {f'src/{n}': f'databricks/runtime_src/{n}' for n in RUNTIME},
+    result = {'version': 2, 'platform': 'databricks-serverless',
+              'runtime_source': 'shared-src',
               'files': files}
     (destination / 'package_manifest.json').write_text(json.dumps(result, indent=2), encoding='utf-8')
     return result

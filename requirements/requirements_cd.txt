@@ -1,1 +1,2 @@
-pyarrow==23.0.1
+# Keep aligned with requirements_export.txt; this file travels alone in CD releases.
+pyarrow==25.0.1

@@ -1,0 +1,5 @@
+# Local regression suite, export and standalone Spark. Airflow runs separately in Linux.
+-r requirements_phase10.txt
+-r requirements_cd.txt
+-r requirements_export.txt
+-r requirements_phase11.txt

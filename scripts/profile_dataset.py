@@ -98,12 +98,16 @@ def profile_csv(path: Path) -> dict:
             })
         else:
             stats = categorical[field]
-            column_profiles.append({
+            profile = {
                 "name": field, "type": "categorical", "null_count": stats["null_count"],
                 "null_percentage": round(100 * stats["null_count"] / rows, 6) if rows else 0,
                 "distinct_count": len(stats["values"]),
-                "value_counts": dict(sorted(stats["values"].items(), key=lambda item: (-item[1], item[0]))),
-            })
+            }
+            if field == "Buyer_ID":
+                profile["value_counts_omitted"] = "Record identifiers are not published."
+            else:
+                profile["value_counts"] = dict(sorted(stats["values"].items(), key=lambda item: (-item[1], item[0])))
+            column_profiles.append(profile)
     return {"file": path.name, "data_rows": rows, "columns": fields, "column_profiles": column_profiles}
 
 

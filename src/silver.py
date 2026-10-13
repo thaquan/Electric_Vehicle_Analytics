@@ -44,7 +44,7 @@ def build_silver(spark: SparkSession, bronze_dir: Path, metadata_dir: Path, outp
         if source == 'test' and ('Will_Buy_EV' in frame.columns or 'will_buy_ev_flag' in frame.columns):
             raise ValueError('Test target leakage')
         target = output_dir / f'{source}.parquet'
-        frame.write.mode('errorifexists').parquet(str(target))
+        frame.write.mode('error').parquet(str(target))
         rows = spark.read.parquet(str(target)).count()
         if rows != entry['data_rows']:
             raise ValueError(f'{source}: written row count mismatch')
