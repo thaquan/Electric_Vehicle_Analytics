@@ -1,6 +1,6 @@
 # Automated tests
 
-These are reusable regression tests for the project, not local test logs or agent work files. CI selects its suites explicitly in `ci/azure_pipelines.yml`.
+These are reusable regression tests for the project, not local test logs or agent work files. CI discovers unit tests automatically and requires separate Spark and Airflow jobs in `ci/azure_pipelines.yml`.
 
 - Data rules: Bronze/Silver typing, categories, target leakage, Gold metrics and star-schema keys.
 - Orchestration: stage dependencies, input integrity, retry behavior and publication gates.
@@ -22,7 +22,31 @@ python -m venv .venv
 On Linux use `.venv/bin/python` instead of `.venv/Scripts/python.exe`.
 See the [runtime matrix](../requirements/README.md) for separate cloud/runtime environments.
 
-Seven Spark tests require `EV_RUN_SPARK_TESTS=1` and Java/Spark setup, including comparison of cached and uncached shared transformations. One Airflow test requires Linux with Airflow installed. Skips are reported separately from passes; see the [runtime guide](../docs/pipelines/standalone_pipeline.md).
+Eight Spark tests require `EV_RUN_SPARK_TESTS=1` and Java/Spark setup. They cover
+Gold corruption, cached/uncached equivalence, and a complete synthetic CSV -> Bronze
+-> Silver -> Gold -> quality -> publish run, including decimal precision, preserved
+nulls, target leakage and rejection of modified published artifacts. Three Airflow
+tests require Linux with Airflow installed: shell-substitution rejection, actual
+six-task DAG execution, and failed input blocking downstream publication.
+
+The shared runner writes JUnit XML and JSON with separate pass/fail/error/skip counts:
+
+```powershell
+.venv/Scripts/python.exe scripts/run_ci_tests.py --suite unit
+# After configuring Java/Hadoop with scripts/phase10_env.ps1:
+$env:EV_RUN_SPARK_TESTS = '1'
+$env:SPARK_MASTER = 'local[2]'
+$env:SPARK_SHUFFLE_PARTITIONS = '2'
+.venv/Scripts/python.exe scripts/run_ci_tests.py --suite spark
+# Local inventory only: explicitly permit unavailable integration runtimes.
+.venv/Scripts/python.exe scripts/run_ci_tests.py --suite all --allow-skips
+```
+
+Without `--allow-skips`, any skip makes the process exit nonzero. Import errors,
+test failures and empty discovery also fail. Missing runtime is never a pass.
+CI never uses `--allow-skips`, publishes results even on failure, and releases
+artifacts only after all three jobs succeed. See the [CI guide](../docs/testing_ci.md)
+for Airflow commands, runtime boundaries and Azure Repos PR setup.
 
 `test_pipeline_entrypoints.py` checks invalid input rejection before Spark across
 CLI/staged/serverless entry points, startup failure reports, preservation of the

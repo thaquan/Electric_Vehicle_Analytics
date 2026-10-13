@@ -10,6 +10,7 @@ release/rollback packages copy it without other requirement files.
 | Local regression, DAX parsing, export/reconciliation | Python 3.13, Windows x64 | `requirements_dev.txt` + `constraints-local-py313.txt` | No cloud credentials required; real Spark/Airflow tests are opt-in. |
 | Standalone Spark pipeline | Same Python environment, Java 17, Spark 3.5.9 | `requirements_phase10.txt` + local constraints | Windows additionally needs `winutils.exe` and `hadoop.dll`; see runtime guide. |
 | CI unit tests | Ubuntu, Python 3.13 | `requirements_dev.txt` + local constraints | Cloud CI must run to establish Linux acceptance; a local Windows pass is not CI evidence. |
+| CI Spark integration | Ubuntu 24.04, Python 3.11, Java 17 | `requirements_phase10.txt` | Real Parquet and full synthetic pipeline; required, zero skips. |
 | Test CD release | Pipeline Python 3.13, existing Azure identity | `requirements_cd.txt` | Local Arrow tests do not establish live deployment success. |
 | Airflow | Linux container, Python 3.11, Java 17 | `docker/phase10_airflow/Dockerfile` | Separate runtime; do not install Airflow into the Windows local environment. |
 | Databricks serverless | Platform-provided Python/Spark | Runtime notebook/package | Do not install local PySpark into serverless. `requirements_phase11.txt` is for local reconciliation only. |

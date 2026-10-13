@@ -1,0 +1,22 @@
+parameters:
+  - name: suite
+    type: string
+
+steps:
+  - task: PublishTestResults@2
+    condition: always()
+    displayName: Publish ${{ parameters.suite }} pass / fail / skip
+    inputs:
+      testResultsFormat: JUnit
+      testResultsFiles: 'test-results/${{ parameters.suite }}.xml'
+      testRunTitle: '${{ parameters.suite }} - $(Build.BuildNumber)'
+      failTaskOnFailedTests: true
+      failTaskOnFailureToPublishResults: true
+      failTaskOnMissingResultsFile: true
+  - task: PublishPipelineArtifact@1
+    condition: always()
+    displayName: Preserve ${{ parameters.suite }} evidence
+    inputs:
+      targetPath: '$(System.DefaultWorkingDirectory)/test-results'
+      artifact: 'test-results-${{ parameters.suite }}'
+      publishLocation: pipeline

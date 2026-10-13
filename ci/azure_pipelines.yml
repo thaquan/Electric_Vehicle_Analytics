@@ -2,108 +2,166 @@ trigger:
   branches:
     include:
       - main
-      - feature/phase8-ci
+      - feature/*
+
+# Azure Repos PR validation must also be enabled as a branch policy.
+pr:
+  branches:
+    include:
+      - main
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: ubuntu-24.04
 
-steps:
-  - checkout: self
-    clean: true
+jobs:
+  - job: Unit
+    displayName: Unit regression (Python 3.13)
+    timeoutInMinutes: 15
+    steps:
+      - checkout: self
+        clean: true
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: '3.13'
+      - bash: |
+          set -euo pipefail
+          python -m pip install -r requirements/requirements_dev.txt -c requirements/constraints-local-py313.txt
+          python -m pip check
+          python -m compileall -q scripts src dags tests
+        displayName: Install and check syntax
+      - bash: python scripts/run_ci_tests.py --suite unit
+        displayName: Discover all unit tests
+      - template: templates/test_results.yml
+        parameters:
+          suite: unit
 
-  - task: UsePythonVersion@0
-    inputs:
-      versionSpec: '3.13'
-    displayName: Use Python 3.13
+  - job: Spark
+    displayName: Real Spark and Parquet integration
+    timeoutInMinutes: 30
+    steps:
+      - checkout: self
+        clean: true
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: '3.11'
+      - bash: |
+          set -euo pipefail
+          python -m pip install -r requirements/requirements_phase10.txt
+          python -m pip check
+          export JAVA_HOME="$JAVA_HOME_17_X64"
+          export PATH="$JAVA_HOME/bin:$PATH"
+          export PYSPARK_PYTHON="$(command -v python)"
+          java -version
+          python scripts/run_ci_tests.py --suite spark
+        env:
+          EV_RUN_SPARK_TESTS: '1'
+          SPARK_LOCAL_IP: '127.0.0.1'
+          SPARK_MASTER: 'local[2]'
+          SPARK_SHUFFLE_PARTITIONS: '2'
+        displayName: Run required Spark suite (no skips)
+      - template: templates/test_results.yml
+        parameters:
+          suite: spark
 
-  - bash: |
-      set -euo pipefail
-      python -m pip install -r requirements/requirements_dev.txt -c requirements/constraints-local-py313.txt
-      python -m pip check
-    displayName: Install dependencies
+  - job: Airflow
+    displayName: Airflow 2.10.5 real DAG execution
+    timeoutInMinutes: 30
+    steps:
+      - checkout: self
+        clean: true
+      - bash: |
+          set -euo pipefail
+          docker build -t ev-airflow-ci docker/phase10_airflow
+          mkdir -p test-results
+          chmod a+w test-results
+          docker run --rm \
+            --entrypoint /bin/bash \
+            -v "$PWD:/workspace" -w /workspace \
+            -e AIRFLOW_HOME=/tmp/airflow-ci \
+            -e AIRFLOW__CORE__LOAD_EXAMPLES=False \
+            -e AIRFLOW__CORE__EXECUTOR=SequentialExecutor \
+            -e AIRFLOW__CORE__DAGS_FOLDER=/workspace/dags \
+            -e EV_PROJECT_ROOT=/workspace \
+            -e SPARK_LOCAL_IP=127.0.0.1 \
+            -e 'SPARK_MASTER=local[2]' \
+            -e SPARK_SHUFFLE_PARTITIONS=2 \
+            ev-airflow-ci -euo pipefail -c \
+            'export PYSPARK_PYTHON="$(command -v python)"; python -m pip check; airflow db migrate; python scripts/run_ci_tests.py --suite airflow'
+        displayName: Migrate isolated DB and execute required Airflow suite
+      - template: templates/test_results.yml
+        parameters:
+          suite: airflow
 
-  - bash: |
-      set -euo pipefail
-      python -m compileall -q scripts src dags
-    displayName: Check Python syntax
+  - job: Package
+    displayName: Publish only after every required suite passes
+    dependsOn:
+      - Unit
+      - Spark
+      - Airflow
+    condition: succeeded()
+    steps:
+      - checkout: self
+        clean: true
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: '3.13'
+      - bash: |
+          set -euo pipefail
+          python -m pip install -r requirements/requirements_cd.txt
+          python -m pip check
+        displayName: Install release dependencies
+      - bash: |
+          set -euo pipefail
+          python scripts/build_test_release.py \
+            --output "$(Build.ArtifactStagingDirectory)/ev-test-release" \
+            --commit "$BUILD_SOURCEVERSION" \
+            --build-id "$BUILD_BUILDID" \
+            --branch "$BUILD_SOURCEBRANCH"
+        displayName: Build and verify Test release
 
-  - bash: |
-      set -euo pipefail
+      - task: PublishPipelineArtifact@1
+        inputs:
+          targetPath: '$(Build.ArtifactStagingDirectory)/ev-test-release'
+          artifact: ev-test-release
+          publishLocation: pipeline
+        displayName: Publish Test release
 
-      for test_file in \
-        test_bronze_silver.py \
-        test_source_download.py \
-        test_gold_rules.py \
-        test_star_schema.py \
-        test_pipeline.py \
-        test_phase9_backup.py \
-        test_phase10_orchestration.py \
-        test_pipeline_entrypoints.py \
-        test_phase11.py \
-        test_phase12.py \
-        test_gold_export.py \
-        test_fabric_test_api.py \
-        test_test_health.py \
-        test_test_release.py \
-        test_dax_query.py
-      do
-        test -f "tests/$test_file"
-        python -m unittest discover -s tests -p "$test_file" -v
-      done
-    displayName: Run unit tests
+      - bash: |
+          set -euo pipefail
 
-  - bash: |
-      set -euo pipefail
-      python scripts/build_test_release.py \
-        --output "$(Build.ArtifactStagingDirectory)/ev-test-release" \
-        --commit "$BUILD_SOURCEVERSION" \
-        --build-id "$BUILD_BUILDID" \
-        --branch "$BUILD_SOURCEBRANCH"
-    displayName: Build and verify Test release
+          mkdir -p "$(Build.ArtifactStagingDirectory)/ev-source"
 
-  - task: PublishPipelineArtifact@1
-    inputs:
-      targetPath: '$(Build.ArtifactStagingDirectory)/ev-test-release'
-      artifact: ev-test-release
-      publishLocation: pipeline
-    displayName: Publish Test release
+          git archive \
+            --format=zip \
+            --output="$(Build.ArtifactStagingDirectory)/ev-source/source.zip" \
+            HEAD
 
-  - bash: |
-      set -euo pipefail
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
 
-      mkdir -p "$(Build.ArtifactStagingDirectory)/ev-source"
+          folder = Path(os.environ["BUILD_ARTIFACTSTAGINGDIRECTORY"]) / "ev-source"
+          source = folder / "source.zip"
 
-      git archive \
-        --format=zip \
-        --output="$(Build.ArtifactStagingDirectory)/ev-source/source.zip" \
-        HEAD
+          manifest = {
+              "commit_sha": os.environ["BUILD_SOURCEVERSION"],
+              "build_id": os.environ["BUILD_BUILDID"],
+              "source_branch": os.environ["BUILD_SOURCEBRANCH"],
+              "source_zip_sha256": hashlib.sha256(source.read_bytes()).hexdigest()
+          }
 
-      python - <<'PY'
-      import hashlib
-      import json
-      import os
-      from pathlib import Path
+          (folder / "manifest.json").write_text(
+              json.dumps(manifest, indent=2),
+              encoding="utf-8"
+          )
+          PY
+        displayName: Package verified source
 
-      folder = Path(os.environ["BUILD_ARTIFACTSTAGINGDIRECTORY"]) / "ev-source"
-      source = folder / "source.zip"
-
-      manifest = {
-          "commit_sha": os.environ["BUILD_SOURCEVERSION"],
-          "build_id": os.environ["BUILD_BUILDID"],
-          "source_branch": os.environ["BUILD_SOURCEBRANCH"],
-          "source_zip_sha256": hashlib.sha256(source.read_bytes()).hexdigest()
-      }
-
-      (folder / "manifest.json").write_text(
-          json.dumps(manifest, indent=2),
-          encoding="utf-8"
-      )
-      PY
-    displayName: Package verified source
-
-  - task: PublishPipelineArtifact@1
-    inputs:
-      targetPath: '$(Build.ArtifactStagingDirectory)/ev-source'
-      artifact: ev-source
-      publishLocation: pipeline
-    displayName: Publish verified source artifact
+      - task: PublishPipelineArtifact@1
+        inputs:
+          targetPath: '$(Build.ArtifactStagingDirectory)/ev-source'
+          artifact: ev-source
+          publishLocation: pipeline
+        displayName: Publish verified source artifact

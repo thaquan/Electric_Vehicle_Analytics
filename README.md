@@ -109,7 +109,7 @@ Each run writes to `output/local/runs/<run_id>/`. Inspect `run_report.json` and 
 | `scripts/`, `tests/`, `ci/` | Reusable utilities, automated regression tests and CI/CD. |
 | `docs/` | Data model, screenshots and technical runbooks. |
 
-Technical guides: [Fabric](docs/pipelines/pipeline_runbook.md) · [PySpark/Airflow](docs/pipelines/standalone_pipeline.md) · [Databricks](docs/pipelines/phase11_databricks.md) · [CI/CD](docs/deployment/test_cd.md) · [tests](tests/README.md) · [recovery](docs/recovery/recovery_runbook.md).
+Technical guides: [Fabric](docs/pipelines/pipeline_runbook.md) · [PySpark/Airflow](docs/pipelines/standalone_pipeline.md) · [Databricks](docs/pipelines/phase11_databricks.md) · [CI/CD](docs/deployment/test_cd.md) · [integration CI](docs/testing_ci.md) ? [tests](tests/README.md) · [recovery](docs/recovery/recovery_runbook.md).
 
 ## CI/CD evidence
 
