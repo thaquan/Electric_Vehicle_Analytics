@@ -2,10 +2,10 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
   "name": "e982074f188f6b3513a0",
   "position": {
-    "x": 256,
-    "y": 32,
-    "width": 1312,
-    "height": 60,
+    "x": 24,
+    "y": 16,
+    "width": 810,
+    "height": 52,
     "z": 1000,
     "tabOrder": 1000
   },
@@ -19,10 +19,10 @@
               {
                 "textRuns": [
                   {
-                    "value": "Customer profile",
+                    "value": "Customer Segments",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
-                      "fontSize": "34px",
+                      "fontSize": "32px",
                       "color": "#F8FAFC"
                     }
                   }
@@ -114,6 +114,38 @@
               "expr": {
                 "Literal": {
                   "Value": "false"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "''"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "13D"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#F8FAFC'"
+                    }
+                  }
+                }
+              }
+            },
+            "titleWrap": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
                 }
               }
             }
