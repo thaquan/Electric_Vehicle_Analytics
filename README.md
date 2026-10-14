@@ -30,7 +30,7 @@ Explore which age and income segments combine scale with higher EV purchase inte
 
 ![Customer Segments](docs/screenshots/customer_segments.png)
 
-[Open the published report](https://app.powerbi.com/groups/5fe78794-25c3-41ee-b35e-bc56542d2cea/reports/ae4d7c59-759e-4462-afed-1717475ae012) with workspace access, or inspect the [Power BI project](RPT_EV_Analytics.pbip). Screenshots can be viewed without a cloud account. They show the redesigned Desktop report; the Service link depends on the version deployed to that workspace. See the [report guide](docs/architecture/powerbi_report.md) for interactions, rebuild steps and model requirements.
+[Open the published report](https://app.powerbi.com/groups/5fe78794-25c3-41ee-b35e-bc56542d2cea/reports/ae4d7c59-759e-4462-afed-1717475ae012) with workspace access, or inspect the [Power BI project](RPT_EV_Analytics.pbip). On 14 October 2026 the Dev Service items were updated in place from source commit `edf7114`: the live semantic model was verified with 29 measures and the expected KPI counts, and the live report definition was verified with three visible pages plus the hidden `Segment context` tooltip page and 68 visuals. The committed screenshots remain Desktop captures rather than Service UI evidence, so browser rendering and interactions still require separate acceptance. See the [report guide](docs/architecture/powerbi_report.md) for interactions, rebuild steps and model requirements.
 
 ## Key findings
 
@@ -113,7 +113,7 @@ Technical guides: [Fabric](docs/pipelines/pipeline_runbook.md) · [PySpark/Airfl
 
 ## CI/CD evidence
 
-Dashboard redesign CI builds **54 and 55 succeeded on 13 October 2026**, and Azure DevOps PR #13 was merged. The release guard requires the 12 core measures by name while allowing additional measures. See the [CI/CD evidence](docs/cicd_evidence.md) for these runs and the separate archived Test deployment checks from 2 October. CI success does not establish that the redesigned report has been deployed or accepted in Power BI Service.
+Dashboard redesign CI builds **54 and 55 succeeded on 13 October 2026**, and Azure DevOps PR #13 was merged. The release guard requires the 12 core measures by name while allowing additional measures. See the [CI/CD evidence](docs/cicd_evidence.md) for these runs and the separate archived Test deployment checks from 2 October. Separately, on 14 October 2026 the existing Dev semantic model and report were updated in place and verified through Fabric/Power BI APIs: 29 live measures, KPI counts of 668,665 respondents / 116,779 Yes / 551,886 No, and a 68-visual report definition bound to the same Dev model. This proves the deployed definitions and model health, not browser-level rendering or interaction acceptance.
 
 ## Reproducing the project
 

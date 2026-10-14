@@ -78,6 +78,14 @@ Additional local captures remain under `output/redesign/screenshots`.
 Deploy the updated semantic model measures together with the report. Publishing
 only PBIR against a model that still has the original 12 measures will leave the
 new narrative visuals without their required fields. CI validates the 12 core
-measure names while permitting the 17 additions and
-future measures. CI packaging and a merged PR do not prove that the redesign
-has been deployed to the shared Fabric model or accepted in Service.
+measure names while permitting the 17 additions and future measures.
+
+The Dev workspace was synchronized on 14 October 2026 by updating the existing
+semantic model and report in place. API read-back verified 29 live measures,
+the expected KPI counts, the existing Direct Lake/OneLake connection, and the
+redesigned report structure with 68 visuals across three visible pages plus the
+hidden `Segment context` tooltip page. The report remained bound to semantic
+model `8e7e37b7-7bab-4122-84fb-3ae7b2121cd7`. Fabric may normalize returned PBIR
+JSON and add a shared base-theme resource, so structural equivalence is the
+relevant deployment check. Browser rendering and interaction behavior still
+require explicit Service UI acceptance.
