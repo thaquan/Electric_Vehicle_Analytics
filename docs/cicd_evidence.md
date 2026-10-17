@@ -1,5 +1,24 @@
 # CI/CD evidence
 
+## Current Test release — 17 October 2026
+
+- Source: `295e26da7aa1ea3c0cbe629ff83230f6ccafdbd2`.
+- [CI #67](https://dev.azure.com/thaquan081006/Electric_Vehicle_Analytics/_build/results?buildId=67), run number `20261017.3`: succeeded. Downloaded results record 118 Unit, 8 real Spark and 3 Airflow tests passed, zero failures/errors/skips. Package succeeded after all three jobs.
+- [PR validation #68](https://dev.azure.com/thaquan081006/Electric_Vehicle_Analytics/_build/results?buildId=68) approved the required build policy on [Azure PR #17](https://dev.azure.com/thaquan081006/Electric_Vehicle_Analytics/_git/Electric_Vehicle_Analytics/pullrequest/17).
+- [Test CD #70](https://dev.azure.com/thaquan081006/Electric_Vehicle_Analytics/_build/results?buildId=70): succeeded using **CI build 67's artifact**, with no checkout or rebuild. Downloaded evidence records `definition_matches_release=true`, successful connection/Gold-run checks, completed refresh and KPI 668,665 / 116,779 / 551,886 using the service principal's Arrow DAX API. The sealed rollback package was retained and verified.
+- [Service UAT](evidence/service_uat_20261017.json): 17 value/filter/tooltip observations passed through Windows UI Automation, plus six directed page-navigation paths, active-page buttons and page-slicer independence. Its report-only candidate came from a sealed archive of the same commit; every report part matched the downloaded CI artifact and the later CD readback.
+
+See the [sanitized acceptance JSON](evidence/acceptance_20261017.json) for artifact
+checksums and verification scope. Raw deployment evidence, rollback, snapshots
+and screenshots remain under ignored `output/acceptance-20261017/`.
+
+CD #69 failed pipeline resource resolution before any job or Service change:
+REST `version` needed run number `20261017.3`, rather than build ID `67`.
+A separate local report-preparation attempt received Arrow DAX HTTP 401 before
+updates; the existing user identity passed the supported JSON API on the next
+attempt. The unattended CD #70 passed with its configured Arrow/service-principal
+path. Failed attempts are retained and are not counted as successful deployments.
+
 ## Dashboard redesign CI - 13 October 2026
 
 - Fix commit: `45552d7509b78428dee64702ef64231ab8998f57`.

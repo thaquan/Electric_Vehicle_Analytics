@@ -71,7 +71,21 @@ Update the pipeline definition as well as repository references whenever a YAML 
    from `refs/heads/feature/phase8-cd` to `refs/heads/main` after merge. Future
    successful main runs can deploy automatically.
 
+When selecting a pipeline resource through the Runs REST API, its `version` is
+the **run number**, not the numeric build ID: for CI build ID 67 use
+`20261017.3`. The downloaded manifest and `resources.pipeline.verifiedCI.runID`
+still identify build `67`; CD verifies that ID and its full commit SHA. An attempt
+using `version: "67"` was rejected during pipeline validation as CD #69 before
+any deployment job ran. The corrected request is retained with CD #70.
+
 ## Verified deployment
+
+The current accepted release is **CI #67 -> CD #70**, source
+`295e26da7aa1ea3c0cbe629ff83230f6ccafdbd2`, on 17 October 2026. The selected
+artifact, complete report readback, refresh, binding and KPI passed. Windows-native
+Service UAT exercised the same report definitions. See the
+[acceptance evidence](../evidence/acceptance_20261017.json) and
+[UAT observations](../evidence/service_uat_20261017.json).
 
 Public readers can inspect the [archived evidence summary](../cicd_evidence.md) and its sanitized JSON without Azure DevOps access.
 

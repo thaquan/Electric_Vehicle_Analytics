@@ -1,0 +1,260 @@
+{
+  "verified_at_utc": "2026-10-17T07:54:08.355763+00:00",
+  "source_commit": "295e26da7aa1ea3c0cbe629ff83230f6ccafdbd2",
+  "ci_build_id": 67,
+  "cd_build_id": 70,
+  "cd_status": "passed",
+  "ui_package_origin": "Local sealed git-archive report deployment; canonical report parts subsequently matched the downloaded CI #67 artifact exactly",
+  "method": "Authenticated Power BI Service; Windows UI Automation and native OS screenshots; Playwright excluded",
+  "status": "passed",
+  "cases": [
+    {
+      "case": "executive-final",
+      "status": "passed",
+      "actual": {
+        "Intent rate": "17.46%",
+        "Interested": "116,779",
+        "Respondents": "668,665"
+      },
+      "ui_snapshot_sha256": "6fb54680a069f178f8ae66753d9c1f88457be5c20624e5ae6a584a729e5fda03"
+    },
+    {
+      "case": "charging-final",
+      "status": "passed",
+      "actual": {
+        "Intent rate": "17.46%",
+        "Respondents": "668,665",
+        "Interested": "116,779",
+        "Population share": "100.00%"
+      },
+      "ui_snapshot_sha256": "e30a78ef690748b24dd14e3e6322963f83d97605dab064df209e716c0306778e"
+    },
+    {
+      "case": "segments-final",
+      "status": "passed",
+      "actual": {
+        "Intent rate": "17.46%",
+        "Respondents": "668,665",
+        "Interested": "116,779",
+        "Commute (km)": "32.2",
+        "Cars owned": "1.71",
+        "Population share": "100.00%"
+      },
+      "ui_snapshot_sha256": "318f3cdd5aff60bca043ad45927e494e263daf41f6d505db23648946cd58080a"
+    },
+    {
+      "case": "executive-urban",
+      "status": "passed",
+      "actual": {
+        "Intent rate": "16.11%",
+        "Interested": "46,595",
+        "Respondents": "289,305"
+      },
+      "ui_snapshot_sha256": "67e6744e7b19be5e234979e36856f5b0822d31f110914fd6623d8f2d97e0d9a7"
+    },
+    {
+      "case": "charging-urban",
+      "status": "passed",
+      "actual": {
+        "Intent rate": "16.11%",
+        "Respondents": "289,305",
+        "Interested": "46,595",
+        "Population share": "43.27%"
+      },
+      "ui_snapshot_sha256": "0013e54b38baa0971c77649727d7423770f6d4eab079126ce59bc87cac85d19a"
+    },
+    {
+      "case": "segments-100k-65",
+      "status": "passed",
+      "actual": {
+        "Intent rate": "26.72%",
+        "Respondents": "19,832",
+        "Interested": "5,299",
+        "Commute (km)": "32.6",
+        "Cars owned": "1.71",
+        "Population share": "2.97%"
+      },
+      "ui_snapshot_sha256": "113d15d082b21e00425deb468b3e5392ed16fc4d52032c132850964b5dd67fc3"
+    },
+    {
+      "case": "segments-multi-age",
+      "status": "passed",
+      "actual": {
+        "Intent rate": "28.49%",
+        "Respondents": "59,971",
+        "Interested": "17,085",
+        "Commute (km)": "32.5",
+        "Cars owned": "1.71",
+        "Population share": "8.97%"
+      },
+      "ui_snapshot_sha256": "469128086d810e0c247e9d0fce301462d21cda658fab1ddf3dca72c36cc5e2d8"
+    },
+    {
+      "case": "executive-reset",
+      "status": "passed",
+      "actual": {
+        "Intent rate": "17.46%",
+        "Interested": "116,779",
+        "Respondents": "668,665"
+      },
+      "ui_snapshot_sha256": "2a73f05cd061076c5a83d74de5dd762ad50f7ad86183765a7a425fd0dab2b653"
+    },
+    {
+      "case": "charging-reset",
+      "status": "passed",
+      "actual": {
+        "Intent rate": "17.46%",
+        "Respondents": "668,665",
+        "Interested": "116,779",
+        "Population share": "100.00%"
+      },
+      "ui_snapshot_sha256": "f42a77473b86990b85804332f233a6103f1e6dffb467dc1e303acd4dbf1c82f1"
+    },
+    {
+      "case": "segments-reset",
+      "status": "passed",
+      "actual": {
+        "Intent rate": "17.46%",
+        "Respondents": "668,665",
+        "Interested": "116,779",
+        "Commute (km)": "32.2",
+        "Cars owned": "1.71",
+        "Population share": "100.00%"
+      },
+      "ui_snapshot_sha256": "1b3f4e8dfe2ca7ba7c19ef714070c3f5f9433698e609fda9ff16955282b3daa2"
+    },
+    {
+      "case": "charging-tooltip",
+      "status": "passed",
+      "actual": {
+        "Intent rate": "30.40%",
+        "Respondents": "294,425",
+        "Interested": "89,494",
+        "Population share": "44.03%",
+        "Commute (km)": "31.4",
+        "Cars owned": "1.71"
+      },
+      "ui_snapshot_sha256": "61fc5b34fffd8a222c7b8f543c316da61cc7feb1e9dc1a79e5ed556f258deccd"
+    },
+    {
+      "case": "segments-tooltip",
+      "status": "passed",
+      "actual": {
+        "Intent rate": "26.72%",
+        "Respondents": "19,832",
+        "Interested": "5,299",
+        "Commute (km)": "32.6",
+        "Cars owned": "1.71",
+        "Population share": "2.97%"
+      },
+      "ui_snapshot_sha256": "bdca1000566e7c2df6e10677877ac82dd3c1cd0af49493833e29c8fda3f9e1c3"
+    },
+    {
+      "case": "charging-cross-filter",
+      "status": "passed",
+      "actual": {
+        "Intent rate": "30.40%",
+        "Respondents": "294,425",
+        "Interested": "89,494",
+        "Population share": "44.03%"
+      },
+      "ui_snapshot_sha256": "eaee82e875652e6a1fa1de961c33e15764d7a4b9f0697c89cf4678d557b69b3b"
+    },
+    {
+      "case": "charging-chart-selection",
+      "status": "passed",
+      "actual": {
+        "Intent rate": "18.90%",
+        "Respondents": "603,972",
+        "Interested": "114,167",
+        "Population share": "90.33%"
+      },
+      "ui_snapshot_sha256": "63e93e7a6d95066af56ca9ea7527a50a25eeee6bf57cc394d7a691b7a68d0ddf"
+    },
+    {
+      "case": "executive-bubble-mark",
+      "status": "passed",
+      "actual": {
+        "Intent rate": "19.34%",
+        "Interested": "23,977",
+        "Respondents": "123,983"
+      },
+      "ui_snapshot_sha256": "5d18464c2c0a5e2a070e6c67f04edc34b8001f5d25a5452032897e090d2c9790"
+    },
+    {
+      "case": "independent-charging",
+      "status": "passed",
+      "actual": {
+        "Intent rate": "17.46%",
+        "Respondents": "668,665",
+        "Interested": "116,779",
+        "Population share": "100.00%"
+      },
+      "ui_snapshot_sha256": "e30a78ef690748b24dd14e3e6322963f83d97605dab064df209e716c0306778e"
+    },
+    {
+      "case": "independent-executive-retained",
+      "status": "passed",
+      "actual": {
+        "Intent rate": "16.11%",
+        "Interested": "46,595",
+        "Respondents": "289,305"
+      },
+      "ui_snapshot_sha256": "2fccd1aa36b524ddb92fc3030dbf3b925f41e72dc864f8021abdc7cf259af88e"
+    }
+  ],
+  "navigation": [
+    {
+      "From": "Customer Segments",
+      "Expected": "Charging & Incentives",
+      "Index": 1,
+      "Passed": true,
+      "AtUtc": "2026-10-17T07:46:35.7176356Z"
+    },
+    {
+      "From": "Charging & Incentives",
+      "Expected": "Customer Segments",
+      "Index": 2,
+      "Passed": true,
+      "AtUtc": "2026-10-17T07:46:37.8155955Z"
+    },
+    {
+      "From": "Customer Segments",
+      "Expected": "Executive Overview",
+      "Index": 0,
+      "Passed": true,
+      "AtUtc": "2026-10-17T07:46:39.6099510Z"
+    },
+    {
+      "From": "Executive Overview",
+      "Expected": "Charging & Incentives",
+      "Index": 1,
+      "Passed": true,
+      "AtUtc": "2026-10-17T07:46:41.5040091Z"
+    },
+    {
+      "From": "Charging & Incentives",
+      "Expected": "Executive Overview",
+      "Index": 0,
+      "Passed": true,
+      "AtUtc": "2026-10-17T07:46:43.3969483Z"
+    }
+  ],
+  "additional_navigation_edge": {
+    "from": "Executive Overview",
+    "to": "Customer Segments",
+    "status": "passed",
+    "evidence": "segments-baseline.json after clicking top navigation index 2"
+  },
+  "active_page_buttons": "All three checked; final UI remained Customer Segments with baseline values",
+  "empty_state": {
+    "status": "not_applicable",
+    "reason": "All 180 atomic slicer combinations per page have rows; minimum 7 for Executive/Segments and 4 for Charging. No published filters were changed to manufacture an empty state."
+  },
+  "raw_evidence": "Ignored output/acceptance-20261017/service-uat/; failed tool attempts and stale browser captures are retained separately and excluded from passed cases",
+  "limitations": [
+    "Representative chart paths exercised; not every possible mark/filter combination",
+    "Static SVG image measures respond to filters but do not emit chart selections"
+  ],
+  "ci_cd_report_readback_equal": true
+}

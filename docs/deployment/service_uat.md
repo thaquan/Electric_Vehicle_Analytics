@@ -6,6 +6,15 @@ tester, actual values and screenshot or other direct UI evidence for each case.
 API readback, DAX and Desktop screenshots are supporting checks; they do not
 establish that a Service button, hover or chart selection worked.
 
+The 17 October run is recorded in [sanitized UAT evidence](../evidence/service_uat_20261017.json).
+It exercised 17 KPI/filter/tooltip observations, the six directed page-navigation
+paths, the active-page buttons and independent page slicers through Windows UI
+Automation. Hover checks verified the actual `Segment context` page. The target
+page needs top-level `"type": "Tooltip"`; `pageBinding.type` alone left Desktop
+treating it as a Standard page. Native screenshots and UI snapshots established
+the correction. Hard reload was needed after deployment because an ordinary
+reload initially reused an older report definition.
+
 Open the Test report using the report ID in `config/environments/test.json`.
 Start in reading mode, use **Reset to default** to remove persistent filters,
 and clear any chart selections before each independent case. A page's **Reset

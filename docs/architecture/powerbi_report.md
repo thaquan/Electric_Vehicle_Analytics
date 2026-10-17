@@ -3,6 +3,12 @@
 The report now has three distinct analytical pages, plus a hidden context tooltip.
 The dark 1600 x 900 canvas remains; navigation and dropdown slicers run across the top.
 
+The 17 October acceptance fixes give each KPI card its full callout width and
+zero internal padding, preventing ellipses in Service. The hidden context page
+has top-level `type: Tooltip` as well as its page binding so Service uses it on
+heatmap hover. See [current acceptance](../portfolio_acceptance.md) and the
+[Service UAT evidence](../evidence/service_uat_20261017.json).
+
 | Page | Business question | Main visuals |
 | --- | --- | --- |
 | Executive Overview | Where do interest and scale meet? | Hero intent KPI, respondent/interested counts, city opportunity bubbles, ranked observed-gap lollipops, city comparison, dynamic insight |
@@ -87,5 +93,7 @@ redesigned report structure with 68 visuals across three visible pages plus the
 hidden `Segment context` tooltip page. The report remained bound to semantic
 model `8e7e37b7-7bab-4122-84fb-3ae7b2121cd7`. Fabric may normalize returned PBIR
 JSON and add a shared base-theme resource, so structural equivalence is the
-relevant deployment check. Browser rendering and interaction behavior still
-require explicit Service UI acceptance.
+relevant deployment check for that older Dev record. The current Test report's
+Service interactions were separately exercised on 17 October through Windows
+UI Automation, against definitions matching CI #67. See the acceptance record
+for the paired CI/CD runs and evidence; the Dev record above remains historical.

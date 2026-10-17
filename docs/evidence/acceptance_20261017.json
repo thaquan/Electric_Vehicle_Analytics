@@ -1,0 +1,143 @@
+{
+  "verified_at_utc": "2026-10-17T08:05:06.101532+00:00",
+  "source_commit": "295e26da7aa1ea3c0cbe629ff83230f6ccafdbd2",
+  "ci_build_id": 67,
+  "ci_run_number": "20261017.3",
+  "pr_validation_build_id": 68,
+  "cd_build_id": 70,
+  "azure_implementation_pr": 17,
+  "azure_implementation_merge": "0d09c51ddba50b9a4a863442c0f396df91f0a081",
+  "deployment_status": "passed",
+  "report_readback": "All packaged parts matched; only JSON formatting/key order and Service .platform metadata ignored",
+  "artifact_manifest_sha256": "2116395e73a2732f2e52166d059bd363f21c19a68a6c094c267e7613b4b3e795",
+  "artifact_inventory_files": 101,
+  "deployment_evidence_sha256": "0820515bd9d7d93d1710924ef93d7b0bc8dc508441982fac29e2cfafd3bb429b",
+  "report_readback_sha256": "57b626112d0a09bee4e50510415421f942f6918038d79c921cfb8657b51ca8f3",
+  "rollback": {
+    "verified": true,
+    "manifest_sha256": "bd8afd538071f06b0b3129a74b21f9c7fb97b4ab353205f83c200d13a1927c4a",
+    "provenance": "Live definitions captured before this deployment; commit_sha identifies capture tooling, not the prior item source.",
+    "scope": "Verified captured package; not applied as a live recovery drill"
+  },
+  "model_binding": "passed",
+  "refresh_status": "Completed",
+  "dax_backend": "arrow",
+  "kpi": {
+    "respondents": 668665,
+    "yes": 116779,
+    "no": 551886
+  },
+  "tests": {
+    "unit": {
+      "tests_run": 118,
+      "passed": 118,
+      "failed": 0,
+      "error": 0,
+      "skipped": 0
+    },
+    "spark": {
+      "tests_run": 8,
+      "passed": 8,
+      "failed": 0,
+      "error": 0,
+      "skipped": 0
+    },
+    "airflow": {
+      "tests_run": 3,
+      "passed": 3,
+      "failed": 0,
+      "error": 0,
+      "skipped": 0
+    }
+  },
+  "service_uat": {
+    "record": "service_uat_20261017.json",
+    "observations": 17,
+    "candidate_and_ci_and_cd_report_definitions_equal": true,
+    "method": "Windows UI Automation; no Playwright"
+  },
+  "screenshots": {
+    "executive_overview.png": {
+      "source": "Desktop preview",
+      "captured_on": "2026-10-17",
+      "sha256": "570bd07627cf2e5515093a6818a017a46b0cbf00411f6bb7f0718f300d20749d",
+      "width": 2535,
+      "height": 1470
+    },
+    "charging_incentives.png": {
+      "source": "Desktop preview",
+      "captured_on": "2026-10-17",
+      "sha256": "e80d3bbb675e729bded4823a55025dc32cd0abec179645eddf0b712a3dfce063",
+      "width": 2535,
+      "height": 1470
+    },
+    "customer_segments.png": {
+      "source": "Desktop preview",
+      "captured_on": "2026-10-17",
+      "sha256": "75f62f763e712c1c9636b1e2f7e4a28299491458d367e3131aaed11717f43bc4",
+      "width": 2535,
+      "height": 1470
+    },
+    "service_charging.png": {
+      "source": "Power BI Service Test, native Windows capture",
+      "captured_on": "2026-10-17",
+      "sha256": "4130bf49152a8788fdb8599435c73307b5143f100f9ed9ae0ef671c0e87a2c03",
+      "width": 1729,
+      "height": 972
+    }
+  },
+  "repositories": {
+    "azure_main_required_build_policy": true,
+    "test_exclusive_lock": true,
+    "github_main_pr_required": true,
+    "github_admins_enforced": true,
+    "github_external_approvals_required": 0,
+    "github_force_push_and_deletion_allowed": false,
+    "public_mirror": "Prepared locally; publication is a separate approval step"
+  },
+  "limitations": [
+    "Author-maintained extract of downloaded evidence, not independent attestation",
+    "Service UAT covers representative paths, not every possible mark/filter combination",
+    "Kaggle direct-download provenance remains unverified",
+    "No live rollback drill was performed"
+  ],
+  "failed_preparatory_attempts": [
+    {
+      "cd_build_id": 69,
+      "stage": "pipeline validation",
+      "service_changed": false,
+      "reason": "Pipeline resource version requires the run number; corrected in CD 70"
+    },
+    {
+      "scope": "local report preparation",
+      "service_changed": false,
+      "reason": "Current user Arrow DAX HTTP 401; supported JSON path then passed. CD service principal Arrow path passed."
+    }
+  ],
+  "clean_rehearsal": {
+    "python_returncode": 0,
+    "status": "passed",
+    "source_manifest_sha256": "cf61da04a330d3acb4568c308f02311851bbaf94b728b3afbd00d0b7bbffa2be",
+    "run_report_sha256": "bedfdc2345f8febf1deb18a425ecedaf8e2f6d3649bda9c266bb2964c9a64abb",
+    "published_manifest_sha256": "50fcc551f7094f7134d809e44e5b5eee5c8c27dc639205daaed907352e3065e1",
+    "quality": {
+      "status": "passed",
+      "respondents": 668665,
+      "yes": 116779,
+      "no": 551886,
+      "orphan_keys": 0,
+      "segment_groups": 35,
+      "dimension_rows": {
+        "dim_demographics": 45,
+        "dim_income": 4,
+        "dim_mobility": 16,
+        "dim_charging": 2,
+        "dim_attitude_incentive": 30
+      },
+      "tables": 8,
+      "schema_checks": "passed",
+      "silver_reconstruction": "exact",
+      "aggregate_checks": "passed"
+    }
+  }
+}
