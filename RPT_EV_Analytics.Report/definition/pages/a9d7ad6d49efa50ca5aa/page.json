@@ -5,6 +5,7 @@
   "displayOption": "FitToPage",
   "width": 600,
   "height": 330,
+  "type": "Tooltip",
   "visibility": "HiddenInViewMode",
   "pageBinding": {
     "name": "Tooltip",

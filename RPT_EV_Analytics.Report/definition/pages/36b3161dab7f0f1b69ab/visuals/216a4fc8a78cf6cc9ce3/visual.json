@@ -209,7 +209,7 @@
             "titleText": {
               "expr": {
                 "Literal": {
-                  "Value": "'Purchase Intent Rate'"
+                  "Value": "'Intent rate'"
                 }
               }
             },

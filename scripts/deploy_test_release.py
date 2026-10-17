@@ -12,7 +12,8 @@ from pathlib import Path
 from urllib.parse import urlparse
 from uuid import UUID
 
-from build_test_release import (verify_release, validate_definitions, seal_release, RUNTIME)
+from build_test_release import (verify_release, validate_definitions, seal_release, RUNTIME,
+                                verify_report_readback)
 from check_test_health import check
 from fabric_test_api import Client, FABRIC, WORKSPACE, operation_url
 from recovery_common import read_json, write_json, require
@@ -183,6 +184,13 @@ def deploy(release, evidence, expected_commit=None, expected_build=None, preflig
             # Check model KPI before publishing report; current report must still target the same model.
             check(evidence / "health_model.json", release / "config/environments/test.json", runner.client)
             runner.fabric_operation("update_report", report_path + "/updateDefinition", report)
+            live_report = runner.fabric_operation("verify_report", report_path + "/getDefinition", result=True)
+            write_json(evidence / "report_readback.json", live_report)
+            validate_definitions(live, live_report, config)
+            verify_report_readback(report, live_report)
+            write_json(evidence / "report_binding.json", {"status": "passed",
+                "model_id": config["semantic_model_id"], "report_id": config["report_id"],
+                "definition_matches_release": True})
             check(evidence / "health_after.json", release / "config/environments/test.json", runner.client)
             summary["status"] = "passed"
     except Exception as error:

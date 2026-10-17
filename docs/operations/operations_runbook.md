@@ -65,16 +65,19 @@ See [automated Test deployment](../deployment/test_cd.md) for first-run setup, p
 artifact selection and rollback. The remaining operational checks below still
 apply; code availability alone does not verify the service principal.
 
-1. Merge the existing CI branch through the required build policy.
-2. Add the new helper tests to CI; the original five-file allowlist does not include them.
-3. Pin validated dependencies for reproducible releases.
-4. Prepare environment-specific definitions from the checked-out commit and publish
-   them with the source commit, build ID, config checksum, Gold run and file inventory.
-5. In the deployment job, download that exact artifact and verify the inventory.
-6. Use an authenticated deployment identity with Test access; configure its service
-   connection and Fabric permissions before enabling unattended execution.
-7. Update existing items, wait for API operations and refresh, then run health checks.
-8. Retain previous artifacts and referenced Gold runs for rollback.
+CI now discovers every top-level unit module and requires separate Spark and
+Airflow jobs before packaging. It uses pinned runtime dependencies, builds from
+the checked-out commit, and publishes the commit/build identity with a SHA-256
+inventory. CD downloads the selected CI artifact with no checkout or rebuild,
+verifies its identity, updates existing items, restores the connection, refreshes,
+reads definitions back and checks binding/KPI. Retain the evidence artifact and
+its sealed rollback package for every accepted deployment.
+
+The Azure `main` build-validation policy and Test Exclusive lock were read back
+on 17 October 2026. See [repository synchronization](repository_sync.md) for
+GitHub protections and mirror handling. Complete [Service UAT](../deployment/service_uat.md)
+after API gates pass, and record the accepted run in the
+[portfolio acceptance record](../portfolio_acceptance.md).
 
 ## Alerts
 

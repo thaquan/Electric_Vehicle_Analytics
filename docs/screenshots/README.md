@@ -8,8 +8,9 @@ The README uses these Desktop captures of the redesigned report:
 | Charging & Incentives | [charging_incentives.png](charging_incentives.png) |
 | Customer Segments | [customer_segments.png](customer_segments.png) |
 
-These files match the named page captures in the local
-`output/redesign/screenshots/` folder. They document the Desktop preview and are
+These files were recaptured on 15 October 2026 after the dashboard presentation
+fixes and match the named page captures in the local
+`output/remediation-20261015/after/` folder. They document the Desktop preview and are
 not screenshots of Power BI Service. The Dev Service definitions were separately
 verified on 14 October 2026 with the redesigned 68-visual report and 29-measure
 model, but these images should not be used as evidence of Service rendering or

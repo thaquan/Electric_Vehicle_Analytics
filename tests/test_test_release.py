@@ -10,11 +10,19 @@ import unittest
 from unittest.mock import Mock, patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-from build_test_release import build, verify_release, validate_definitions, CORE_MEASURES, ROOT
+from build_test_release import (build, verify_release, validate_definitions, CORE_MEASURES, ROOT,
+                                verify_report_readback, validate_report_references, seal_release)
 from deploy_test_release import Deployment, deploy
 from recovery_common import read_json, write_json
 
 SHA = "a" * 40
+
+
+def edit_json_part(body, path, transform):
+    part = next(p for p in body['definition']['parts'] if p['path'] == path)
+    value = json.loads(base64.b64decode(part['payload']))
+    transform(value)
+    part['payload'] = base64.b64encode(json.dumps(value).encode()).decode()
 
 
 class ReleaseTests(unittest.TestCase):
@@ -51,6 +59,70 @@ class ReleaseTests(unittest.TestCase):
     def test_additional_measures_are_allowed(self):
         self.validate_with_fact_transform(
             lambda text: text + "\n\tmeasure 'Additional dashboard metric' = 1\n")
+
+    def test_invalid_fields_fail_before_network_even_in_sealed_release(self):
+        original = read_json(self.release / 'report-update.json')
+        for kind, entity, prop in [('Measure', 'EV Respondents', 'Missing narrative'),
+                                   ('Column', 'Demographics', 'Missing column'),
+                                   ('Measure', 'Missing table', 'Respondents'),
+                                   ('Column', 'EV Respondents', 'Respondents')]:
+            with self.subTest(kind=kind, entity=entity, prop=prop):
+                report = copy.deepcopy(original)
+                edit_json_part(report, 'definition/report.json', lambda value: value.update(
+                    filterConfig={'filters': [{'field': {kind: {
+                        'Expression': {'SourceRef': {'Entity': entity}}, 'Property': prop}}}]}))
+                write_json(self.release / 'report-update.json', report)
+                seal_release(self.release, SHA, '123', 'refs/heads/main')
+                client = Mock()
+                with self.assertRaisesRegex(ValueError, 'Unknown report'):
+                    deploy(self.release, Path(self.temp.name) / (kind + entity + prop), client=client)
+                client.request.assert_not_called()
+
+    def test_missing_narrative_measure_is_rejected(self):
+        with self.assertRaisesRegex(ValueError, 'Unknown report Measure'):
+            self.validate_with_fact_transform(lambda text: text.replace(
+                "measure 'Share of Population' =", "measure 'Unused replacement' ="))
+
+    def test_readback_comparison_rejects_missing_extra_and_changed_parts(self):
+        report = read_json(self.release / 'report-update.json')
+        for mutation in ('missing', 'extra', 'changed'):
+            with self.subTest(mutation=mutation):
+                actual = copy.deepcopy(report)
+                if mutation == 'missing':
+                    actual['definition']['parts'].pop()
+                elif mutation == 'extra':
+                    actual['definition']['parts'].append({'path': 'extra.json',
+                        'payloadType': 'InlineBase64', 'payload': 'e30='})
+                else:
+                    edit_json_part(actual, 'definition/report.json', lambda value: value.update(theme='stale'))
+                with self.assertRaisesRegex(ValueError, 'Report readback'):
+                    verify_report_readback(report, actual)
+
+    def test_readback_accepts_json_formatting_and_platform_metadata(self):
+        report = read_json(self.release / 'report-update.json')
+        actual = copy.deepcopy(report)
+        edit_json_part(actual, 'definition/report.json', lambda value: None)
+        actual['definition']['parts'].reverse()
+        actual['definition']['parts'].append({'path': '.platform',
+            'payloadType': 'InlineBase64', 'payload': 'e30='})
+        verify_report_readback(report, actual)
+
+    def test_referenced_theme_is_packaged_and_compared(self):
+        from build_test_release import decode_parts
+        report = read_json(self.release / 'report-update.json')
+        parts = decode_parts(report)
+        resource = 'StaticResources/SharedResources/BaseThemes/CY26SU10.json'
+        self.assertIn(resource, parts)
+        self.assertNotIn('access mode=', json.loads(parts['definition.pbir'])[
+            'datasetReference']['byConnection']['connectionString'])
+        actual = copy.deepcopy(report)
+        edit_json_part(actual, resource, lambda value: value.update(name='unexpected-theme'))
+        with self.assertRaisesRegex(ValueError, 'Report readback differs'):
+            verify_report_readback(report, actual)
+        report['definition']['parts'] = [p for p in report['definition']['parts'] if p['path'] != resource]
+        with self.assertRaisesRegex(ValueError, 'Unpackaged report resource'):
+            validate_definitions(read_json(self.release / 'model-update.json'), report,
+                                 read_json(self.release / 'config/environments/test.json'))
 
     def test_each_core_measure_is_required_even_when_count_is_unchanged(self):
         for name in sorted(CORE_MEASURES):
@@ -138,7 +210,7 @@ class ReleaseTests(unittest.TestCase):
             steps.append(step)
             if step in ('capture_model', 'verify_model'):
                 return read_json(self.release / 'model-update.json')
-            if step == 'capture_report':
+            if step in ('capture_report', 'verify_report'):
                 return read_json(self.release / 'report-update.json')
             return {}
         with patch('deploy_test_release.check'), \
@@ -152,6 +224,42 @@ class ReleaseTests(unittest.TestCase):
         self.assertLess(steps.index('preflight_connection'), steps.index('update_model'))
         self.assertLess(steps.index('update_model'), steps.index('restore_connection'))
         self.assertLess(steps.index('restore_connection'), steps.index('refresh'))
+        self.assertLess(steps.index('update_report'), steps.index('verify_report'))
+        self.assertTrue(read_json(Path(self.temp.name) / 'evidence/report_binding.json')
+                        ['definition_matches_release'])
+
+    def test_report_readback_failure_retains_rollback_and_blocks_success(self):
+        from build_test_release import TARGET_MODEL, TARGET_REPORT
+        for failure in ('stale', 'wrong_binding', 'read_error'):
+            with self.subTest(failure=failure):
+                client = Mock()
+                client.request.side_effect = [(200, {}, json.dumps({'id': i, 'type': t}).encode())
+                    for i, t in [(TARGET_MODEL, 'SemanticModel'), (TARGET_REPORT, 'Report')]]
+                def operation(step, path, body=None, result=False):
+                    if step in ('capture_model', 'verify_model'):
+                        return read_json(self.release / 'model-update.json')
+                    report = read_json(self.release / 'report-update.json')
+                    if step == 'verify_report':
+                        if failure == 'read_error':
+                            raise RuntimeError('readback unavailable')
+                        if failure == 'stale':
+                            edit_json_part(report, 'definition/report.json', lambda v: v.update(theme='old'))
+                        else:
+                            edit_json_part(report, 'definition.pbir', lambda v:
+                                v['datasetReference']['byConnection'].update(connectionString='semanticmodelid=wrong'))
+                    return report
+                evidence = Path(self.temp.name) / failure
+                with patch('deploy_test_release.check') as health, \
+                     patch.object(Deployment, 'take_ownership'), \
+                     patch.object(Deployment, 'bind_connection'), \
+                     patch.object(Deployment, 'refresh'), \
+                     patch.object(Deployment, 'fabric_operation', side_effect=operation):
+                    with self.assertRaises((ValueError, RuntimeError)):
+                        deploy(self.release, evidence, client=client)
+                self.assertEqual(health.call_count, 2)
+                self.assertEqual(read_json(evidence / 'deployment.json')['status'], 'failed')
+                self.assertFalse((evidence / 'report_binding.json').exists())
+                verify_release(evidence / 'rollback')
 
 
 class PollingTests(unittest.TestCase):
@@ -171,6 +279,29 @@ class PollingTests(unittest.TestCase):
         self.runner.fabric_operation('update','/semanticModels/test/updateDefinition',{})
         self.assertEqual(self.client.request.call_count,2)
         self.assertIn(op,(self.runner.evidence/'operations.json').read_text())
+
+    def test_readback_lro_fetches_result_after_success(self):
+        op = '410f4fc2-8ca1-4ab8-a8cb-0f04a5fea3fe'
+        self.client.request.side_effect = [
+            (202, {'x-ms-operation-id': op, 'Retry-After': '1'}, b''),
+            (200, {}, b'{"status":"Succeeded"}'),
+            (200, {}, b'{"definition":{"parts":[]}}')]
+        result = self.runner.fabric_operation('verify_report', '/reports/test/getDefinition', result=True)
+        self.assertEqual(result, {'definition': {'parts': []}})
+        self.assertTrue(self.client.request.call_args.args[0].endswith(op + '/result'))
+
+    def test_alias_resolution_and_quoted_declarations(self):
+        model = {'definition/tables/Test.tmdl':
+                 "table 'Owner''s table'\r\n\tcolumn 'Quoted column'\r\n\tmeasure 'Quoted metric' = 1\r\n"}
+        query = {'From': [{'Name': 't', 'Entity': "Owner's table"}], 'Select': [
+            {'Column': {'Expression': {'SourceRef': {'Source': 't'}}, 'Property': 'Quoted column'}},
+            {'Measure': {'Expression': {'SourceRef': {'Source': 't'}}, 'Property': 'Quoted metric'}}]}
+        def validate():
+            validate_report_references(model, {'definition/report.json': json.dumps(query).encode()})
+        validate()
+        query['From'] = []
+        with self.assertRaisesRegex(ValueError, 'Unknown report'):
+            validate()
 
     def test_failed_operation_is_not_retried(self):
         self.client.request.side_effect=[(202,{'x-ms-operation-id':'410f4fc2-8ca1-4ab8-a8cb-0f04a5fea3fe'},b''),

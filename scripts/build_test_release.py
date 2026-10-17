@@ -58,6 +58,84 @@ def decode_parts(body):
     return result
 
 
+def validate_report_references(texts, report_parts):
+    """Validate structured PBIR fields, including filters and formatting expressions.
+
+    This gate supports the project's direct Entity references and query-local
+    From aliases. Unsupported hierarchy expressions fail closed.
+    """
+    # Include referenced resources in the artifact so Service materialization
+    # cannot introduce an untracked theme during exact report readback.
+    report = json.loads(report_parts['definition/report.json'])
+    for package in report.get('resourcePackages', []):
+        for item in package.get('items', []):
+            resource = 'StaticResources/' + package['name'] + '/' + item['path']
+            require(resource in report_parts, 'Unpackaged report resource: ' + resource)
+    identifier = r"(?:'((?:[^']|'')+)'|([^'=\r\n]+?))"
+
+    def names(text, kind, prefix, suffix):
+        text = text.replace('\r\n', '\n')
+        return {quoted.replace("''", "'") if quoted else bare.strip()
+                for quoted, bare in re.findall(
+                    r"(?m)^" + prefix + kind + r"[ \t]+" + identifier + suffix, text)}
+
+    catalog = {}
+    for path, text in texts.items():
+        if not path.startswith("definition/tables/"):
+            continue
+        tables = names(text, 'table', '', r'[ \t]*$')
+        require(len(tables) == 1, "Expected one table declaration: " + path)
+        table = next(iter(tables))
+        require(table not in catalog, "Duplicate table: " + table)
+        catalog[table] = {
+            'Measure': names(text, 'measure', r'[ \t]+', r'[ \t]*='),
+            'Column': names(text, 'column', r'[ \t]+', r'[ \t]*(?:=|$)'),
+        }
+
+    def walk(node, aliases, location):
+        if isinstance(node, list):
+            for index, value in enumerate(node):
+                walk(value, aliases, f"{location}/{index}")
+        elif isinstance(node, dict):
+            aliases = dict(aliases)
+            for source in node.get('From', []):
+                require(isinstance(source, dict) and 'Name' in source and 'Entity' in source,
+                        "Unsupported query source: " + location)
+                aliases[source['Name']] = source['Entity']
+            for kind in ('Hierarchy', 'HierarchyLevel'):
+                require(kind not in node, "Unsupported report reference " + kind + ': ' + location)
+            if 'SourceRef' in node:
+                source = node['SourceRef']
+                entity = source.get('Entity') or aliases.get(source.get('Source'))
+                require(entity in catalog, "Unknown report table/source: " + location)
+            for kind in ('Column', 'Measure'):
+                if kind not in node:
+                    continue
+                field = node[kind]
+                source = field.get('Expression', {}).get('SourceRef', {})
+                entity = source.get('Entity') or aliases.get(source.get('Source'))
+                prop = field.get('Property')
+                require(entity in catalog and prop in catalog[entity][kind],
+                        f"Unknown report {kind}: {entity}.{prop} at {location}")
+            for key, value in node.items():
+                walk(value, aliases, location + '/' + key)
+
+    for path, payload in report_parts.items():
+        if path.startswith('definition/') and path.endswith('.json'):
+            walk(json.loads(payload), {}, path)
+
+
+def verify_report_readback(expected, actual):
+    """Compare all deployed parts; JSON whitespace/key order are immaterial."""
+    def canonical(body):
+        return {path: json.loads(payload) if path.endswith(('.json', '.pbir')) else payload
+                for path, payload in decode_parts(body).items() if path != '.platform'}
+    wanted, found = canonical(expected), canonical(actual)
+    require(wanted.keys() == found.keys(), "Report readback inventory differs from release")
+    for path in wanted:
+        require(wanted[path] == found[path], "Report readback differs from release: " + path)
+
+
 def validate_definitions(model, report, config):
     validate_target(config)
     parts = decode_parts(model)
@@ -97,6 +175,7 @@ def validate_definitions(model, report, config):
     require(fields.get("semanticmodelid") == config["semantic_model_id"], "Wrong report model")
     require(fields.get("Data Source") == "powerbi://api.powerbi.com/v1.0/myorg/" + config["workspace_name"],
             "Wrong report workspace")
+    validate_report_references(texts, decode_parts(report))
 
 
 def body_from_folder(folder):
@@ -161,7 +240,7 @@ def build(project, output, commit, build_id, branch):
     binding = read_json(report_dir / "definition.pbir")
     binding["datasetReference"] = {"byConnection": {"connectionString":
         f"Data Source=powerbi://api.powerbi.com/v1.0/myorg/{config['workspace_name']};"
-        f"initial catalog={config['semantic_model_name']};access mode=readonly;"
+        f"initial catalog={config['semantic_model_name']};"
         f"integrated security=ClaimsToken;semanticmodelid={TARGET_MODEL}"}}
     write_json(report_dir / "definition.pbir", binding)
     model, report = body_from_folder(model_dir), body_from_folder(report_dir)

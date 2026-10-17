@@ -113,6 +113,13 @@ Technical guides: [Fabric](docs/pipelines/pipeline_runbook.md) · [PySpark/Airfl
 
 ## CI/CD evidence
 
+The [current acceptance record](docs/portfolio_acceptance.md) tracks release
+verification, Service UAT, documentation, repository synchronization and the
+clean rehearsal. See the [mirror runbook](docs/operations/repository_sync.md)
+for the separate Azure/GitHub histories and branch protections, and the
+[clean rehearsal guide](docs/operations/clean_rehearsal.md) for source inventories
+and controlled retention.
+
 Dashboard redesign CI builds **54 and 55 succeeded on 13 October 2026**, and Azure DevOps PR #13 was merged. The release guard requires the 12 core measures by name while allowing additional measures. See the [CI/CD evidence](docs/cicd_evidence.md) for these runs and the separate archived Test deployment checks from 2 October. Separately, on 14 October 2026 the existing Dev semantic model and report were updated in place and verified through Fabric/Power BI APIs: 29 live measures, KPI counts of 668,665 respondents / 116,779 Yes / 551,886 No, and a 68-visual report definition bound to the same Dev model. This proves the deployed definitions and model health, not browser-level rendering or interaction acceptance.
 
 ## Reproducing the project
