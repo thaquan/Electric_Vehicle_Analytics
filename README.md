@@ -30,7 +30,7 @@ Explore which age and income segments combine scale with higher EV purchase inte
 
 ![Customer Segments](docs/screenshots/customer_segments.png)
 
-[Open the published report](https://app.powerbi.com/groups/5fe78794-25c3-41ee-b35e-bc56542d2cea/reports/ae4d7c59-759e-4462-afed-1717475ae012) with workspace access, or inspect the [Power BI project](RPT_EV_Analytics.pbip). On 14 October 2026 the Dev Service items were updated in place from source commit `edf7114`: the live semantic model was verified with 29 measures and the expected KPI counts, and the live report definition was verified with three visible pages plus the hidden `Segment context` tooltip page and 68 visuals. The committed screenshots remain Desktop captures rather than Service UI evidence, so browser rendering and interactions still require separate acceptance. See the [report guide](docs/architecture/powerbi_report.md) for interactions, rebuild steps and model requirements.
+[Open the verified Test report](https://app.powerbi.com/groups/27873d0c-580a-4963-9e25-5846948f1c5d/reports/b7d65039-0413-4ecc-9f7f-33f0098c9cc0) with workspace access, or inspect the [Power BI project](RPT_EV_Analytics.pbip). On 17 October 2026, CI #67 and CD #70 deployed source `295e26d` to the existing Test items. Report readback matched every packaged part, refresh and KPI checks passed, and Service slicer/reset/navigation/tooltip/cross-filter cases passed through Windows UI Automation. The README images are Desktop previews of the same visible definitions; a separate [Service capture](docs/screenshots/service_charging.png) and [UAT record](docs/evidence/service_uat_20261017.json) identify their scope. See the [report guide](docs/architecture/powerbi_report.md) for interactions, rebuild steps and model requirements.
 
 ## Key findings
 
@@ -113,7 +113,14 @@ Technical guides: [Fabric](docs/pipelines/pipeline_runbook.md) · [PySpark/Airfl
 
 ## CI/CD evidence
 
-Dashboard redesign CI builds **54 and 55 succeeded on 13 October 2026**, and Azure DevOps PR #13 was merged. The release guard requires the 12 core measures by name while allowing additional measures. See the [CI/CD evidence](docs/cicd_evidence.md) for these runs and the separate archived Test deployment checks from 2 October. Separately, on 14 October 2026 the existing Dev semantic model and report were updated in place and verified through Fabric/Power BI APIs: 29 live measures, KPI counts of 668,665 respondents / 116,779 Yes / 551,886 No, and a 68-visual report definition bound to the same Dev model. This proves the deployed definitions and model health, not browser-level rendering or interaction acceptance.
+The [current acceptance record](docs/portfolio_acceptance.md) tracks release
+verification, Service UAT, documentation, repository synchronization and the
+clean rehearsal. See the [mirror runbook](docs/operations/repository_sync.md)
+for the separate Azure/GitHub histories and branch protections, and the
+[clean rehearsal guide](docs/operations/clean_rehearsal.md) for source inventories
+and controlled retention.
+
+**CI #67 and Test CD #70 succeeded on 17 October 2026**, using source `295e26d`. CI recorded 118 Unit, 8 real Spark and 3 Airflow tests passed, with zero skips. CD verified the selected artifact identity, restored the Test connection, refreshed the model, compared the complete report readback and reconciled KPI. The retained rollback and [sanitized CI/CD evidence](docs/evidence/acceptance_20261017.json) identify the release; [Service UAT](docs/deployment/service_uat.md) records representative interactions. The [CI/CD history](docs/cicd_evidence.md) keeps older redesign, Dev and Test records separate.
 
 ## Reproducing the project
 

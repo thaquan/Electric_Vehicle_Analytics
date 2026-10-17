@@ -534,7 +534,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Charging access × subsidy | intent heatmap'"
+                  "Value": "'Home charging (rows) × Subsidy (columns) | intent %'"
                 }
               }
             },

@@ -80,7 +80,11 @@ function card(key,names,pos,title='',ink=C.green,size=28,cols=names.length) {
  }
  const v=add(key,'cardVisual',pos,{Data:role(...names.map(name=>({...M(name),displayName:labels[name]||name})))},{value:O({fontSize:L(size),fontColor:color(ink),textWrap:L(true),labelDisplayUnits:L(1)},{id:'default'}),label:O({show:L(names.length>1),fontSize:L(11),fontColor:color(C.muted),textWrap:L(true)},{id:'default'}),layout:O({orientation:L('0'),autoGrid:L(false),columnCount:I(cols),rowCount:I(Math.ceil(names.length/cols)),paddingUniform:I(6),backgroundFillColor:color(C.card)},{id:'default'}),outline:O({show:L(false)},{id:'default'}),fillCustom:O({show:L(true),fillColor:color(C.card),transparency:L(0)},{id:'default'}),cardCalloutArea:O({show:L(true),backgroundFillColor:color(C.card),backgroundTransparency:L(0)})},title);
  v.visual.objects.layout[0].properties.orientation=L(names.length>1?'2':'1');
- for(const k of ['value','label','layout','outline','fillCustom'])v.visual.objects[k].unshift({properties:{...v.visual.objects[k][0].properties}});
+ // Service otherwise reserves only part of a tile for its callout, even on
+ // single-measure cards; counts and narrative text then render as ellipses.
+ Object.assign(v.visual.objects.layout[0].properties,{calloutSize:L(100),maxTiles:I(1),showFixedSize:L(false),paddingUniform:I(0)});
+ v.visual.objects.padding=O({paddingUniform:I(0),paddingIndividual:L(false)},{id:'default'});
+ for(const k of ['value','label','layout','padding','outline','fillCustom'])v.visual.objects[k].unshift({properties:{...v.visual.objects[k][0].properties}});
  if(pos[3]<120) {v.visual.visualContainerObjects.padding=O({top:L(6),bottom:L(6),left:L(10),right:L(10)});v.visual.visualContainerObjects.title[0].properties.fontSize=L(10);}
  return v;
 }
@@ -103,6 +107,9 @@ const axis=(title)=>O({showAxisTitle:L(true),titleText:L(title),labelColor:color
 function scatter(key,category,series,x,pos,title) {
  const v=add(key,'scatterChart',pos,{Category:role(category),...(series?{Series:role(series)}:{}),X:role(M(x)),Y:role(M('Purchase Intent Rate')),Size:role(M('Respondents')),Tooltips:role(M('Intending to Buy EV'),M('Share of Population'))},{categoryAxis:axis(x),valueAxis:axis('Purchase intent rate'),categoryLabels:O({show:L(!series),color:color(C.text),fontSize:L(10)}),legend:O({show:L(!!series),labelColor:color(C.muted)})},title);
  v.visual.objects.valueAxis[0].properties.start=L(0);
+ // Fit the entire marker at every filter state, rather than pinning a
+ // baseline-only upper bound. Keep the existing population size encoding.
+ v.visual.objects.bubbles=O({preventOverflow:L(true)});
  return v;
 }
 function matrix(key,row,column,pos,title,metrics=['Purchase Intent Rate'],heat=true) {
@@ -167,11 +174,12 @@ for(let n=0;n<3;n++) {
  } else if(n===1) {
    svg('charging','Home Charging Dumbbell SVG',[24,205,766,205],'HOME CHARGING | purchase intent');
    svg('subsidy','Subsidy Dumbbell SVG',[810,205,766,205],'SUBSIDY | purchase intent');
-   matrix('charging-subsidy',P('Charging','Home_Charging_Possible',false,'Home charging'),P('Attitude and Incentive','Subsidy_Available',false,'Subsidy'),[24,430,950,200],'Charging access × subsidy | intent heatmap');
+   matrix('charging-subsidy',P('Charging','Home_Charging_Possible',false,'Home charging'),P('Attitude and Incentive','Subsidy_Available',false,'Subsidy'),[24,430,950,200],'Home charging (rows) × Subsidy (columns) | intent %');
    card('selected',['Purchase Intent Rate','Respondents','Intending to Buy EV','Share of Population'],[994,430,582,200],'SELECT A CELL TO EXPLORE ITS SCALE',C.green,25,2);
    const line=cartesian('anxiety','lineChart',P('Attitude and Incentive','Range_Anxiety_Level',false,'Range anxiety'),['Purchase Intent Rate'],[24,650,766,207],'Range anxiety | ordered Low → Medium → High',C.orange);
    line.visual.query.queryState.Tooltips.projections.push(M('Range Anxiety Order'));
    line.visual.query.sortDefinition={sort:[{field:M('Range Anxiety Order').field,direction:'Ascending'}],isDefaultSort:true};
+   line.visual.objects.valueAxis[0].properties.titleText=L('Intent rate');
    svg('infrastructure','Infrastructure SVG',[810,650,766,207],'Average charging stations nearby | home vs work');
  } else {
    matrix('age-income',age,income,[24,205,950,340],'Age × income | purchase intent (0–40% color scale)');
@@ -181,7 +189,10 @@ for(let n=0;n<3;n++) {
    const combo=cartesian('age-volume','lineClusteredColumnComboChart',age,['Respondents'],[694,565,452,292],'Age | volume + intent rate',C.blue);
    combo.visual.query.queryState.Y2=role(M('Purchase Intent Rate'));
    Object.assign(combo.visual.objects.valueAxis[0].properties,{secShow:L(true),secShowAxisTitle:L(true),secTitleText:L('Intent rate'),secLabelColor:color(C.green),secTitleColor:color(C.green)});
-   combo.visual.objects.dataPoint=['Respondents','Purchase Intent Rate'].flatMap(name=>[M(name).queryRef,name].flatMap(metadata=>O({fill:color(name==='Respondents'?C.blue:C.green)},{metadata})));
+   // The combo's column renderer needs its own default; metadata selectors
+   // alone color the legend but can leave columns using the theme palette.
+   combo.visual.objects.dataPoint=[...O({defaultColor:color(C.blue)}),...['Respondents','Purchase Intent Rate'].map(name=>({properties:{fill:color(name==='Respondents'?C.blue:C.green)},selector:{metadata:M(name).queryRef}}))];
+   combo.visual.objects.legend=O({show:L(true),labelColor:color(C.muted),matchLineColor:L(true)});
    combo.visual.objects.lineStyles=O({showMarker:L(true),markerColor:color(C.green)});
    combo.visual.objects.labels=O({show:L(false)});
    cartesian('ownership','lineChart',P('EV Respondents','Number_of_Cars_Owned',false,'Cars owned'),['Purchase Intent Rate'],[1166,565,410,292],'Vehicle ownership | intent rate');
@@ -193,6 +204,6 @@ for(let n=0;n<3;n++) {
 pid=tooltipId;visuals=[];
 text('title','SEGMENT CONTEXT',[16,12,560,35],20,C.text);
 card('context',['Purchase Intent Rate','Respondents','Intending to Buy EV','Share of Population','Average Daily Commute km','Average Cars Owned'],[16,55,568,260],'',C.green,23,2);
-flush({$schema:read(`definition/pages/${pageIds[0]}/page.json`).$schema,name:pid,displayName:'Segment context',displayOption:'FitToPage',width:600,height:330,visibility:'HiddenInViewMode',pageBinding:{name:'Tooltip',type:'Tooltip',parameters:[]},objects:{background:O({color:color(C.bg),transparency:L(0)})}});
+flush({$schema:read(`definition/pages/${pageIds[0]}/page.json`).$schema,name:pid,displayName:'Segment context',displayOption:'FitToPage',width:600,height:330,type:'Tooltip',visibility:'HiddenInViewMode',pageBinding:{name:'Tooltip',type:'Tooltip',parameters:[]},objects:{background:O({color:color(C.bg),transparency:L(0)})}});
 write('definition/pages/pages.json',{...read('definition/pages/pages.json'),pageOrder:[...pageIds,tooltipId],activePageName:pageIds[0]});
 console.log(`Redesigned three pages + hidden tooltip; ${measures.length} dynamic measures. Model binding preserved.`);

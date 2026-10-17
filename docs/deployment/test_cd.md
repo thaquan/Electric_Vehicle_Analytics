@@ -11,7 +11,17 @@ This does not provision data or run the Bronze/Silver pipeline.
 The redesigned report requires its matching 29-measure model (12 core plus 17
 narrative measures). Package both current PBIP item folders together. The
 release guard requires all 12 core names in `EV Respondents` and allows extra
-measures; it no longer requires an exact total of 12. The historical export
+measures; it no longer requires an exact total of 12. It also resolves structured
+PBIR Column/Measure references against the packaged TMDL table declarations,
+including narrative measures, filters, sorting and formatting expressions.
+Unknown tables, missing fields, wrong field kinds and unresolved query-local
+aliases fail before network access. Hierarchy expressions are currently unsupported
+and fail closed. This is a reference check, not a DAX compiler or rendering test.
+Every declared report resource must also be packaged. The referenced shared base
+theme is included explicitly, and Test binding omits the optional `access mode`
+property that Service strips on readback. This makes the artifact and returned
+definition comparable without ignoring added themes or connection changes.
+The historical export
 under `models/SM_EV_Analytics` is not the source for this release.
 
 `ci/azure_pipelines_test_cd.yml` consumes artifacts from `EV-Analytics-CI`. Successful
@@ -61,9 +71,32 @@ Update the pipeline definition as well as repository references whenever a YAML 
    from `refs/heads/feature/phase8-cd` to `refs/heads/main` after merge. Future
    successful main runs can deploy automatically.
 
+When selecting a pipeline resource through the Runs REST API, its `version` is
+the **run number**, not the numeric build ID: for CI build ID 67 use
+`20261017.3`. The downloaded manifest and `resources.pipeline.verifiedCI.runID`
+still identify build `67`; CD verifies that ID and its full commit SHA. An attempt
+using `version: "67"` was rejected during pipeline validation as CD #69 before
+any deployment job ran. The corrected request is retained with CD #70.
+
 ## Verified deployment
 
+The current accepted release is **CI #67 -> CD #70**, source
+`295e26da7aa1ea3c0cbe629ff83230f6ccafdbd2`, on 17 October 2026. The selected
+artifact, complete report readback, refresh, binding and KPI passed. Windows-native
+Service UAT exercised the same report definitions. See the
+[acceptance evidence](../evidence/acceptance_20261017.json) and
+[UAT observations](../evidence/service_uat_20261017.json).
+
 Public readers can inspect the [archived evidence summary](../cicd_evidence.md) and its sanitized JSON without Azure DevOps access.
+
+The later main release was CI #63 -> CD #64 on 14 October 2026, source
+`fa9e0fa701951ef73f07c88c29ffb864c604c622`. On 17 October its downloaded release
+inventory and retained deployment evidence were inspected: the manifest identifies
+build 63, CD recorded `passed`, refresh completed and KPI matched the pinned
+snapshot. That older deployment predates the new report-readback gate and the
+15 October presentation fixes; it does not establish deployment of this working
+tree. Use the [portfolio acceptance record](../portfolio_acceptance.md) for the
+new verification and [Service UAT cases](service_uat.md) for interaction acceptance.
 
 CI build 14 and CD build 15 succeeded on 2026-10-02. CD used source commit
 `8e8e4f74a03efb91fbd2c6211fd2809ca532b851` and service principal
@@ -87,7 +120,20 @@ the captured rollback package. See `metadata/phase8_cd_verification.json` (local
 6. Start full transactional refresh; poll that exact refresh ID.
 7. Check DAX KPI before updating the report.
 8. Update the existing report and wait for completion.
-9. Check final report/model binding, refresh and DAX, and publish evidence even on failure.
+9. Read the report definition back with `getDefinition` (including asynchronous
+   operation results). Save `report_readback.json`, validate its references against
+   the model read back in step 5, and compare every part with the release. JSON key
+   order/whitespace and service `.platform` metadata are ignored; missing, extra or
+   changed parts fail the gate. A service normalization beyond those exceptions
+   also fails and needs investigation rather than a silent bypass.
+10. Write `report_binding.json` only after readback passes, then check final
+    report/model binding, refresh and DAX. Publish evidence even on failure.
+
+A failed readback leaves deployment status `failed` and retains captured rollback;
+it does not retry the report update or roll back automatically. The offline suite
+`python -m unittest discover -s tests -p test_test_release.py` covers invalid fields,
+missing narrative measures, stale/wrong report readback, read errors and successful
+deployment ordering. These mocks do not establish that a live deployment passed.
 
 The pipeline never creates replacement items, writes Gold tables, retries POST
 requests automatically, or assumes a timeout means the operation failed remotely.
