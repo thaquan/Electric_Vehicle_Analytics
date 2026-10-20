@@ -83,7 +83,7 @@ support the [sanitized UAT record](evidence/service_uat_20261017.json).
 All 180 atomic slicer combinations per page have data, so an empty selection
 cannot be manufactured from the offered slicers; the older disposable Desktop
 empty-filter check remains historical. These checks cover representative paths,
-not every possible user selection. Playwright was excluded by the user.
+not every possible user selection.
 
 See the [report guide](architecture/powerbi_report.md) for rebuild and preview
 commands, and [Test deployment](deployment/test_cd.md) for release handling.
