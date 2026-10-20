@@ -1,49 +1,49 @@
 # Electric Vehicle Purchase Intent Analytics
 
-An end-to-end data project that turns **668,665 customer records** into a three-page Power BI report explaining how EV purchase intent varies with income, charging access and incentives.
+A data pipeline and Power BI report for exploring EV purchase intent across **668,665 synthetic survey records**. The three report pages compare income, charging access, incentives and customer segments.
 
 **Microsoft Fabric · Power BI · SQL · Python · PySpark · Airflow · Databricks · Azure DevOps**
 
 ## Business problem
 
-Which customer groups express interest in an EV, and which conditions are associated with that interest? The project helps a manufacturer or dealership explore segments and form hypotheses for customer research and marketing.
+Which groups express more interest in buying an EV, and how large are those groups? The report shows both the intent rate and the number of interested respondents. That distinction matters here: rural respondents have a higher intent rate, while the urban group contains more interested people.
 
-The outcome is a descriptive analytics tool: **purchase intent, not actual sales or a prediction model**. The source is synthetic competition data, so the findings do not estimate real-world demand or establish causality.
+The dataset records stated purchase intent. It has no completed sales or revenue, and its synthetic origin limits the findings to patterns within this sample. The project focuses on descriptive analysis rather than predicting purchases.
 
 ## Dashboard
 
 ### Executive Overview
 
-Summarize overall EV purchase intent, segment opportunity, and the largest observed intent gaps.
+Overall intent, group sizes and differences by income, charging access and subsidies.
 
 ![Executive Overview](docs/screenshots/executive_overview.png)
 
 ### Charging & Incentives
 
-Compare charging access, subsidies, range anxiety and nearby infrastructure as descriptive associations with EV purchase intent.
+Intent rates across home charging, subsidies, range anxiety and nearby infrastructure.
 
 ![Charging and Incentives](docs/screenshots/charging_incentives.png)
 
 ### Customer Segments
 
-Explore which age and income segments combine scale with higher EV purchase intent, with supporting mobility context.
+Age and income groups, with respondent counts, intent rates and commuting context.
 
 ![Customer Segments](docs/screenshots/customer_segments.png)
 
-[Open the verified Test report](https://app.powerbi.com/groups/27873d0c-580a-4963-9e25-5846948f1c5d/reports/b7d65039-0413-4ecc-9f7f-33f0098c9cc0) with workspace access, or inspect the [Power BI project](RPT_EV_Analytics.pbip). On 17 October 2026, CI #67 and CD #70 deployed source `295e26d` to the existing Test items. Report readback matched every packaged part, refresh and KPI checks passed, and Service slicer/reset/navigation/tooltip/cross-filter cases passed through Windows UI Automation. The README images are Desktop previews of the same visible definitions; a separate [Service capture](docs/screenshots/service_charging.png) and [UAT record](docs/evidence/service_uat_20261017.json) identify their scope. See the [report guide](docs/architecture/powerbi_report.md) for interactions, rebuild steps and model requirements.
+[Open the Test report](https://app.powerbi.com/groups/27873d0c-580a-4963-9e25-5846948f1c5d/reports/b7d65039-0413-4ecc-9f7f-33f0098c9cc0) with workspace access, or inspect the [Power BI project](RPT_EV_Analytics.pbip). The images above are Desktop previews; a [Service capture](docs/screenshots/service_charging.png) is also available. The [report guide](docs/architecture/powerbi_report.md) explains filters, tooltips and rebuild steps.
 
 ## Key findings
 
 **116,779 of 668,665 respondents express purchase intent: 17.46%.**
 
-| Pattern in the dataset | Result | Business implication to investigate |
+| Comparison | Intent rate | What stands out |
 | --- | --- | --- |
-| Annual income | 29.18% intent at USD 100,000+ vs 4.35% below USD 50,000 | Test affordability and total-cost-of-ownership messaging. |
-| Subsidy availability | 27.47% with subsidies vs 0.58% without | Include incentive eligibility in customer research. |
-| Home charging | 19.58% with access vs 12.71% without | Investigate charging feasibility and installation support. |
-| Segment size vs rate | Rural intent is 19.34% vs 16.11% urban, but urban has 46,595 interested respondents vs 23,977 rural | Consider both interested-record count and rate when comparing segments. |
+| Annual income: USD 100,000+ / below USD 50,000 | 29.18% / 4.35% | A 24.83 percentage-point gap between the two income groups. |
+| Subsidies available / unavailable | 27.47% / 0.58% | The largest rate gap among these three comparisons. |
+| Home charging available / unavailable | 19.58% / 12.71% | A 6.87 percentage-point gap. |
+| Rural / urban | 19.34% / 16.11% | Urban has more interested respondents: 46,595 versus 23,977. |
 
-Figures come from the [reference segment metrics](metadata/star_expected_metrics.json). These are unadjusted associations; no campaign uplift, sales conversion or ROI has been measured.
+Figures come from the [reference segment metrics](metadata/star_expected_metrics.json). These comparisons do not control for other attributes, so they cannot establish whether charging access or subsidies cause higher intent.
 
 ## Architecture and technical work
 
@@ -56,16 +56,16 @@ flowchart LR
     E --> F[Three report pages]
 ```
 
-| Area | Implementation |
-| --- | --- |
-| Data engineering | Fabric/OneLake Bronze–Silver–Gold pipeline, schema and checksum validation, lineage and quality gates. |
-| Data modeling | One respondent-level fact and five dimensions; 29 DAX measures (12 core + 17 narrative). Two Gold audit aggregates remain outside the model. |
-| Analytics | Segment comparisons for income, demographics, mobility, charging and incentives. |
-| Orchestration | Standalone PySpark with an Airflow DAG, controlled retries and integrity checks before publication. |
-| Cross-platform execution | Databricks serverless runtime with eight-table Gold reconciliation against the standalone output. |
-| Delivery | Azure CI tests and package verification; Test deployment with refresh, binding and KPI checks. |
+Fabric stores the Bronze, Silver and Gold layers in OneLake and supplies the Power BI model. The model has one respondent-level fact table, five dimensions and 29 DAX measures.
 
-Power BI uses the Fabric model. Databricks demonstrates an alternative data-processing path. See [validation and limitations](docs/validation.md), [star schema](docs/architecture/star_schema.md) and [semantic model](docs/architecture/semantic_model.md).
+### Design choices
+
+- **Keep the respondent grain.** Age, income and commute values stay on the fact table for averages; dimensions provide the bands used by slicers. Two summary tables support reconciliation outside the report model, avoiding double-counting across overlapping segment summaries.
+- **Use the existing Gold Lakehouse.** The star schema fits the Delta tables already produced by Spark, so it does not require a separate Warehouse. There is no date dimension because the source has no business-event date.
+- **Share processing across runtimes.** Local PySpark, Airflow and Databricks use the same transformation modules. Databricks provides an alternative execution path whose eight Gold tables are compared with the standalone output; Power BI reads from Fabric.
+- **Publish only after validation.** Each run has its own output and integrity checks. Retries reuse completed stages only when their inputs, code and artifacts still match.
+
+See the [star schema](docs/architecture/star_schema.md), [semantic model](docs/architecture/semantic_model.md) and [Databricks guide](docs/pipelines/phase11_databricks.md) for implementation details.
 
 ## Data
 
@@ -82,7 +82,7 @@ Source: Kaggle Playground Series S6E9, *Predicting Electric Vehicle Purchases*, 
 
 ## Run locally
 
-Place the four source CSVs in `data/raw/kaggle/`, matching the manifest. Prepare Python, Java 17 and the [PySpark runtime](docs/pipelines/standalone_pipeline.md#runtime-windows), then run:
+Follow the [data acquisition guide](docs/data_access.md) and place the four CSVs in `data/raw/kaggle/`. On Windows, prepare Python 3.13, Java 17 and the native Hadoop helpers described in the [runtime guide](docs/pipelines/standalone_pipeline.md#runtime-windows), then run:
 
 ```powershell
 python -m venv .venv
@@ -93,9 +93,15 @@ python -m venv .venv
 .venv/Scripts/python.exe -m src.run_pipeline --raw data/raw/kaggle --output-root output/local
 ```
 
-Use Python 3.13 for this Windows recipe. See the [runtime matrix and troubleshooting](requirements/README.md) for dependency scopes and other runtimes. The helper accepts custom Java/Hadoop paths; Java and Windows native helpers are installed separately. If PowerShell blocks the helper script, the runtime guide documents a process-only execution-policy setting.
+The [runtime matrix and troubleshooting](requirements/README.md) covers other runtimes and dependency issues. The runtime guide also explains custom Java/Hadoop paths and PowerShell execution-policy settings.
 
-Each run writes to `output/local/runs/<run_id>/`. Inspect `run_report.json` and `published.json`; publication requires passing quality and integrity checks. Opening the live Power BI report requires access to the configured Fabric model. Cloning the repo does not provision cloud resources.
+Results go to `output/local/runs/<run_id>/`. Check `run_report.json` for execution status and `published.json` for successful publication. To run the unit suite in the same environment:
+
+```powershell
+.venv/Scripts/python.exe scripts/run_ci_tests.py --suite unit
+```
+
+Spark and Airflow integration tests have separate runtime requirements; see the [test guide](tests/README.md).
 
 ## Explore the code
 
@@ -113,15 +119,8 @@ Technical guides: [Fabric](docs/pipelines/pipeline_runbook.md) · [PySpark/Airfl
 
 ## CI/CD evidence
 
-The [current acceptance record](docs/portfolio_acceptance.md) tracks release
-verification, Service UAT, documentation, repository synchronization and the
-clean rehearsal. See the [mirror runbook](docs/operations/repository_sync.md)
-for the separate Azure/GitHub histories and branch protections, and the
-[clean rehearsal guide](docs/operations/clean_rehearsal.md) for source inventories
-and controlled retention.
-
-**CI #67 and Test CD #70 succeeded on 17 October 2026**, using source `295e26d`. CI recorded 118 Unit, 8 real Spark and 3 Airflow tests passed, with zero skips. CD verified the selected artifact identity, restored the Test connection, refreshed the model, compared the complete report readback and reconciled KPI. The retained rollback and [sanitized CI/CD evidence](docs/evidence/acceptance_20261017.json) identify the release; [Service UAT](docs/deployment/service_uat.md) records representative interactions. The [CI/CD history](docs/cicd_evidence.md) keeps older redesign, Dev and Test records separate.
+Azure DevOps runs CI and deploys to Test; GitHub hosts the portfolio mirror. The [17 October acceptance record](docs/portfolio_acceptance.md) documents CI #67 with **129 passing tests** (118 unit, 8 Spark, 3 Airflow) and deployment through CD #70. Refresh, KPI and report-definition checks passed, alongside representative Service interactions. Build links and release details are in the [CI/CD history](docs/cicd_evidence.md); the [mirror runbook](docs/operations/repository_sync.md) describes repository synchronization.
 
 ## Reproducing the project
 
-Follow [data acquisition and checksum verification](docs/data_access.md) before running locally. The four CSVs are obtained separately, and the source manifest's direct-Kaggle verification limitation remains explicit. For cloud adaptation, see [configuration templates and deployment constraints](config/README.md); the existing environment mappings identify the pinned demonstration deployment.
+The local pipeline produces data outputs; opening the live report requires access to its Fabric model. Cloud resources are configured separately using the [environment templates and deployment guide](config/README.md). For a run from a fresh source copy, follow the [clean rehearsal guide](docs/operations/clean_rehearsal.md). The [validation overview](docs/validation.md) describes checks and remaining limitations.

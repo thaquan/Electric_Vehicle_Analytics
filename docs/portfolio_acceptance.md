@@ -1,16 +1,17 @@
 # Portfolio acceptance — 17 October 2026
 
 The report release and representative Service interactions passed. This record
-covers delivery/review items 3–7; public mirror publication is a separate approval
-step. Playwright was excluded at the user's request.
+summarizes the release, documentation, repository checks and reproduction run
+reviewed on 17 October 2026. Service interactions were tested with Windows UI
+Automation.
 
-| Item | Current evidence | Acceptance |
+| Area | Evidence at review | Result |
 | --- | --- | --- |
-| 3. CI/CD and Service UAT | CI #67: 118 Unit, 8 real Spark and 3 Airflow tests passed, zero skips. CD #70 consumed that exact artifact, refreshed the model, checked Gold binding/KPI and compared every report part. Seventeen UI observations, navigation, resets and representative cross-filter paths passed. | Passed. |
-| 4. Documentation | README points to the verified Test report. Runbooks, release/source identity, a [Service capture](screenshots/service_charging.png), current Desktop previews and sanitized evidence identify their actual sources. | Updated and reviewed. |
-| 5. GitHub/Azure | Azure main required CI and Test Exclusive lock verified. GitHub main now requires PRs, includes admins, blocks force-push/deletion and needs zero external reviewers for this personal portfolio. A local mirror uses the public history and matches accepted source content. | Controls passed; public publication requires approval after automatic review rejected the initial push. |
-| 6. Reproduce and reduce | Fresh Python 3.13 environment from pinned requirements; `pip check` passed; four CSV checksums matched. Frozen-source execution returned Python exit 0 and published after all six stages, eight tables, 35 segment groups, zero orphans and exact Silver reconstruction. All eight Gold tables reconciled with the retained reference, including schema and duplicate-sensitive rows. | Passed; process-exit and data evidence retained. |
-| 7. Final review | Open GitHub issues and non-closed Azure work items were empty at the review. The clipped Service cards and inactive report-page tooltip were fixed and retested. Azure PR #17 passed required build validation #68 and merged as `0d09c51`. | Technical acceptance passed; publication is tracked separately. |
+| CI/CD and Service UAT | CI #67: 118 Unit, 8 real Spark and 3 Airflow tests passed, zero skips. CD #70 consumed that exact artifact, refreshed the model, checked Gold binding/KPI and compared every report part. Seventeen UI observations, navigation, resets and representative cross-filter paths passed. | Passed. |
+| Documentation | README points to the verified Test report. Runbooks, release/source identity, a [Service capture](screenshots/service_charging.png), Desktop previews and sanitized evidence identify their actual sources. | Updated and reviewed. |
+| Repository controls and mirror preparation | Azure main required CI and Test Exclusive lock verified. GitHub main requires PRs, includes admins, blocks force-push/deletion and needs zero external reviewers for this personal portfolio. The local mirror used the public history and matched accepted source content. | Controls and local content comparison passed. Remote publication was not verified in this record. |
+| Reproduction | Fresh Python 3.13 environment from pinned requirements; `pip check` passed; four CSV checksums matched. Frozen-source execution returned Python exit 0 and published after all six stages, eight tables, 35 segment groups, zero orphans and exact Silver reconstruction. All eight Gold tables reconciled with the retained reference, including schema and duplicate-sensitive rows. | Passed; process-exit and data evidence retained. |
+| Final review | Open GitHub issues and non-closed Azure work items were empty at the review. The clipped Service cards and inactive report-page tooltip were fixed and retested. Azure PR #17 passed required build validation #68 and merged as `0d09c51`. | Technical acceptance passed. |
 
 ## Accepted release and UAT
 
@@ -58,16 +59,14 @@ commit are in the [retirement inventory](evidence/retired_artifacts_20261017.jso
 The older 12-measure export remains labeled as historical; data, rollback packages
 and remote history remain preserved. See the [retention decisions](operations/clean_rehearsal.md#retention-decisions).
 
-## Publication boundary
+## Repository synchronization
 
 Azure Repos is the source for required CI/CD; GitHub is the public portfolio
-mirror with a separate history. The initial fetched main trees matched despite
-different commit IDs. The new mirror is prepared locally and scanned before
-publication; no history rewrite or force-push is part of the process. Use the
-[mirror runbook](operations/repository_sync.md) and fetch both remotes before
-running `scripts/check_repository_sync.py` after the approved PR merge.
+mirror with a separate history. At this review, the initially fetched main trees
+matched despite different commit IDs, and the release mirror was prepared and
+scanned locally. The publication procedure preserves both histories and merges
+changes through a PR.
 
-The automatic approval review rejected the initial public push because the exact
-payload/public destination had not been explicitly approved. The final local
-payload is reviewable before that approval; a successful local content comparison
-does not claim that the public remote has already been updated.
+To verify synchronization after a mirror PR is merged, follow the
+[mirror runbook](operations/repository_sync.md): fetch both remotes, then run
+`scripts/check_repository_sync.py` to compare their trees.

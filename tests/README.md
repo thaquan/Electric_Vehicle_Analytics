@@ -1,6 +1,8 @@
 # Automated tests
 
-These are reusable regression tests for the project, not local test logs or agent work files. CI discovers unit tests automatically and requires separate Spark and Airflow jobs in `ci/azure_pipelines.yml`.
+The regression suite covers data processing, orchestration, deployment and recovery.
+CI discovers unit tests automatically and runs Spark and Airflow integration tests
+in separate jobs defined in `ci/azure_pipelines.yml`.
 
 - Data rules: Bronze/Silver typing, categories, target leakage, Gold metrics and star-schema keys.
 - Orchestration: stage dependencies, input integrity, retry behavior and publication gates.

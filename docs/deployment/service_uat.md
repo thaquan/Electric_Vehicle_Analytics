@@ -38,7 +38,6 @@ reason. A failed or unverified required case blocks full portfolio acceptance.
 Do not infer a report defect from an automation tool's inability to click a
 control. Preserve the actual values and failed attempt before retrying.
 
-Playwright is excluded for the current acceptance at the user's request.
-Use direct Windows interaction or a human-operated authenticated Service
-session. Keep raw captures and traces under ignored `output/`; publish only
-reviewed evidence with its source and checksums.
+For repeat runs, use Windows UI Automation or manual interaction with an
+authenticated Service session. Keep raw captures and traces under ignored
+`output/`; publish reviewed evidence with its source and checksums.
