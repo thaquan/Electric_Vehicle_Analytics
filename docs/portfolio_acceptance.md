@@ -61,6 +61,12 @@ and remote history remain preserved. See the [retention decisions](operations/cl
 
 ## Repository synchronization
 
+Follow-up on 21 October: GitHub PR #4 and #5 and Azure PR #19 have merged.
+The two main trees matched at the commits listed in the
+[repository publication record](evidence/repository_publication_20261021.json).
+This verifies repository publication; it does not extend the deployment or
+Service UAT results recorded on 17 October.
+
 Azure Repos is the source for required CI/CD; GitHub is the public portfolio
 mirror with a separate history. At this review, the initially fetched main trees
 matched despite different commit IDs, and the release mirror was prepared and
