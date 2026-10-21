@@ -1,2 +1,2 @@
-// Compatibility entry point: the approved narrative generator owns layout and style.
+// Compatibility entry point: delegate report layout and styling to redesign_report.cjs.
 require('./redesign_report.cjs');
