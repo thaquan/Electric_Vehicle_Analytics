@@ -25,9 +25,10 @@ the current PBIP definitions together; do not pair its report with the old
 12-measure export. See [current model](../architecture/semantic_model.md).
 
 The KPI describe EV purchase intent in synthetic data. The two aggregate tables
-are for audit only. Remaining navigation/reset, chart cross-filter, and dashboard
-rendering tests stay **skipped by user request**, not passed. Verifying the recovery
-report KPI below provides separate evidence for part 5.
+are for audit only. In this archived recovery record, navigation/reset, chart
+cross-filter, and remaining dashboard rendering checks were not performed. Their
+recorded status is `skipped_by_user_request`; they have no passing result.
+Verifying the recovery report KPI below provides separate evidence for part 5.
 
 ## 2. Tools and access
 
@@ -284,9 +285,12 @@ Mark overall recovery `passed` only when:
 - The published report uses the new model and displays matching KPI.
 - Workspace, lakehouse, model, and report IDs are recorded.
 
-Keep skipped dashboard tests as `skipped_by_user_request`. Payload preparation,
-unit tests, or checksum verification alone do not prove recovery succeeded.
-Distinguish user-attested checks from checks directly verified by a tool.
+Preserve `skipped_by_user_request` for the checks omitted from the archived
+recovery record. For a new recovery run, record the actual outcome and supporting
+evidence for each check. Payload preparation, unit tests, or checksum verification
+alone do not prove recovery succeeded. Identify whether each result was reported
+by the person reviewing the report or directly verified by a tool, and retain
+the corresponding evidence.
 
 ## 11. Troubleshooting and reruns
 

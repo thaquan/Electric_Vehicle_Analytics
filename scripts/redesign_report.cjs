@@ -1,4 +1,4 @@
-// Rebuild the approved three-page narrative, preserving the model binding.
+// Rebuild the three visible report pages and context tooltip, preserving the model binding.
 // SVG measures are data-bound vector charts, not static snapshot illustrations.
 const fs = require('fs'), path = require('path'), crypto = require('crypto');
 const root = path.resolve(__dirname, '..');

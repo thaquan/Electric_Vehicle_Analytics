@@ -31,7 +31,7 @@ Thumbs.db
 /metadata/recovery_model_get_definition.json
 /metadata/recovery_model_live_definition.json
 
-# Local agent work, plans and diagnostic output
+# Local development configuration, plans and diagnostic output
 /.agents/
 /.codex/
 /.aws/
