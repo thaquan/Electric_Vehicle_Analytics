@@ -1,51 +1,89 @@
 # Databricks serverless pipeline
 
-Các lệnh dưới đây chạy từ thư mục gốc repo. CLI dùng cấu hình Databricks mặc định trên máy; chỉ thêm `--profile` khi cần chọn workspace khác. Không cần cung cấp lại tài khoản nếu CLI đã đăng nhập.
+Run these commands from the repository root using an authenticated Databricks
+CLI profile with access to the target workspace and Volume.
 
-## 1. Tạo project serverless sạch
-
-```powershell
-python scripts/phase11_package.py --output output/phase11_release_20261006/project
-```
-
-Thư mục đích phải chưa tồn tại; mỗi release dùng một tên mới. Có thể truyền `--raw <thu-muc-csv>` nếu nguồn không nằm tại `data/raw/kaggle`. Công cụ kiểm tra kích thước/SHA-256 nguồn theo manifest trước khi tạo package.
-
-Package v2 chứa 22 file cần chạy: bốn CSV nguồn, sáu JSON metadata, ba module trong `scripts` và chín module `src`. Local, Airflow và Databricks dùng chung transformation, input validation, stage gates và publication. Không còn bản sao transformation ở `databricks/runtime_src/`. `package_manifest.json` ghi `runtime_source: shared-src`, phiên bản package và checksum từng file.
-
-Notebook gọi `execute_pipeline(..., runtime='databricks-serverless')`, cung cấp Spark session của nền tảng. Runtime này không gọi cache/unpersist, không cấu hình `local[*]` và không dừng session do Databricks sở hữu. Input check dùng cùng `prepare()` với local/Airflow và cần pandas/numpy có sẵn trong Python runtime; validation hiện dùng driver memory cho snapshot khoảng 73 MB CSV.
-
-Tạo package và import notebook mới cùng nhau. Notebook mới từ chối package overlay v1; giữ nguyên release cũ để đối chiếu. Code có kiểm thử offline và Spark local cho hai chế độ cache; chỉ một run serverless mới thành công mới chứng minh phiên bản này hoạt động trên Databricks.
-
-Notebook kiểm tra package manifest và checksum trước khi xử lý. Không upload nguyên repo thay cho package. Không sửa file trong release đã đóng gói; tạo release mới khi thay đổi code hoặc metadata.
-
-## 2. Upload và chạy trên Databricks
-
-Catalog/schema/Volume `workspace.ev_phase11.ev_phase11` đã có từ lần triển khai đầu. Dùng thư mục release và notebook riêng để giữ lại run cũ:
+## 1. Package the source and data
 
 ```powershell
-databricks fs cp output/phase11_release_20261006/project dbfs:/Volumes/workspace/ev_phase11/ev_phase11/releases/review_20261006/project --recursive
-databricks workspace import /Shared/ev_phase11/phase11_runner_review_20261006 --file databricks/notebooks/phase11_runner.py --format SOURCE --language PYTHON
-databricks jobs submit --json @databricks/jobs/phase11_review_submit.json --no-wait
+python scripts/phase11_package.py --output output/databricks-release/project
 ```
 
-`phase11_review_submit.json` là mẫu chạy một lần bằng serverless, có tham số `project_root` trỏ tới release trên. Khi tạo release mới, đổi cả đường dẫn Volume, notebook và tham số trong JSON. `phase11_job_serverless.json` là định nghĩa job cũ; muốn chuyển job đó sang release mới phải cập nhật notebook path/base parameters tương ứng.
+Choose a new output directory for each release. Use `--raw <csv-directory>`
+when inputs are outside `data/raw/kaggle/`. Packaging checks source sizes and
+SHA-256 against the manifest before copying files.
 
-Lấy `run_id` trả về rồi đọc trạng thái:
+Package v2 contains the four source CSVs, six metadata files, three script
+modules and nine `src` modules. Local, Airflow and Databricks share processing,
+validation and publication logic. `package_manifest.json` identifies the source
+and checksum of every packaged file. Keep the package outside Git.
+
+The notebook verifies the package before calling
+`execute_pipeline(..., runtime='databricks-serverless')` with the platform Spark
+session. This runtime does not cache/unpersist tables, select a local Spark
+master or stop the platform session. Input validation requires pandas/numpy and
+uses driver memory for the approximately 73 MB CSV snapshot. Import the current
+notebook with a v2 package; older overlay packages are rejected.
+
+## 2. Upload and submit
+
+Choose an existing catalog/schema/Volume and a new release name. Replace the
+Volume placeholder below before running the commands. The submit template uses
+serverless compute and requires workspace support for it.
+
+```powershell
+$release = "release_" + (Get-Date -Format "yyyyMMdd_HHmmss")
+$volumeRoot = "/Volumes/<catalog>/<schema>/<volume>" # replace with your Volume
+$projectRoot = "$volumeRoot/releases/$release/project"
+$notebookFolder = "/Shared/ev_analytics/$release"
+$notebookPath = "$notebookFolder/phase11_runner"
+New-Item -ItemType Directory -Force config/local | Out-Null
+$submit = Get-Content config/examples/databricks_submit.json -Raw | ConvertFrom-Json
+$submit.tasks[0].notebook_task.notebook_path = $notebookPath
+$submit.tasks[0].notebook_task.base_parameters.project_root = $projectRoot
+$submitJson = $submit | ConvertTo-Json -Depth 10
+[IO.File]::WriteAllText((Join-Path (Get-Location) "config/local/databricks_submit.json"), $submitJson, (New-Object Text.UTF8Encoding($false)))
+
+databricks fs cp output/databricks-release/project "dbfs:$projectRoot" --recursive
+databricks workspace mkdirs $notebookFolder
+databricks workspace import $notebookPath --file databricks/notebooks/phase11_runner.py --format SOURCE --language PYTHON
+databricks jobs submit --json @config/local/databricks_submit.json --no-wait
+```
+
+Concrete submission paths stay in ignored `config/local/`. Do not submit the
+example with unresolved `<...>` placeholders. Keep existing releases unchanged;
+create a new package and notebook whenever code or metadata changes. Upload the
+package rather than the entire repository.
+
+`databricks/jobs/phase11_job_serverless.json` is the historical job definition.
+This guide submits a separate run and does not update that existing job.
+
+Read the returned run ID:
 
 ```powershell
 databricks jobs get-run <run_id> --output json
 ```
 
-Chỉ chốt chạy thành công khi `state.result_state` là `SUCCESS`. `tasks[].run_id` dùng với `databricks jobs get-run-output <task_run_id>` để xem lỗi nếu cần. Run dữ liệu `phase11_<UTC timestamp>` và các artifact nằm dưới `<project_root>/output/phase11/runs/`. Kiểm tra `run_report.json` có `status: passed` và `published.json` có `status: published`.
+Require `state.result_state: SUCCESS`. For a failed task, use its `tasks[].run_id`
+with `databricks jobs get-run-output <task_run_id>`. Data runs are written under
+`<project_root>/output/phase11/runs/phase11_<UTC timestamp>/`. Check for
+`run_report.json` with `status: passed` and `published.json` with
+`status: published`. Local tests alone do not establish a successful serverless run.
 
-## 3. Tải dữ liệu và đối chiếu
+## 3. Download and reconcile
+
+Use the same `$projectRoot` as the submitted run and replace both placeholders:
 
 ```powershell
 python -m pip install -r requirements/requirements_phase11.txt
-databricks fs cp dbfs:/Volumes/workspace/ev_phase11/ev_phase11/releases/review_20261006/project/output/phase11/runs/<pipeline_run_id> output/phase11_reconciliation/<pipeline_run_id> --recursive
-python scripts/phase11_reconcile.py --reference-gold output/phase10/runs/review_fix_20261003_03/gold --candidate-gold output/phase11_reconciliation/<pipeline_run_id>/gold --output output/phase11_review/reconciliation_new_run.json
+databricks fs cp "dbfs:$projectRoot/output/phase11/runs/<pipeline_run_id>" output/phase11_reconciliation/<pipeline_run_id> --recursive
+python scripts/phase11_reconcile.py --reference-gold <verified-local-gold-directory> --candidate-gold output/phase11_reconciliation/<pipeline_run_id>/gold --output output/databricks-reconciliation.json
 ```
 
-Script nhận thư mục Gold bất kỳ, hỗ trợ cả bảng Parquet dạng thư mục và file đơn. Bắt buộc có đúng tám bảng, so sánh tên/kiểu/thứ tự cột và số dòng, rồi chạy `EXCEPT ALL` hai chiều để giữ đúng số lần xuất hiện của bản ghi trùng. Chỉ bỏ ba giá trị lineage theo run khi so sánh dữ liệu; kiểu/tên các cột đó vẫn được kiểm tra. Nullability không được coi là hợp đồng vật lý của Parquet reader. Thiếu bảng, sai schema, lỗi đọc hoặc dữ liệu khác đều trả `status: failed` và exit code 1; đạt trả exit code 0.
-
-Dữ liệu lớn và kết quả đối chiếu trong `output/` không được Git quản lý. Tạo đường dẫn release mới và truyền đúng run ID khi tái triển khai.
+Reconciliation requires all eight Gold tables. It compares column names, types,
+order and row counts, then uses `EXCEPT ALL` in both directions to preserve
+record multiplicity. It ignores only three run-specific lineage values; their
+column names and types are still checked. Reader-inferred Parquet nullability
+is not treated as a physical schema contract. Missing tables, schema errors,
+read failures or different rows return `status: failed` and exit code 1.
+Success returns exit code 0. Downloaded data and results stay in `output/`.

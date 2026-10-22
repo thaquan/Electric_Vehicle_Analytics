@@ -84,3 +84,8 @@ playwright-report/
 /docs/screenshots/overview_urban_filter.png
 /scripts/phase12_release.py
 /tests/test_recovery_package.py
+
+# Retired maintenance journals and one-off submission payloads stay local.
+/docs/evidence/repository_publication_20261021.json
+/docs/evidence/retired_artifacts_20261017.json
+/databricks/jobs/phase11_review_submit.json
