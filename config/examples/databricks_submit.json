@@ -1,0 +1,17 @@
+{
+  "run_name": "EV Analytics pipeline",
+  "tasks": [
+    {
+      "task_key": "phase11_e2e",
+      "notebook_task": {
+        "notebook_path": "/Shared/<project>/<release>/phase11_runner",
+        "source": "WORKSPACE",
+        "base_parameters": {
+          "project_root": "/Volumes/<catalog>/<schema>/<volume>/releases/<release>/project"
+        }
+      },
+      "timeout_seconds": 7200,
+      "max_retries": 0
+    }
+  ]
+}
