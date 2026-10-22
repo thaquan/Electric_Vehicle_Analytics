@@ -35,7 +35,8 @@ serverless compute and requires workspace support for it.
 $release = "release_" + (Get-Date -Format "yyyyMMdd_HHmmss")
 $volumeRoot = "/Volumes/<catalog>/<schema>/<volume>" # replace with your Volume
 $projectRoot = "$volumeRoot/releases/$release/project"
-$notebookPath = "/Shared/ev_analytics/$release/phase11_runner"
+$notebookFolder = "/Shared/ev_analytics/$release"
+$notebookPath = "$notebookFolder/phase11_runner"
 New-Item -ItemType Directory -Force config/local | Out-Null
 $submit = Get-Content config/examples/databricks_submit.json -Raw | ConvertFrom-Json
 $submit.tasks[0].notebook_task.notebook_path = $notebookPath
@@ -44,6 +45,7 @@ $submitJson = $submit | ConvertTo-Json -Depth 10
 [IO.File]::WriteAllText((Join-Path (Get-Location) "config/local/databricks_submit.json"), $submitJson, (New-Object Text.UTF8Encoding($false)))
 
 databricks fs cp output/databricks-release/project "dbfs:$projectRoot" --recursive
+databricks workspace mkdirs $notebookFolder
 databricks workspace import $notebookPath --file databricks/notebooks/phase11_runner.py --format SOURCE --language PYTHON
 databricks jobs submit --json @config/local/databricks_submit.json --no-wait
 ```
