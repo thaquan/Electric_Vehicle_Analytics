@@ -1,0 +1,92 @@
+{
+  "scope": "On-demand live Test health verification using the existing local Azure CLI user identity; no deployment or fresh refresh",
+  "source_commit": "48fa1fe022f78b86dd9837a5a85bd8e9c74dd6c5",
+  "working_tree_dirty": true,
+  "source_note": "Health helpers and Test config have no diff from HEAD. This does not accept other uncommitted pipeline/model/report changes.",
+  "source_files_sha256": {
+    "scripts/check_test_health.py": "62c8f3c562ea8e6e6a27ce4f6a766e11c522dfabceebcdac372b534ab0ce33d1",
+    "scripts/fabric_test_api.py": "bb3de0d47c6ae3bb78539cbe06646c13fdae915947daddeb015e72c973291f70",
+    "scripts/dax_query.py": "44482a998618d422666c83547dc3acc21badfb178d6e886eeb72f933b6a67da7",
+    "config/environments/test.json": "8481360d2608aeb830a35c8cd175d01ed06060475490df29f84c42235207174b"
+  },
+  "auth_context": {
+    "checked_at_utc": "2026-10-29T00:57:48.831039+00:00",
+    "identity_type": "delegated_user",
+    "resource_requested": "https://analysis.windows.net/powerbi/api",
+    "audience": "https://analysis.windows.net/powerbi/api",
+    "expires_at_utc": "2026-10-29T02:21:56+00:00",
+    "expired": false,
+    "delegated_scopes": [
+      "user_impersonation"
+    ],
+    "same_client_and_cached_token_for_both_backends": true,
+    "note": "Decoded claims are diagnostic metadata, not independent signature validation. No token, username or object ID stored in this summary."
+  },
+  "workspace_id": "27873d0c-580a-4963-9e25-5846948f1c5d",
+  "semantic_model_id": "a97a9cc1-eaac-4007-b8ad-c146ac1776c5",
+  "report_id": "b7d65039-0413-4ecc-9f7f-33f0098c9cc0",
+  "json_backend": {
+    "checked_at_utc": "2026-10-29T00:57:48.834254+00:00",
+    "status": "passed",
+    "endpoint": "executeQueries",
+    "checks": {
+      "report_binding": "passed",
+      "latest_refresh": "passed",
+      "dax_kpi": "passed"
+    },
+    "actual_kpi": {
+      "respondents": 668665,
+      "yes": 116779,
+      "no": 551886
+    }
+  },
+  "arrow_backend": {
+    "checked_at_utc": "2026-10-29T00:57:52.916997+00:00",
+    "status": "failed",
+    "endpoint": "executeDaxQueries",
+    "checks": {
+      "report_binding": "passed",
+      "latest_refresh": "passed"
+    },
+    "error": "HTTP 401: {\"error\":{\"code\":\"Unauthorized\",\"pbi.error\":{\"code\":\"Unauthorized\",\"parameters\":{},\"details\":[],\"exceptionCulprit\":1}}}",
+    "root_cause": "not_established"
+  },
+  "latest_refresh": {
+    "status": "Completed",
+    "request_id": "e8e0f30e-fa4c-4973-af97-4aa634a86b0c",
+    "start_time": "2026-10-22T08:51:00.28Z",
+    "end_time": "2026-10-22T08:51:03.94Z",
+    "started_by_this_verification": false
+  },
+  "conclusion": {
+    "live_kpi_reverified": true,
+    "local_verified_backend": "json",
+    "arrow_for_local_user": "HTTP 401; unresolved",
+    "service_principal_reverified": false,
+    "permission_changes": false,
+    "code_or_ci_backend_changes": false,
+    "report_rendering_or_interaction_uat": "not_run",
+    "sql_analytics_endpoint": "not_verified"
+  },
+  "offline_checks": {
+    "health": {
+      "command": "python -m unittest discover -s tests -p test_test_health.py -v",
+      "tests_run": 4,
+      "status": "passed",
+      "skipped": 0
+    },
+    "arrow_decoder": {
+      "command": "python -m unittest discover -s tests -p test_dax_query.py -v",
+      "tests_run": 5,
+      "status": "passed",
+      "skipped": 0
+    }
+  },
+  "raw_artifacts_sha256": {
+    "output/live-health-20261029/confirmed-json.json": "180711f8d8ff5656afd45c218870d8993c499f5a3476d0d3fb9cfd108160d366",
+    "output/live-health-20261029/confirmed-arrow.json": "6823697162b28601595fb38ce46f7858821e63fe7866fd743c0aa77408637b62",
+    "output/live-health-20261029/shared-auth-context.json": "e967463e62d78b78570b0f34c1a7bdedfe94666c4840a174acb170325f44582a",
+    "output/live-health-20261029/diagnose_shared_token.py": "83e9f84eaad0b9585259bb6d6e3dbd53eca5874c7523b3e709bbe4961bfe501c",
+    "output/live-health-20261029/shared-probe.log": "ea47a824adc65f33c55ec27020e1dc66bd4a5ff5ba2b5c03d52ab89f322402a8"
+  }
+}

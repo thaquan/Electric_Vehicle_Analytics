@@ -16,6 +16,44 @@ after every deployment.
 
 The fixed snapshot does not require a daily data-processing schedule.
 
+## Local DAX authentication — 29 October 2026
+
+The existing Azure CLI **user** identity passed the full health check with the
+JSON `executeQueries` backend on 29 October 2026 (07:57, Asia/Bangkok). Report
+binding, latest refresh completion and all three KPI matched the pinned snapshot:
+668665 respondents, 116779 Yes and 551886 No. The latest refresh was completed on
+22 October; this probe did not start a new refresh or deploy definitions. See the
+[dated evidence](../evidence/live_health_20261029.json).
+
+Select the backend explicitly for local user checks, including in a shell previously
+used for Arrow/CD:
+
+```powershell
+$env:EV_DAX_API = "json"
+python scripts/check_test_health.py --output output/live-health-<new-run>/json.json
+```
+
+Using the **same cached token**, `EV_DAX_API=arrow` still returned HTTP 401.
+Its decoded audience matched `https://analysis.windows.net/powerbi/api`, and
+the token was not expired. This narrows the observed failure to the Arrow request
+for this identity; it does not establish its root cause or prove an Arrow permission
+fix. Successful JSON queries demonstrate current query access for that endpoint;
+workspace role/Build ACLs were not independently enumerated.
+
+The health checker uses the selected backend and fails on its error; it does not
+fall back automatically. Keep the CD setting `EV_DAX_API=arrow` for the service
+connection as documented in [Test deployment](../deployment/test_cd.md). This
+local user check does not revalidate the service principal or supersede its
+historical deployment evidence. Do not run deployment preflight to diagnose this
+read-only health issue: preflight can change model ownership and connection mapping.
+
+If a future JSON check also fails, inspect the selected Azure account/tenant and
+Power BI token resource/expiry, then verify access for that identity. Record the
+failure before renewing the login; do not change permissions or expected KPI to
+force a pass. Keep separate evidence per backend and a fresh output path per run.
+The raw probes, sanitized auth context and SHA-256 inputs for this run are retained
+locally under ignored `output/live-health-20261029/`.
+
 ## Deployment and rollback tools
 
 `scripts/fabric_test_api.py` uses the existing Azure CLI login and permits only the
