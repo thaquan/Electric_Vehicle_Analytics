@@ -1,0 +1,72 @@
+{
+  "scope": "Author-maintained summary of Azure artifacts downloaded during the 28 October 2026 review; not acceptance of subsequent uncommitted changes",
+  "source_commit": "48fa1fe022f78b86dd9837a5a85bd8e9c74dd6c5",
+  "ci_build_id": 84,
+  "cd_build_id": 85,
+  "ci_url": "https://dev.azure.com/thaquan081006/Electric_Vehicle_Analytics/_build/results?buildId=84",
+  "cd_url": "https://dev.azure.com/thaquan081006/Electric_Vehicle_Analytics/_build/results?buildId=85",
+  "tests": {
+    "unit": {
+      "status": "passed",
+      "tests_run": 118,
+      "passed": 118,
+      "failed": 0,
+      "error": 0,
+      "skipped": 0,
+      "source_sha256": "16244f088e5778bcea9feace6740051505045c434f055d5c27013dc7db3b27d8"
+    },
+    "spark": {
+      "status": "passed",
+      "tests_run": 8,
+      "passed": 8,
+      "failed": 0,
+      "error": 0,
+      "skipped": 0,
+      "source_sha256": "ac9f4a7cf42e30f18d980af8b5bc9f68a288fa1c0d5abd6ed4ab471ed21d4e92"
+    },
+    "airflow": {
+      "status": "passed",
+      "tests_run": 3,
+      "passed": 3,
+      "failed": 0,
+      "error": 0,
+      "skipped": 0,
+      "source_sha256": "8bca1a8112c79488e771c7db5c6548ec0e9bcecadb1c128794d14212ee0532d9"
+    }
+  },
+  "deployment": {
+    "status": "passed",
+    "preflight_only": false,
+    "source_build_id": "84",
+    "source_sha256": "949a5e754a988d1a0ae7534d11bc837fb2c28a84a6d280d2ec6a5da5b3f8b5f0"
+  },
+  "health_after_deployment": {
+    "checked_at_utc": "2026-10-22T08:51:47.338217+00:00",
+    "status": "passed",
+    "checks": {
+      "report_binding": "passed",
+      "latest_refresh": "passed",
+      "dax_kpi": "passed"
+    },
+    "actual_kpi": {
+      "respondents": 668665,
+      "yes": 116779,
+      "no": 551886
+    },
+    "source_sha256": "186c6668f3028132b562b1dfa32f2039b4aa3649fba365ea3543a4448437fc41"
+  },
+  "live_probe_20261028": {
+    "checked_at_utc": "2026-10-28T15:22:15.019220+00:00",
+    "status": "failed",
+    "checks": {
+      "report_binding": "passed",
+      "latest_refresh": "passed"
+    },
+    "dax_backend": "arrow",
+    "dax_error": "HTTP 401 Unauthorized with the current local Azure CLI identity; cause not established",
+    "live_kpi_reverified": false
+  },
+  "service_interactions": "Representative UAT belongs to the separate 17 October release; no new Service interaction UAT recorded here",
+  "sql_analytics_endpoint": "not_verified",
+  "raw_artifacts": "Ignored local output/review-20261028/ci84 and cd85; original Azure build artifacts require access"
+}

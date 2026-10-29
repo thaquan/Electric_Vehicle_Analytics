@@ -119,7 +119,15 @@ Technical guides: [Fabric](docs/pipelines/pipeline_runbook.md) · [PySpark/Airfl
 
 ## CI/CD evidence
 
-Azure DevOps runs CI and deploys to Test; GitHub hosts the portfolio mirror. The [17 October acceptance record](docs/portfolio_acceptance.md) documents CI #67 with **129 passing tests** (118 unit, 8 Spark, 3 Airflow) and deployment through CD #70. Refresh, KPI and report-definition checks passed, alongside representative Service interactions. Build links and release details are in the [CI/CD history](docs/cicd_evidence.md); the [mirror runbook](docs/operations/repository_sync.md) describes repository synchronization.
+Azure DevOps runs CI and deploys to Test; GitHub hosts the portfolio mirror. Evidence is scoped by date and source:
+
+| Record | Verified result |
+| --- | --- |
+| [22 October Test release](docs/evidence/release_20261022.json), source `48fa1fe` | CI #84 passed **129 tests** (118 unit, 8 Spark, 3 Airflow; zero skips). CD #85 passed model/report deployment, binding, refresh and KPI checks. |
+| [29 October live health](docs/evidence/live_health_20261029.json), 07:57 Asia/Bangkok | Local user JSON queries passed binding, latest-refresh status and KPI: **668,665 / 116,779 / 551,886**. With the same token, Arrow still returned HTTP 401. No deployment or new refresh was performed by this probe. |
+| [17 October acceptance](docs/portfolio_acceptance.md), source `295e26d` | Representative Service slicer, reset, navigation, tooltip and cross-filter cases passed for CI #67/CD #70. |
+
+The 28 October Arrow probe remains a recorded failure; the 29 October JSON pass does not resolve the Arrow error or revalidate the service principal. These dated checks do not accept later uncommitted changes or establish exhaustive Service interaction coverage. See the [validation overview](docs/validation.md), [CI/CD history](docs/cicd_evidence.md) and [mirror runbook](docs/operations/repository_sync.md).
 
 ## Reproducing the project
 

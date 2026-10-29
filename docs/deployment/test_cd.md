@@ -78,25 +78,29 @@ still identify build `67`; CD verifies that ID and its full commit SHA. An attem
 using `version: "67"` was rejected during pipeline validation as CD #69 before
 any deployment job ran. The corrected request is retained with CD #70.
 
-## Verified deployment
+## Verified deployment and acceptance scope
 
-The current accepted release is **CI #67 -> CD #70**, source
-`295e26da7aa1ea3c0cbe629ff83230f6ccafdbd2`, on 17 October 2026. The selected
-artifact, complete report readback, refresh, binding and KPI passed. Windows-native
-Service UAT exercised the same report definitions. See the
-[acceptance evidence](../evidence/acceptance_20261017.json) and
-[UAT observations](../evidence/service_uat_20261017.json).
+| Record | Source and scope |
+| --- | --- |
+| [22 October deployment](../evidence/release_20261022.json), inspected 28 October | CI #84 -> CD #85, source `48fa1fe022f78b86dd9837a5a85bd8e9c74dd6c5`. All 129 regression tests passed without skips; downloaded CD evidence records `preflight_only=false`, successful model/report deployment, binding, refresh and KPI. |
+| [17 October acceptance](../evidence/acceptance_20261017.json) | CI #67 -> CD #70, source `295e26da7aa1ea3c0cbe629ff83230f6ccafdbd2`. Selected artifact, complete report readback, refresh, binding and KPI passed. Windows-native Service UAT exercised the same report definitions; see [UAT observations](../evidence/service_uat_20261017.json). |
+| [29 October live health](../evidence/live_health_20261029.json) | Local user JSON queries passed binding, latest-refresh status and KPI; Arrow still returned HTTP 401 with the same cached token. This is a read-only probe, not a deployment or Service interaction acceptance. |
 
-Public readers can inspect the [archived evidence summary](../cicd_evidence.md) and its sanitized JSON without Azure DevOps access.
+Service UAT remains scoped to 17 October; a later API/deployment pass does not
+extend that interaction acceptance. The 29 October probe observed a completed
+22 October refresh and did not start a new one. These dated records do not
+validate subsequent uncommitted code/report changes or assert the latest online
+pipeline state. See the [validation overview](../validation.md) for remaining
+checks and the [CI/CD history](../cicd_evidence.md) for public evidence summaries.
 
-The later main release was CI #63 -> CD #64 on 14 October 2026, source
+An earlier main release was CI #63 -> CD #64 on 14 October 2026, source
 `fa9e0fa701951ef73f07c88c29ffb864c604c622`. On 17 October its downloaded release
 inventory and retained deployment evidence were inspected: the manifest identifies
 build 63, CD recorded `passed`, refresh completed and KPI matched the pinned
 snapshot. That older deployment predates the new report-readback gate and the
 15 October presentation fixes; it does not establish deployment of this working
 tree. Use the [portfolio acceptance record](../portfolio_acceptance.md) for the
-new verification and [Service UAT cases](service_uat.md) for interaction acceptance.
+17 October verification and [Service UAT cases](service_uat.md) for interaction acceptance.
 
 CI build 14 and CD build 15 succeeded on 2026-10-02. CD used source commit
 `8e8e4f74a03efb91fbd2c6211fd2809ca532b851` and service principal
@@ -154,6 +158,10 @@ python scripts/deploy_test_release.py --release output/test-release --evidence o
 
 Local tests use your Azure CLI identity; they are not evidence that the service
 principal works. CI provenance only applies to a package actually built by CI.
+The Arrow setting above requires query access for the selected deployment identity;
+the 29 October JSON pass by a local user does not verify that path. For read-only
+local checks, use the [JSON health procedure](../operations/operations_runbook.md).
+Deployment preflight also changes ownership/connection mapping as described above.
 
 ## Rollback
 
