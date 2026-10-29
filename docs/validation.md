@@ -11,12 +11,27 @@
 - Delivery: CI runs regression tests and verifies release packaging. Test CD checks model/report binding, refresh and live KPI; rollback tooling preserves the previous definitions.
 - Recovery: checksum-verified snapshot restoration has been demonstrated. Data and backup archives are stored separately from source code.
 
-The [test suites](../tests/README.md) and [CI configuration](../ci/azure_pipelines.yml) show reproducible checks. Historical successful cloud runs include [CI #30](https://dev.azure.com/thaquan081006/Electric_Vehicle_Analytics/_build/results?buildId=30) and [Test CD #31](https://dev.azure.com/thaquan081006/Electric_Vehicle_Analytics/_build/results?buildId=31). The redesign also passed CI builds [#54](https://dev.azure.com/thaquan081006/Electric_Vehicle_Analytics/_build/results?buildId=54) and [#55](https://dev.azure.com/thaquan081006/Electric_Vehicle_Analytics/_build/results?buildId=55) on 13 October 2026. These results describe recorded runs, not continuous service monitoring or proof of a redesigned Service deployment.
+## Verification dates and release scope
+
+| Record | Verified scope | Limits |
+| --- | --- | --- |
+| [17 October acceptance](portfolio_acceptance.md) | CI #67/CD #70; representative Service slicer/reset/navigation/tooltip/cross-filter cases passed on source `295e26d`. | Not exhaustive interaction coverage or a new UAT of later source changes. |
+| [22 October release, inspected 28 October](evidence/release_20261022.json) | CI #84: 118 unit, 8 Spark, 3 Airflow passed, zero skips. CD #85: model/report update, binding, refresh and KPI passed on `48fa1fe`. | This cloud release predates the uncommitted portfolio remediation. |
+| [28 October live API probe](evidence/release_20261022.json) | Report binding passed; latest refresh was Completed on 22 October. | Arrow DAX query returned HTTP 401 with the current local identity. Live KPI was not reverified in that probe; this does not invalidate the successful service-connection query in CD #85. |
+| [29 October live API probes](evidence/live_health_20261029.json), 07:57 Asia/Bangkok | Local Azure CLI user: JSON binding, latest-refresh status and KPI passed (668665 / 116779 / 551886). | Same cached token: Arrow HTTP 401 remains unresolved. No deployment, new refresh, Service UAT or service-principal revalidation; latest refresh observed by this probe was 22 October. |
+
+The [test suites](../tests/README.md) and [CI configuration](../ci/azure_pipelines.yml)
+define the required checks. See the [CI/CD history](cicd_evidence.md) for earlier
+runs. Recorded successful builds are evidence for their source commits, not
+continuous monitoring or acceptance of subsequent working-tree changes.
+The 29 October source identity describes the checked health helpers/config; a
+successful KPI query alone does not identify the deployed source commit. Deployment
+provenance comes from its selected CI artifact and CD/readback evidence.
 
 ## Scope and limitations
 
 - Synthetic data measures stated intent. There are no transactions, revenue, brands, business dates or precise locations; findings are descriptive and non-causal.
-- Full navigation/reset, chart cross-filter and Service rendering acceptance, plus separate SQL endpoint execution, remain unverified. Structural validation and API KPI checks do not replace these tests.
+- Representative Service navigation/reset, slicer, tooltip and cross-filter cases passed for the 17 October release. Every possible selection, rendering after later source changes and separate SQL analytics endpoint execution remain unverified. Structural validation and API KPI checks do not replace interaction tests.
 - Power BI depends on the configured Fabric model. The Databricks pipeline is an alternative implementation, not the report's source.
 - Direct source-file comparison with a Kaggle download remains unverified; provenance and hashes identify the acquired snapshot.
 - This is a portfolio project, not a production service with agreed uptime, cost limits, automated alerting or completed recipient handoff. An independent backup copy outside the development machine remains unverified.

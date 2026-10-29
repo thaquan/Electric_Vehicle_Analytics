@@ -145,3 +145,20 @@ và config Test không đổi so với HEAD `48fa1fe`; working tree còn nhiều
 nên kết quả này không nghiệm thu toàn bộ code/report đang chỉnh sửa.
 
 Các quan sát ngày 28/10 ở trên được giữ nguyên như bằng chứng lịch sử.
+
+## Theo dõi phần 3 — 29/10/2026
+
+Đã đồng bộ [README](../README.md), [validation overview](validation.md),
+[CI/CD history](cicd_evidence.md), [mục lục evidence](evidence/README.md) và
+[hướng dẫn CD](deployment/test_cd.md) với các bằng chứng theo thời điểm:
+
+- Service UAT đại diện thuộc release CI #67/CD #70 ngày 17/10, không được tự động mở rộng sang release sau.
+- Artifact CI #84/CD #85 ngày 22/10 trên `48fa1fe` ghi nhận 129 test passed, không skip, cùng deployment/binding/refresh/KPI passed; hash của các báo cáo gốc đã được đối chiếu lại.
+- Probe ngày 28/10 vẫn là lần Arrow lỗi 401. Ngày 29/10 JSON live passed, Arrow cùng token vẫn 401; không gọi đây là deploy, refresh mới hay xác minh lại service principal.
+- SQL analytics endpoint, mọi tổ hợp tương tác và nghiệm thu các thay đổi code/report chưa commit vẫn chưa được xác minh.
+
+Đã bỏ mô tả release 17/10 là release hiện hành trong hướng dẫn CD và sửa thứ tự
+thời gian của release 14/10. Evidence JSON lịch sử được giữ nguyên. Lượt này chỉ
+sửa tài liệu; không chạy lại pipeline, deploy hay tạo bằng chứng UAT mới. Không
+khẳng định các build online mới nhất: truy vấn Azure CLI trong lượt này bị chặn
+khi đọc cấu hình cục bộ. Các build và trạng thái được ghi theo evidence đã kiểm chứng.
